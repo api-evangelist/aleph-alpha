@@ -1,0 +1,64 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/index.html
+scheme: 'PhariaAI release train v1.<yymm>.<patch>; roughly monthly, dated, published as release notes per release.'
+current_version: v1.260700.0
+current_release_date: '2026-07-08'
+availability: 'On-premise and hosted'
+entries:
+- version: v1.260700.0
+  date: '2026-07-08'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/pharia-ai/1.260700.0.html
+  breaking: false
+  highlights:
+  - 'Inference: vLLM worker updated to vLLM 0.23.0.'
+  - 'Pharia Chat: added support for native tool calling.'
+  - 'Pharia Chat: fixed tool call history being dropped from A2A conversation context, which caused the model to lose tool context after several turns and stop invoking MCP tools.'
+  - 'Pharia Chat: improved MCP logging and log-level hygiene — tool parameters, error content and LLM buffer data moved from INFO to DEBUG.'
+  - 'Pharia Data API: stages can now be flagged for cleanup once their retention period expires, with automatic monitoring.'
+  - 'Pharia IAM: admins sign in through a separate ADFS connection; the Admin role can be assigned by other admins.'
+  - 'Translation Service: new /metrics endpoint exposing translation_service_http_requests_total in Prometheus; language detection added to the translate endpoint.'
+- version: v1.260600.0
+  date: '2026-06-09'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/pharia-ai/1.260600.0.html
+  breaking: true
+  deprecations:
+  - 'Deprecated the luminous worker.'
+  - 'PhariaAI is no longer bundled with the Zitadel IdP by default; the Zitadel dependency is removed entirely in the July release.'
+  highlights:
+  - 'First release of Pharia Data v2, the ingestion and retrieval platform succeeding pharia-data-api and pharia-data-workflows (IAM, workflows, retrieval, search store management, file management).'
+  - 'Chat and Stateful Responses: greater configurability of guardrails.'
+  - 'Chat: incognito endpoints that retain no conversation history or uploaded documents.'
+  - 'Stateful Responses: soft and hard delete (admin only) for responses and conversations.'
+  - 'Inference: vLLM worker updated to vLLM 0.21.0.'
+- version: v1.260500.0
+  date: '2026-05-06'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/pharia-ai/1.260500.0.html
+  breaking: false
+  highlights:
+  - 'Document Index: optional minRelevancy field on the search store search API, applied after all scoring and fusion on the final score returned to the caller.'
+  - 'Pharia IAM: advance notice that Zitadel will no longer be enabled by default from the next release.'
+  - 'Translation: configurable language-pair-based rounding for the Stille model.'
+- version: v1.260400.0
+  date: '2026-04-01'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/pharia-ai/1.260400.0.html
+  breaking: false
+  highlights:
+  - 'Document Index: added GET /search_stores/{search_store_id}/documents/{document_name}/status.'
+  - 'PhariaData: OpenTelemetry tracing across qdrant_collection_initializer; improved file validation in workflows; new msword/ms-powerpoint mime types.'
+  - 'Pharia IAM: OpenFGA caching and limit tuning for better list-query throughput.'
+  - 'PhariaAssistant: clearer error pages for expired/invalid session tokens and unavailable application APIs.'
+- version: v1.260300.0
+  date: '2026-03-05'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/pharia-ai/1.260300.0.html
+  breaking: false
+  deprecations:
+  - 'Deprecated services: PhariaTranslate, PhariaTranscribe, PhariaKernel, PhariaConductor.'
+  highlights:
+  - 'PhariaChat: configurable timeouts for MCP tool calls to prevent tool executions hanging indefinitely.'
+  - 'PhariaChat: authentication optimised through connection pooling, client reuse and improved token caching.'
+  - 'Data & Search: updated document-index and document-index-mcp components; MCP integration improvements for the document index service.'
+  - 'Security updates addressing known CVEs (Pharia Numinous).'
+earlier:
+  note: 'The release notes index links every earlier PhariaAI release back to v1.250500.1, plus Pharia Government Assistant releases (PGA 2025.08.20, PGA 2025.06.01).'
+  url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/index.html

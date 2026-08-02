@@ -1,0 +1,83 @@
+generated: '2026-08-02'
+method: derived
+source: mcp/aleph-alpha-mcp.yml, openapi/aleph-alpha-pharia-search-openapi.json, openapi/aleph-alpha-responses-openapi.json
+summary: 'Binds the MCP servers Aleph Alpha bundles with PhariaAI to the REST operations that
+  back them. The live MCP tools/list is auth-gated (PhariaAI is deployed per customer and the
+  api.aleph-alpha.com gateway returns 401 for every anonymous path), so tools are mapped from
+  the published server descriptions by capability, not from an introspected manifest — confidence
+  is set accordingly and no tool names or inputSchemas are invented.'
+surfaces:
+  openapi:
+  - {file: openapi/aleph-alpha-pharia-search-openapi.json, title: Aleph Alpha Document Index API, operations: 34, operation_ids: false}
+  - {file: openapi/aleph-alpha-responses-openapi.json, title: Stateful Responses, operations: 15, operation_ids: true}
+  - {file: openapi/aleph-alpha-pharia-inference-openapi.json, title: Aleph Alpha API, operations: 28, operation_ids: true}
+  graphql: null
+  mcp:
+    endpoint: null
+    gated: true
+    note: 'Bundled with the PhariaAI distribution; reachable only at a customer Pharia domain.'
+crosswalk:
+- tool: document-index (Document index MCP server)
+  category: retrieval
+  rest:
+  - 'POST /collections/{namespace}/{collection}/indexes/{index}/search'
+  - 'GET /collections/{namespace}/{collection}/docs'
+  - 'GET /collections/{namespace}/{collection}/docs/{name}'
+  binding: rest
+  confidence: medium
+  note: 'The document-index-mcp component fronts the Document Index service. The PhariaSearch
+    spec declares no operationIds, so operations are referenced by method+path. Mapped from the
+    published server description ("search through collections and open documents"), not from a
+    tools/list response.'
+- tool: PhariaConductor
+  category: agents
+  rest: []
+  binding: none
+  confidence: low
+  note: 'Creates custom agents through PhariaAssistant Chat. No corresponding operation exists
+    in any of the six published OpenAPI documents.'
+- tool: Code sandbox
+  category: execution
+  rest: []
+  binding: none
+  confidence: low
+  note: 'Sandboxed code execution for the agent. No public REST equivalent is published.'
+- tool: mcp-firecrawl
+  category: web-search
+  rest: []
+  binding: none
+  confidence: high
+  note: 'Third-party (Firecrawl); not an Aleph Alpha API surface. Listed for completeness.'
+mcp_only:
+- {tool: PhariaConductor, reason: 'Agent-authoring capability with no public REST operation.'}
+- {tool: Code sandbox, reason: 'Server-side execution capability with no public REST operation.'}
+- {tool: mcp-firecrawl, reason: 'Third-party web search, not an Aleph Alpha API.'}
+rest_only:
+- capability: inference
+  spec: openapi/aleph-alpha-pharia-inference-openapi.json
+  operations: [complete, completeJson, chatCompletions, embeddings, semanticEmbed, batchSemanticEmbed, instructableEmbed, embed, evaluate, explain, tokenize, detokenize, transcribe, translate, rerank, create_steering_concept, availableModels, getModelTokenizer, modelSettings, version]
+  note: 'No MCP tool is published for the inference surface; agents call it as an OpenAI-compatible HTTP API instead.'
+- capability: token-and-account management
+  spec: openapi/aleph-alpha-pharia-inference-openapi.json
+  operations: [tokens, newToken, deleteToken, recentRequests, postCheckPrivileges]
+- capability: stateful responses and conversations
+  spec: openapi/aleph-alpha-responses-openapi.json
+  operations: [post_responses_endpoint_v1_responses_post, get_responses_endpoint_v1_responses__response_id__get, delete_response_endpoint_v1_responses__response_id__delete, update_response_endpoint_v1_responses__response_id__patch, post_check_endpoint_v1_check_post, create_conversation_endpoint_v1_conversations_post, list_conversations_endpoint_v1_conversations_get, get_conversation_endpoint_v1_conversations__conversation_id__get, update_conversation_endpoint_v1_conversations__conversation_id__post, delete_conversation_endpoint_v1_conversations__conversation_id__delete, recover_conversation_endpoint_v1_conversations__conversation_id__patch, list_conversation_responses_endpoint_v1_conversations__conversation_id__responses_get]
+  note: 'This surface is the MCP *client*: it executes MCP tools server-side rather than being exposed as one.'
+- capability: data platform (repositories, datasets, stages, connectors, transformations, search stores)
+  spec: openapi/aleph-alpha-pharia-data-openapi.json
+  operation_count: 54
+  note: 'Spec declares no operationIds.'
+- capability: studio (projects, traces, spans, evaluation, benchmarks, lineages)
+  spec: openapi/aleph-alpha-pharia-studio-openapi.json
+  operation_count: 42
+- capability: platform operations (cluster, use cases, deployments, models)
+  spec: openapi/aleph-alpha-pharia-os-openapi.json
+  operation_count: 21
+  note: 'Swagger 2.0; declares no operationIds.'
+coverage:
+  tools_named: 4
+  tools_bound_to_rest: 1
+  mcp_only: 3
+  rest_operations_total: 194
+  rest_operations_with_a_tool: 3

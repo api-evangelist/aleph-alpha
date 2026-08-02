@@ -1,0 +1,49 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/index.html
+versioning:
+  scheme: uri-path
+  api_current:
+    pharia_inference: 4.7.0
+    pharia_data: 1.0.0
+    pharia_studio: 0.1.0
+    pharia_search: 0.0.0
+    pharia_os: '1.0'
+    responses: 0.4.23
+  product_train: 'v1.<yymm>.<patch> — e.g. v1.260700.0 released July 08, 2026.'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  note: 'PhariaInference keeps a separately published OpenAPI document for every historical version
+    (v1.13.0 through v4.7.0 across majors v1-v4), so consumers can diff any two versions directly.'
+deprecation:
+  policy_url: https://docs.aleph-alpha.com/phariaai-home/latest/release-notes/index.html
+  formal_policy: false
+  practice: 'Deprecations are announced per release in the release notes, usually one release
+    ahead of removal, with an explicit migration recommendation. No RFC 8594 Sunset/Deprecation
+    response headers are documented, and no fixed deprecation window is published.'
+  sunset_header: false
+  announced:
+  - {item: Zitadel identity provider bundled by default, announced: v1.260500.0, effective: v1.260600.0, removal: 'July 2026 release', migration: 'Migrate to Dex and connect your own OIDC provider (set pharia-iam.zitadel.enabled true to keep Zitadel).'}
+  - {item: luminous worker, announced: v1.260600.0, migration: 'Use the vLLM worker.'}
+  - {item: 'Legacy model registration workflow (models.json + /v1/models endpoint)', announced: v1.251200.0, api: PhariaInference}
+  - {item: 'PhariaTranslate, PhariaTranscribe, PhariaKernel, PhariaConductor services', announced: v1.260300.0}
+  - {item: 'Helm chart-based UI customization', announced: v1.250800.0, migration: 'Handle all future UI configuration through the API.'}
+  - {item: 'Legacy Chat architecture (superseded by the agentic Beta Chat)', announced: v1.250700.0, effective: '2025-09-03'}
+  - {item: 'Legacy ORAS-based image attestation flow', announced: 'Security disclosure v2', effective: 'end of Q4/2025', migration: 'Cosign keyless signing with SLSA provenance and CycloneDX/SPDX attestations.'}
+deprecated_operations: []
+deprecated_operations_note: 'No operation in any of the six published OpenAPI documents carries deprecated: true.'
+sla:
+  url: null
+  uptime_target: null
+  note: 'No public SLA or uptime commitment is published. PhariaAI is sold as an on-premise /
+    per-customer hosted installation, so availability terms are contractual rather than posted.'
+status_page:
+  url: null
+  probed:
+  - {url: 'https://status.aleph-alpha.com/', result: 'DNS does not resolve'}
+  note: 'No public status page was found (probed 2026-08-02). Incident reporting runs through the
+    Aleph Alpha support portal instead.'
+  support_portal: https://supportportal.aleph-alpha.com/
+support:
+  portal: https://supportportal.aleph-alpha.com/
+  incident_reporting: https://support.aleph-alpha.com/
+  shared_responsibility: https://docs.aleph-alpha.com/phariaai-install-config-guide/latest/installation/before-you-start/shared-responsibility-model.html

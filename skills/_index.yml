@@ -1,0 +1,23 @@
+generated: '2026-08-02'
+method: generated
+source: openapi/*.json, https://docs.aleph-alpha.com/
+note: 'Every step is grounded in an operationId verified against the harvested spec. PhariaSearch,
+  PhariaData and PhariaOS publish no operationIds, so the semantic-search skill references
+  method+path and its operations[] list is deliberately empty.'
+skills:
+- file: aleph-alpha-complete-and-chat.md
+  name: Generate text with the Aleph Alpha PhariaInference API
+  api: openapi/aleph-alpha-pharia-inference-openapi.json
+  operations: [availableModels, modelSettings, complete, chatCompletions, tokenize, detokenize, getModelTokenizer, version]
+- file: aleph-alpha-stateful-responses-agent.md
+  name: Run a multi-turn agent on the Aleph Alpha Responses API
+  api: openapi/aleph-alpha-responses-openapi.json
+  operations: [get_models_endpoint_models_get, post_responses_endpoint_v1_responses_post, get_responses_endpoint_v1_responses__response_id__get, delete_response_endpoint_v1_responses__response_id__delete, post_check_endpoint_v1_check_post, create_conversation_endpoint_v1_conversations_post]
+- file: aleph-alpha-semantic-search.md
+  name: Build and query a semantic search index with the Aleph Alpha Document Index
+  api: openapi/aleph-alpha-pharia-search-openapi.json
+  operations: []
+- file: aleph-alpha-evaluate-with-studio.md
+  name: Evaluate a PhariaAI application with PhariaStudio benchmarks and traces
+  api: openapi/aleph-alpha-pharia-studio-openapi.json
+  operations: [create_project_projects_post, create_dataset_projects__project_id__evaluation_datasets_post, create_benchmark_projects__project_id__evaluation_benchmarks_post, create_benchmark_execution_projects__project_id__evaluation_benchmarks__benchmark_id__executions_post, receive_otlp_traces_projects__project_id__traces_v2_post]

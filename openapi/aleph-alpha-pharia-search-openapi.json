@@ -1,0 +1,1986 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Aleph Alpha Document Index API",
+        "version": "0.0.0",
+        "description": "The Document Index is a service that provides semantic search over your knowledge base. It\ntakes care of the chunking and embedding of your documents, and it keeps these embeddings in\nsync when your documents change.\n",
+        "contact": {
+            "email": "support@aleph-alpha.com"
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "token": {
+                "type": "http",
+                "scheme": "bearer",
+                "description": "Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)"
+            }
+        },
+        "schemas": {
+            "searchQueryParameters": {
+                "description": "The parameters for finding document sections within a collection based on a semantic search.\n",
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "$ref": "#/components/schemas/query"
+                    },
+                    "max_results": {
+                        "type": "integer",
+                        "description": "Maximum number of found documents to return. Default 1."
+                    },
+                    "min_score": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "Filter out results with a cosine similarity score below this value. Scores range from -1 to 1.\nFor searches on hybrid indexes, the Document Index applies the min_score to the semantic results\nbefore fusion of result sets. As fusion re-scores results, returned scores may exceed this value.\n"
+                    },
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/filter"
+                        },
+                        "description": "A filter for search results that restricts the results to those document sections that match the filter criteria.\nThe individual conditions of this array are AND-combined (i.e. all conditions must match). This can for example be\nused to restrict the returned sections based on their modality (i.e. image or text), or on their metadata.\n"
+                    }
+                },
+                "required": [
+                    "query"
+                ]
+            },
+            "queryResult": {
+                "description": "The result for semantic document search.\nAn array of document names and content of the found documents in the given collection.\n",
+                "type": "array",
+                "items": {
+                    "allOf": [
+                        {
+                            "$ref": "#/components/schemas/documentSection"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "score": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "description": "Search score of the found section, where a higher score indicates a closer match.\nWill be between -1 and 1. A score closer to -1 indicates the section opposes the\nquery. A score close 0 suggests the section is unrelated to the query. A score\nclose to 1 suggests the section is related to the query. The score depends on\nthe index configuration, e.g. the score of a section differs for hybrid and\nnon-hybrid indexes. For searches on hybrid indexes, the score can exceed the\nmin_score of the query as the min_score only applies to the semantic similarity\nsub-query.\n"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "transitioningResult": {
+                "description": "The result for a transitioning documents query.\n",
+                "type": "object",
+                "properties": {
+                    "currently_embedding": {
+                        "type": "integer"
+                    },
+                    "currently_archiving": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "currently_embedding",
+                    "currently_archiving"
+                ]
+            },
+            "textCursor": {
+                "description": "A position within a document. The cursor is always inclusive of the current position, in both start and end positions.\n",
+                "type": "object",
+                "properties": {
+                    "modality": {
+                        "type": "string",
+                        "enum": [
+                            "text"
+                        ]
+                    },
+                    "item": {
+                        "type": "integer",
+                        "description": "Index of the item in the document"
+                    },
+                    "position": {
+                        "type": "integer",
+                        "description": "The character position the cursor can be found at within the string."
+                    }
+                }
+            },
+            "imageCursor": {
+                "description": "A position within a document. The cursor is always inclusive of the current position, in both start and end positions.\n",
+                "type": "object",
+                "properties": {
+                    "modality": {
+                        "type": "string",
+                        "enum": [
+                            "image"
+                        ]
+                    },
+                    "item": {
+                        "type": "integer",
+                        "description": "Index of the item in the document"
+                    }
+                }
+            },
+            "documentInformation": {
+                "description": "Information about a document",
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "$ref": "#/components/schemas/documentPath"
+                    },
+                    "created": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "version": {
+                        "type": "integer",
+                        "minimum": "1"
+                    }
+                }
+            },
+            "documentSection": {
+                "description": "A section of a document.\n",
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "$ref": "#/components/schemas/documentPath"
+                    },
+                    "section": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/components/schemas/text"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/image"
+                                }
+                            ]
+                        }
+                    },
+                    "start": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/textCursor"
+                            },
+                            {
+                                "$ref": "#/components/schemas/imageCursor"
+                            }
+                        ]
+                    },
+                    "end": {
+                        "description": "Inclusive cursor. The section of the document includes whatever is at this position",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/textCursor"
+                            },
+                            {
+                                "$ref": "#/components/schemas/imageCursor"
+                            }
+                        ]
+                    }
+                }
+            },
+            "documentVersion": {
+                "description": "The version of a document with the creation timestamp.\n",
+                "type": "object",
+                "properties": {
+                    "version": {
+                        "type": "integer"
+                    },
+                    "created_timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "archived_timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "documentPath": {
+                "description": "The path to a document. A path uniquely identifies a document among all managed documents.",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of the document. The name is unique within a collection.",
+                        "type": "string",
+                        "maxLength": "512"
+                    },
+                    "collection": {
+                        "description": "Collection containing documents. The name of the collection must be unique within a namespace.\n",
+                        "type": "string",
+                        "maxLength": "100"
+                    },
+                    "namespace": {
+                        "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\n",
+                        "type": "string",
+                        "maxLength": "100"
+                    }
+                }
+            },
+            "document": {
+                "description": "Represents a document. The actual content of the document is an array of text and image elements.\nThe version field allow to evolve the schema. The documentation here describes only the most recent version.\n",
+                "type": "object",
+                "properties": {
+                    "schema_version": {
+                        "type": "string",
+                        "enum": [
+                            "V1"
+                        ]
+                    },
+                    "contents": {
+                        "type": "array",
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/components/schemas/text"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/image"
+                                }
+                            ]
+                        }
+                    },
+                    "metadata": {
+                        "description": "Store any metadata about the document. Accepts any valid JSON. You can filter search\nresults based on these metadata fields using filter indexes.\n"
+                    }
+                },
+                "required": [
+                    "schema_version",
+                    "content"
+                ]
+            },
+            "indexConfig": {
+                "description": "Represents the configuration of an index. You can assign indexes to collections and use them\nfor efficient content-based searching.\n",
+                "type": "object",
+                "required": [
+                    "chunk_size"
+                ],
+                "properties": {
+                    "chunk_size": {
+                        "type": "integer",
+                        "minimum": "1",
+                        "maximum": "2046",
+                        "description": "The Document Index chunks documents before embedding them. This field specifies\nthe maximum number of tokens in a chunk. Chunking adheres to semantic boundaries where\npossible.\n"
+                    },
+                    "chunk_overlap": {
+                        "type": "integer",
+                        "minimum": "0",
+                        "maximum": "2045",
+                        "default": "0",
+                        "description": "The Document Index chunks documents before embedding them. This field specifies the\nmaximum number of tokens of overlap between consecutive chunks. Chunking adheres to\nsemantic boundaries where possible.\n"
+                    },
+                    "embedding_type": {
+                        "type": "string",
+                        "enum": [
+                            "symmetric",
+                            "asymmetric"
+                        ],
+                        "deprecated": "true",
+                        "description": "The embedding representation to embed with. This field is deprecated and will be\nremoved in a future version. Use the `embedding` field with the `semantic_embed`\nstrategy instead. Note: for backwards compatibility, the Document Index will always\nreturn this field. For cases where a value for it is not applicable (e.g., with the\n`instructable_embed` embedding strategy, it will return `asymmetric`.\n"
+                    },
+                    "hybrid_index": {
+                        "type": "string",
+                        "enum": [
+                            "bm25"
+                        ],
+                        "description": "If set, the Document Index will maintain a hybrid (i.e. semantic and keyword) index.\nSearches on this index will query both semantic and keyword indexes, combining results\nwith Reciprocal Rank Fusion (RRF).\n"
+                    },
+                    "embedding": {
+                        "type": "object",
+                        "description": "The embedding configuration, i.e., how to embed chunks of documents in the index. You\nmust specify this field (recommended), or the `embedding_type` field (deprecated).\n",
+                        "oneOf": [
+                            {
+                                "type": "object",
+                                "description": "Semantic embed. This is the standard way to embed documents.\n",
+                                "required": [
+                                    "strategy",
+                                    "model_name",
+                                    "representation"
+                                ],
+                                "properties": {
+                                    "strategy": {
+                                        "type": "string",
+                                        "enum": [
+                                            "semantic_embed"
+                                        ]
+                                    },
+                                    "model_name": {
+                                        "type": "string",
+                                        "description": "The name of the model to use for embedding."
+                                    },
+                                    "representation": {
+                                        "type": "string",
+                                        "enum": [
+                                            "symmetric",
+                                            "asymmetric"
+                                        ],
+                                        "description": "The representation to use for embedding.\nUse \"symmetric\" when the queries and documents are the same, e.g., for classification tasks.\nUse \"asymmetric\" when the queries and documents are different, e.g., for search tasks.\nFor more details about the difference between symmetric and asymmetric semantic embeddings,\nsee our blog post: https://www.aleph-alpha.com/luminous-explore-a-model-for-world-class-semantic-representation\n"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "object",
+                                "description": "Instructable embed. This lets you prompt embedding models with custom instructions\nfor queries and documents. Steering the model like this can help the model\nunderstand nuances of your specific data and ultimately lead to embeddings that are\nmore useful for your use-case.\n",
+                                "required": [
+                                    "strategy",
+                                    "model_name"
+                                ],
+                                "properties": {
+                                    "strategy": {
+                                        "type": "string",
+                                        "enum": [
+                                            "instructable_embed"
+                                        ]
+                                    },
+                                    "model_name": {
+                                        "type": "string",
+                                        "description": "The name of the model to use for embedding."
+                                    },
+                                    "query_instruction": {
+                                        "type": "string",
+                                        "description": "The instruction to use for embedding queries."
+                                    },
+                                    "document_instruction": {
+                                        "type": "string",
+                                        "description": "The instruction to use for embedding document chunks."
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "filterIndexConfig": {
+                "description": "Represents the configuration parameters for a filter index. Filter indexes can be used to filter search\nresults based on the metadata field defined in the configuration.\n",
+                "type": "object",
+                "properties": {
+                    "field_name": {
+                        "$ref": "#/components/schemas/metadataFilterField"
+                    },
+                    "field_type": {
+                        "type": "string",
+                        "enum": [
+                            "string",
+                            "integer",
+                            "float",
+                            "boolean",
+                            "date_time"
+                        ]
+                    }
+                }
+            },
+            "filter": {
+                "description": "A logical combination of filter conditions.\n",
+                "type": "object",
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "description": "Logical conjunction, i.e. forms the predicate \"filterCondition1 AND filterCondition2 AND ...\"",
+                        "properties": {
+                            "with": {
+                                "$ref": "#/components/schemas/filterConditions"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "description": "Logical conjunction of negations, i.e. forms the predicate \"(NOT filterCondition1) AND (NOT filterCondition2) AND ...\"",
+                        "properties": {
+                            "without": {
+                                "$ref": "#/components/schemas/filterConditions"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "description": "Logical disjunction, i.e. forms the predicate \"filterCondition1 OR filterCondition2 OR ...\"",
+                        "properties": {
+                            "withOneOf": {
+                                "$ref": "#/components/schemas/filterConditions"
+                            }
+                        }
+                    }
+                ]
+            },
+            "filterConditions": {
+                "type": "array",
+                "description": "A collection of filter conditions that are combined according to the parent filter combinator.\n",
+                "items": {
+                    "oneOf": [
+                        {
+                            "type": "object",
+                            "description": "Matches sections that have at least one item with the given modality.\n",
+                            "properties": {
+                                "modality": {
+                                    "type": "string",
+                                    "enum": [
+                                        "text",
+                                        "image"
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "type": "object",
+                            "description": "Matches sections whose metadata fields match the given condition. You must specify the field, and can only specify\na single condition.\n",
+                            "properties": {
+                                "metadata": {
+                                    "type": "object",
+                                    "required": [
+                                        "field"
+                                    ],
+                                    "properties": {
+                                        "field": {
+                                            "$ref": "#/components/schemas/metadataFilterField"
+                                        },
+                                        "greater_than": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "greater_than_or_equal_to": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "less_than": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "less_than_or_equal_to": {
+                                            "type": "number",
+                                            "format": "double"
+                                        },
+                                        "after": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "at_or_after": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "before": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "at_or_before": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "equal_to": {
+                                            "type": [
+                                                "string",
+                                                "integer",
+                                                "boolean"
+                                            ]
+                                        },
+                                        "is_null": {
+                                            "type": "boolean",
+                                            "description": "This condition matches all metadata fields with a value of null.\nThe only allowed value for this condition is true.\n"
+                                        }
+                                    },
+                                    "oneOf": [
+                                        {
+                                            "required": [
+                                                "greater_than"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "greater_than_or_equal_to"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "less_than"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "less_than_or_equal_to"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "after"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "at_or_after"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "before"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "at_or_before"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "equal_to"
+                                            ]
+                                        },
+                                        {
+                                            "required": [
+                                                "is_null"
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            "metadataFilterField": {
+                "description": "The metadata field on which to filter search results. Field names must only contain alphanumeric characters,\ndashes and underscores. Nested fields can be specified using dot notation (e.g. 'a.b').\nArray-valued fields can either use a wildcard specifier (e.g. 'a[].b') or a specific index (e.g. 'a[1].b').\nThe maximum length of the field name is 1000 characters.\n",
+                "type": "string",
+                "maxLength": "1000",
+                "pattern": "^([[:alnum:]\\-_]+(\\[[[:digit:]]{0,5}\\])*\\.)*[[:alnum:]\\-_]+$"
+            },
+            "query": {
+                "description": "Represents a query as is an array of text and image elements.\n",
+                "type": "array",
+                "items": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/schemas/text"
+                        },
+                        {
+                            "$ref": "#/components/schemas/image"
+                        }
+                    ]
+                }
+            },
+            "text": {
+                "description": "Represent a single piece of continuous text. The modality must always be 'text'.",
+                "type": "object",
+                "properties": {
+                    "modality": {
+                        "type": "string",
+                        "enum": [
+                            "text"
+                        ]
+                    },
+                    "text": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "modality",
+                    "text"
+                ]
+            },
+            "image": {
+                "description": "Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.",
+                "type": "object",
+                "properties": {
+                    "modality": {
+                        "type": "string",
+                        "enum": [
+                            "image"
+                        ]
+                    },
+                    "bytes": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "modality",
+                    "bytes"
+                ]
+            }
+        },
+        "parameters": {
+            "namespace": {
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n",
+                "name": "namespace",
+                "in": "path",
+                "schema": {
+                    "type": "string",
+                    "maxLength": "100",
+                    "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                },
+                "required": "true",
+                "example": "aleph-alpha"
+            },
+            "collection": {
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n",
+                "name": "collection",
+                "in": "path",
+                "schema": {
+                    "type": "string",
+                    "maxLength": "100",
+                    "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                },
+                "required": "true",
+                "example": "wikipedia-de"
+            },
+            "name": {
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n",
+                "name": "name",
+                "in": "path",
+                "schema": {
+                    "type": "string",
+                    "maxLength": "512"
+                },
+                "required": "true",
+                "example": "Climate_change"
+            },
+            "version": {
+                "description": "Which version of the document to retrieve.",
+                "name": "version",
+                "in": "path",
+                "schema": {
+                    "type": "integer"
+                },
+                "required": "true",
+                "example": "1"
+            },
+            "index": {
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n",
+                "name": "index",
+                "in": "path",
+                "schema": {
+                    "type": "string",
+                    "maxLength": "50",
+                    "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                },
+                "required": "true",
+                "example": "asymmetric"
+            },
+            "filterIndex": {
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n",
+                "name": "filterIndex",
+                "in": "path",
+                "schema": {
+                    "type": "string",
+                    "maxLength": "50",
+                    "pattern": "^[a-zA-Z0-9\\-\\.]+$"
+                },
+                "required": "true",
+                "example": "creation-date"
+            }
+        }
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Ping the Document Index.",
+                "responses": {
+                    "200": {
+                        "description": "Hello!",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Hello from the Document Index!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health/liveness": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Liveness state of the Document Index.",
+                "responses": {
+                    "200": {
+                        "description": "The Document Index is alive"
+                    }
+                }
+            }
+        },
+        "/health/readiness": {
+            "get": {
+                "tags": [
+                    "Service"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Readiness state of the Document Index.",
+                "responses": {
+                    "200": {
+                        "description": "The Document Index is ready to receive requests"
+                    }
+                }
+            }
+        },
+        "/namespaces": {
+            "get": {
+                "tags": [
+                    "Namespace"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "List namespaces.",
+                "description": "List all namespaces",
+                "responses": {
+                    "200": {
+                        "description": "A list of namespace names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "namespace_1",
+                                        "namespace_2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/namespaces/{namespace}": {
+            "put": {
+                "tags": [
+                    "Namespace"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Create namespace.",
+                "description": "Create namespace",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Namespace successfully created"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Namespace"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Delete namespace.",
+                "description": "Delete namespace. Only possible if there are no collections in the namespace.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Namespace successfully deleted"
+                    }
+                }
+            }
+        },
+        "/indexes/{namespace}": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "List of index configurations in namespace.",
+                "description": "List all index configurations that exist in the given namespace.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of index config names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "index-config-1",
+                                        "index-config-2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/indexes/{namespace}/{index}": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get a namespace-wide index configuration.",
+                "description": "Gets the parameters for the given index configuration.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An index config",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/indexConfig"
+                                },
+                                "example": {
+                                    "chunk_size": "384",
+                                    "chunk_overlap": "5",
+                                    "hybrid_index": "bm25",
+                                    "embedding": {
+                                        "strategy": "semantic_embed",
+                                        "model_name": "luminous-base",
+                                        "representation": "asymmetric"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Define a namespace-wide index configuration.",
+                "description": "Defines a namespace-wide index configuration. Once a configuration is defined it can be assigned\nto the collections of the namespace.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/indexConfig"
+                            },
+                            "example": {
+                                "chunk_size": "384",
+                                "chunk_overlap": "5",
+                                "hybrid_index": "bm25",
+                                "embedding": {
+                                    "strategy": "semantic_embed",
+                                    "model_name": "luminous-base",
+                                    "representation": "asymmetric"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "No content"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Delete a namespace-wide index configuration.",
+                "description": "Deletes the index configuration for the given namespace. This is not possible if the index configuration\nis assigned to any collection.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Index configuration successfully deleted."
+                    },
+                    "409": {
+                        "description": "The index configuration cannot be deleted because it is used."
+                    }
+                }
+            }
+        },
+        "/filter_indexes/{namespace}": {
+            "get": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "List of filter index configurations in namespace.",
+                "description": "List all filter index configurations that exist in the given namespace.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of filter index config names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "filter-index-config-1",
+                                        "filter-index-config-2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/filter_indexes/{namespace}/{filterIndex}": {
+            "get": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get namespace-wide filter index configuration.",
+                "description": "Gets the parameters for the given filter index configuration.",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterIndex"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A filter index config",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/filterIndexConfig"
+                                },
+                                "example": {
+                                    "field_name": "a.nested.field",
+                                    "field_type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Define a namespace-wide filter index configuration.",
+                "description": "Defines a namespace-wide filter index configuration. Once a configuration is defined it can be assigned\nto indexes that are assigned to a collections of the namespace which then allows to filter searches on this index\nbased on the field defined in the configuration.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterIndex"
+                    }
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/filterIndexConfig"
+                            },
+                            "example": {
+                                "field_name": "a.nested.field",
+                                "field_type": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "No content"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Delete a namespace-wide filter index configuration.",
+                "description": "Deletes the filter index configuration for the given namespace. This is not possible if the filter index\nis added to any assigned index.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterIndex"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filter index configuration successfully deleted."
+                    },
+                    "409": {
+                        "description": "The filter index configuration cannot be deleted because it is used."
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}": {
+            "get": {
+                "tags": [
+                    "Collection"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "List collections in namespace.",
+                "description": "List all collections that exist in the given namespace",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of collection names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "collection_1",
+                                        "collection_2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}": {
+            "put": {
+                "tags": [
+                    "Collection"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Create a collection.",
+                "description": "Creates a collection with a path given as namespace/collection.\nCollections need to be created explicitly before documents can be put into a collection.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collection successfully created."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Collection"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Delete collection.",
+                "description": "Deletes a collection identified by the namespace/collection.\nIf the delete request returns successfully, the collection is deleted, i.e. it cannot be found\nany more neither by collection-path nor through search/lookup. However if the delete request fails\neither deletion failed or the collection will be deleted eventually.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collection successfully deleted."
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/docs": {
+            "get": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "List document information.",
+                "description": "Lists the information of documents in a collection. This includes the document name,\ncreation timestamp and version number.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "in": "query",
+                        "name": "max_documents",
+                        "description": "Maximum number of documents to fetch",
+                        "schema": {
+                            "type": "integer",
+                            "minimum": "0",
+                            "maximum": "10000",
+                            "default": "100"
+                        },
+                        "required": "false"
+                    },
+                    {
+                        "in": "query",
+                        "name": "starts_with",
+                        "description": "Only return documents whose name start with the given prefix.",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": "false"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of document information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/documentInformation"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/docs/{name}": {
+            "get": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get a document.",
+                "description": "Get all details of document from namespace and collection by name",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A document",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/document"
+                                },
+                                "example": {
+                                    "schema_version": "V1",
+                                    "contents": [
+                                        {
+                                            "modality": "text",
+                                            "text": "Hello, World!"
+                                        }
+                                    ],
+                                    "metadata": [
+                                        {
+                                            "url": "https://example.com/external-uri"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Insert or update a document.",
+                "description": "Inserts a document under the given document path given as namespace/collection/name.\nNote that embeddings required for semantic searches will be computed asynchronously,\ni.e. after a document was successfully\ninserted into a collection it might not immediately be found through a search/lookup request.\nCollections need to be created explicitly before documents can be put into a collection.\nWhen PUT'ing a document that is already embedded, the original version will disappear\nimmediately. The new embeddings of the document will appear asynchronously as if the\ndocument had never been uploaded.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    }
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/document"
+                            },
+                            "example": {
+                                "schema_version": "V1",
+                                "contents": [
+                                    {
+                                        "modality": "text",
+                                        "text": "Hello, World!"
+                                    }
+                                ],
+                                "metadata": [
+                                    {
+                                        "url": "https://example.com/external-uri"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "No content"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Delete a document.",
+                "description": "Deletes a document identified by the document path given as namespace/collection/name.\nIf the delete request returns successfully, the document is deleted, i.e. it cannot be found\nany more neither by document-path nor through search/lookup. However if the delete request\nfails, the document might be deleted eventually.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No content"
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/docs/{name}/versions": {
+            "get": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get all document versions.",
+                "description": "Get all current and previous document versions in the Document Index together with their creation timestamp",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of version numbers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/documentVersion"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/docs/{name}/versions/{version}": {
+            "get": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get a specific version of a document.",
+                "description": "Get a specific version of a document",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    },
+                    {
+                        "$ref": "#/components/parameters/version"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A document",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/document"
+                                },
+                                "example": {
+                                    "schema_version": "V1",
+                                    "contents": [
+                                        {
+                                            "modality": "text",
+                                            "text": "Hello, World!"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/docs/{name}/indexes/{index}/chunks": {
+            "get": {
+                "tags": [
+                    "Document"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get document chunks for a given index.",
+                "description": "Get all chunks associated with a document in a given index",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/name"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of document chunks",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/documentSection"
+                                    }
+                                },
+                                "example": {
+                                    "path": {
+                                        "name": "Cope Am\u00e9rica",
+                                        "collection": "Sports",
+                                        "namespace": "Sample-Organization"
+                                    },
+                                    "section": [
+                                        {
+                                            "modality": "text",
+                                            "text": "Copa Am\u00e9rica 2021"
+                                        }
+                                    ],
+                                    "start": {
+                                        "modality": "text",
+                                        "item": "0",
+                                        "position": "0"
+                                    },
+                                    "end": {
+                                        "modality": "text",
+                                        "item": "0",
+                                        "position": "17"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get path of indexes assigned to the given collection.",
+                "description": "Gets a list of paths of indexes that are assigned to the given collections. Details of the index\n(i.e. its parameters) can be retrieved via the /indexes/namespace/index endpoint.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of index names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "index_1",
+                                        "index_2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes/{index}": {
+            "put": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Assign an existing index config to an existing collection.",
+                "description": "Assigns an index config that exists in the same namespace as the collection to the collection.\nAll current and future documents of the collection will asynchronously be added to the index and\nwill eventually be available for search through the index specific search endpoint\n/collections/{namespace}/{collection}/indexes/{index}/search.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Index successfully assigned."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Removes an index from collection.",
+                "description": "Removes the assigned index from a collection. This makes the search endpoint for this index\nimmediately unavailable and deletes asynchronously all data associated to the index.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Index successfully removed from collection."
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes/{index}/search": {
+            "post": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Index based search.",
+                "description": "Find documents by a query that is much shorter than the actual document.\n\nNote that the embeddings of documents required to find documents through this\nare computed asynchronously, i.e. after a document was successfully\ninserted into a collection it might not immediately be found through this request.\n\nYou can filter search results by modality and metadata.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "requestBody": {
+                    "required": "true",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/searchQueryParameters"
+                            },
+                            "example": {
+                                "query": [
+                                    {
+                                        "modality": "text",
+                                        "text": "Who likes pizza?"
+                                    },
+                                    {
+                                        "modality": "image",
+                                        "image": "<base64_encoded_image>"
+                                    }
+                                ],
+                                "max_results": "5",
+                                "filters": [
+                                    {
+                                        "with": [
+                                            {
+                                                "modality": "text"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "without": [
+                                            {
+                                                "metadata": {
+                                                    "field": "colour",
+                                                    "equal_to": "red"
+                                                }
+                                            },
+                                            {
+                                                "metadata": {
+                                                    "field": "weight_in_kg",
+                                                    "greater_than_or_equal_to": "10"
+                                                }
+                                            },
+                                            {
+                                                "metadata": {
+                                                    "field": "weight_in_kg",
+                                                    "less_than": "60"
+                                                }
+                                            },
+                                            {
+                                                "metadata": {
+                                                    "field": "expiry_date",
+                                                    "before": "2024-07-18T14:01:31Z"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The most similar documents.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/queryResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes/{index}/export/embedding_projector": {
+            "get": {
+                "tags": [
+                    "Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Exports embeddings in Embedding Projector format.",
+                "description": "Exports embeddings from the indexed collection identified by the path. The exported\nfile is a ZIP containing two tab-separated value (TSV) files, one with the raw\nembeddings and the other with identifying metadata for each embedding. You can import\nthese files into the Embedding Projector to visualise them in a lower dimension.\n\nExports contain no more than 100,000 embeddings; larger collections will be\nrandomly downsampled to meet this contraint. This is the maximum embedding count that\nthe Embedding Projector supports.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The exported ZIP file to download",
+                        "content": {
+                            "application/zip": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes/{index}/filter_indexes": {
+            "get": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Gets the filter indexes assigned to an assigned (search) index.",
+                "description": "Gets the filter indexes assigned to an assigned (search) index. Searches on the assigned\nindex can use these filter indexes.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of filter index names",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "example": [
+                                        "filter_index_1",
+                                        "filter_index_2"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/indexes/{index}/filter_indexes/{filterIndex}": {
+            "put": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Assign an existing filter index config to an assigned (search) index.",
+                "description": "Assigns a filter index config that exists in the same namespace as the collection to an\nindex assigned to the collection. This allows you to filter results from searches over the\nsearch index.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterIndex"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filter index successfully assigned."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Filter Index"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Unassigns a filter index config from an assigned (search) index.",
+                "description": "Unassigns a filter index config from an assigned (search) index. Subsequent searches on the\nindex will no longer be able to use the filter.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    },
+                    {
+                        "$ref": "#/components/parameters/index"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterIndex"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filter index successfully unassigned."
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/progress": {
+            "get": {
+                "tags": [
+                    "Collection"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get count of all documents in a collection that are not yet embedded.",
+                "description": "Gets count of all documents in a collection that are saved in the knowledge base, but not embedded for search yet.\nThe count is not exact but an upper boundary of the exact number of documents to be embedded.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Number of unembedded documents",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/{namespace}/{collection}/transitioning": {
+            "get": {
+                "tags": [
+                    "Collection"
+                ],
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "summary": "Get count of all documents in a collection that are not yet embedded or not yet archived.",
+                "description": "Gets count of all documents in a collection where the target state does not equal the current state.\nThe count is not exact but an upper boundary of the exact number of documents to be embedded/archived.\n",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/namespace"
+                    },
+                    {
+                        "$ref": "#/components/parameters/collection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Number of unembedded documents",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/transitioningResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Service",
+            "description": "Service health and status"
+        },
+        {
+            "name": "Namespace",
+            "description": "Management of namespaces"
+        },
+        {
+            "name": "Collection",
+            "description": "Management of document collections"
+        },
+        {
+            "name": "Document",
+            "description": "Management of documents"
+        },
+        {
+            "name": "Index",
+            "description": "Management of search indexes"
+        },
+        {
+            "name": "Filter Index",
+            "description": "Management of search filter indexes"
+        }
+    ],
+    "servers": [
+        {
+            "url": "{host}/v1/studio/search",
+            "variables": {
+                "host": {
+                    "default": "https://api.pharia.example.com"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Aleph Alpha API
+  version: 1.0.0
+extends: openapi/aleph-alpha-pharia-inference-openapi.json
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: aleph-alpha
+    x-apievangelist-harvested: '2026-08-02'
+    x-apievangelist-source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/index.html
+    x-apievangelist-artifacts:
+      authentication: authentication/aleph-alpha-authentication.yml
+      conventions: conventions/aleph-alpha-conventions.yml
+      errors: errors/aleph-alpha-problem-types.yml
+      lifecycle: lifecycle/aleph-alpha-lifecycle.yml
+      agentic_access: agentic-access/aleph-alpha-agentic-access.yml
+- target: $.servers
+  description: The hosted Aleph Alpha gateway is api.aleph-alpha.com; the published server template uses
+    a {host} variable defaulting to a placeholder for self-hosted PhariaAI installations.
+  update: {}

@@ -1,0 +1,34 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-studio/playground.html
+summary: 'Aleph Alpha publishes no public test/live key separation, no magic test identifiers and
+  no fixture tooling — PhariaAI is deployed per customer, so there is no shared sandbox tenant.
+  What it does publish is an interactive console (the PhariaStudio Playground) and a documented
+  local development loop for custom applications and skills.'
+test_live_separation:
+  supported: false
+  note: 'A single bearer token authenticates against the installation; there are no test-mode key prefixes.'
+test_values: []
+test_values_note: 'No published test cards, test identifiers or hosted test tokens. Nothing is invented here.'
+console:
+  name: PhariaStudio Playground
+  url_pattern: 'https://pharia-studio.{ingressDomain}'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-studio/playground.html
+  description: 'A workspace for interacting with the LLMs you have access to. Select a model,
+    choose the prompt input modality (Only Prompt or Raw Text String), run the prompt, and adjust
+    model settings (maximum tokens and others) in the right sidebar.'
+  capabilities:
+  - 'Select an LLM from the models the installation exposes; copy the model name for use in code.'
+  - 'Two prompt input modalities: Only Prompt (content only, single-turn) and Raw Text String (full template control, e.g. adding a system prompt).'
+  - 'Adjust model settings per run.'
+  - 'Change the output text format.'
+  - 'Export the prompt as code — the bridge from console experiment to an API call.'
+local_development:
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/phariaai-applications/quick-start-custom-apps.html
+  loop:
+  - 'npx @aleph-alpha/pharia-ai-cli create — scaffolds UI + service + Skill from a base / summary / qa template.'
+  - 'pnpm run dev (UI) and uv run dev (service) run the application locally against your PhariaAI installation.'
+  - 'npx @aleph-alpha/pharia-ai-cli preview — runs the app locally and emits a preview URL to register in PhariaAssistant developer mode before deploying.'
+  - 'pharia-skill-test (crates.io) provides test helpers for testing Pharia Kernel skill components locally.'
+  incognito: 'Incognito endpoints and incognito mode (PhariaAI v1.260600.0) retain no conversation history or uploaded documents — useful for throwaway experimentation.'
+  store_false: 'Responses API store=false returns a response without persisting it (forfeits previous_response_id chaining).'

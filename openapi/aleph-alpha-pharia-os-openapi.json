@@ -1,0 +1,2720 @@
+{
+    "schemes": [
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.",
+        "title": "PhariaOS Manager API",
+        "contact": {
+            "name": "Aleph Alpha",
+            "url": "https://www.aleph-alpha.com"
+        },
+        "version": "1.0"
+    },
+    "host": "api.pharia.example.com",
+    "basePath": "/v1/os",
+    "paths": {
+        "/cluster/gpus": {
+            "get": {
+                "description": "Retrieve the available GPU resources for the cluster",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cluster"
+                ],
+                "summary": "Get available GPU resources",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sort GPUs ascending (asc) or descending (desc). Ascending is the default.",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Group GPUs by profileName or product",
+                        "name": "groupBy",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Gpu"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/cluster/nodes": {
+            "get": {
+                "description": "Retrieve all cluster nodes information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cluster"
+                ],
+                "summary": "List all cluster nodes",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NodePaginatedResult"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/cluster/nodes/taints": {
+            "get": {
+                "description": "Retrieve the taints of a cluster node",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cluster"
+                ],
+                "summary": "Get node taints",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "description": "Filter nodes with GPU",
+                        "name": "gpu",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Sort taints ascending (asc) or descending (desc). Ascending is the default.",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.NodeTaint"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/cluster/nodes/{nodeName}": {
+            "get": {
+                "description": "Retrieve a cluster node by its name",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cluster"
+                ],
+                "summary": "Get node by name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Node name",
+                        "name": "nodeName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NodeOutput"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/usecases": {
+            "get": {
+                "description": "List all usecases",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "List all usecases",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter is a JSON string containing filter criteria.\n\nExample: {\"name\":\"test\", \"projectId\":\"project-id\", \"labels\":[\"assistant\",\"ui\"]}\n\nLabels filtering uses OR logic: returns usecases with ANY of the specified labels",
+                        "name": "filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecasePaginatedResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new usecase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Create a new usecase",
+                "parameters": [
+                    {
+                        "description": "Usecase object that needs to be created",
+                        "name": "usecase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateUsecaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/usecases/{usecaseID}": {
+            "get": {
+                "description": "Retrieve a usecase by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Get usecase by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a usecase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Update a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Usecase object that needs to be updated",
+                        "name": "usecase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateUsecaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a usecase if it is not active or pending (deployment status: undeployed, error)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Delete a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail422"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Patch a usecase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Patch a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Usecase object that needs to be patched",
+                        "name": "usecase",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.PatchUsecaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/usecases/{usecaseID}/deployments": {
+            "get": {
+                "description": "List all deployments of a usecase",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "List all deployments of a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the usecase",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "DeploymentFilter is a struct that contains the filter fields for the deployment\nexample: {\"status\":\"deployed\"}",
+                        "name": "filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseDeploymentPaginatedResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Triggers a usecase deployment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Deploy a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Usecase deployment configuration",
+                        "name": "deploy",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.DeployUsecaseRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseDeploymentCreatedOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail422"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Triggers a usecase undeployment",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Undeploy a usecase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail422"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/usecases/{usecaseID}/deployments/{deploymentID}": {
+            "get": {
+                "description": "Get a usecase deployment by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "usecases"
+                ],
+                "summary": "Get a usecase deployment by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Usecase ID",
+                        "name": "usecaseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Deployment ID",
+                        "name": "deploymentID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UsecaseDeploymentOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/foundation-models": {
+            "get": {
+                "description": "List all available foundation models",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "List all foundation models",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sort models ascending (asc) or descending (desc). Ascending is the default.",
+                        "name": "sort",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/v1.FoundationModelOutput"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/inference-runtimes": {
+            "get": {
+                "description": "List all available inference runtimes supported to deploy models. Currently the supported inference runtimes are Aleph Alpha authorial Luminous and vLLM",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "List all inference runtimes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter is a struct that contains the filter fields for the Inference Runtimes.\nexample: {\"supportedModel\":\"Llama-3.1-8B-Instruct\"}",
+                        "name": "filter",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.InferenceRuntimes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/models": {
+            "get": {
+                "description": "List all models",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "List all models",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ModelFilter is a struct that contains the filter fields for the model.\nexample: {\"name\":\"model-name\", \"type\":\"base-model\", \"inferenceRuntime\":\"vllm\"}",
+                        "name": "filter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int",
+                        "default": 1,
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ModelPaginatedResult"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new model",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "Create a new model",
+                "parameters": [
+                    {
+                        "description": "Model object that needs to be created",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.CreateModelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ModelOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/models/{modelID}": {
+            "get": {
+                "description": "Retrieve a model by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "Get model by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Model ID",
+                        "name": "modelID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ModelOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a model",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "Update a model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Model ID",
+                        "name": "modelID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Model object that needs to be updated",
+                        "name": "model",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.UpdateModelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ModelOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a model",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "v1/models"
+                ],
+                "summary": "Delete a model",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Model ID",
+                        "name": "modelID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail400"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail401"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail403"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail404"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProblemDetail500"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "deployment.Status": {
+            "type": "string",
+            "enum": [
+                "undeploying",
+                "undeployed",
+                "deploying",
+                "deployed",
+                "error",
+                "superseded"
+            ],
+            "x-enum-varnames": [
+                "StatusUndeploying",
+                "StatusUndeployed",
+                "StatusDeploying",
+                "StatusDeployed",
+                "StatusError",
+                "StatusSuperseded"
+            ]
+        },
+        "dtos.Autoscaling": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "description": "Enable or disable autoscaling for the deployment. When enabled, uses CPU at 70% by default if no metrics specified.",
+                    "type": "boolean",
+                    "example": true
+                },
+                "maxReplicas": {
+                    "description": "The maximum number of replicas allowed when autoscaling is enabled.",
+                    "type": "integer",
+                    "default": 5,
+                    "example": 5
+                },
+                "metrics": {
+                    "description": "Scaling metrics. If empty, defaults to CPU at 70%.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Metric"
+                    }
+                },
+                "minReplicas": {
+                    "description": "The minimum number of replicas to maintain when autoscaling is enabled.",
+                    "type": "integer",
+                    "default": 1,
+                    "example": 1
+                }
+            }
+        },
+        "dtos.Availability": {
+            "type": "object",
+            "properties": {
+                "startup": {
+                    "description": "Defines the probe that will be used during container startup.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.Probe"
+                        }
+                    ]
+                }
+            }
+        },
+        "dtos.Cpu": {
+            "type": "object",
+            "required": [
+                "allocatable",
+                "capacity",
+                "unit"
+            ],
+            "properties": {
+                "allocatable": {
+                    "description": "Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)",
+                    "type": "number"
+                },
+                "capacity": {
+                    "description": "Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)",
+                    "type": "number"
+                },
+                "unit": {
+                    "description": "Unit of capacity and allocatable (e.g., \"cores\" for CPU, \"Ki\" for Memory)",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CreateUsecaseRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "usecase-description"
+                },
+                "isPublic": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "assistant",
+                        "ui"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "example": "usecase-name"
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": "project-id"
+                }
+            }
+        },
+        "dtos.DeployUsecaseRequest": {
+            "type": "object",
+            "required": [
+                "config"
+            ],
+            "properties": {
+                "config": {
+                    "$ref": "#/definitions/dtos.UsecaseConfig"
+                }
+            }
+        },
+        "dtos.EnvRef": {
+            "type": "object",
+            "required": [
+                "key",
+                "name"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "example": "password"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "usecase-abc123-db-credentials"
+                }
+            }
+        },
+        "dtos.Gpu": {
+            "type": "object",
+            "required": [
+                "allocatable",
+                "capacity",
+                "manufacturer",
+                "memory",
+                "metadata",
+                "product",
+                "unit"
+            ],
+            "properties": {
+                "allocatable": {
+                    "description": "Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)",
+                    "type": "number"
+                },
+                "capacity": {
+                    "description": "Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)",
+                    "type": "number"
+                },
+                "manufacturer": {
+                    "description": "GPU manufacturer",
+                    "type": "string",
+                    "example": "NVIDIA"
+                },
+                "memory": {
+                    "description": "GPU memory in Bytes",
+                    "type": "string",
+                    "example": "81920"
+                },
+                "metadata": {
+                    "description": "GPU metadata",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "cudaDriverVersion": "550.90.07",
+                        "family": "ampere",
+                        "machine": "OpenStack-Nova"
+                    }
+                },
+                "product": {
+                    "description": "GPU product name",
+                    "type": "string",
+                    "example": "NVIDIA-A100-80GB-PCIe"
+                },
+                "profileName": {
+                    "description": "GPU label",
+                    "type": "string",
+                    "example": "nvidia.com/gpu"
+                },
+                "unit": {
+                    "description": "Unit of capacity and allocatable (e.g., \"cores\" for CPU, \"Ki\" for Memory)",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Image": {
+            "type": "object",
+            "required": [
+                "registry",
+                "repository",
+                "tag"
+            ],
+            "properties": {
+                "registry": {
+                    "type": "string",
+                    "example": "docker.io"
+                },
+                "repository": {
+                    "type": "string",
+                    "example": "alephalpha/phariaos-usecase"
+                },
+                "tag": {
+                    "type": "string",
+                    "example": "0.0.1"
+                }
+            }
+        },
+        "dtos.Ingress": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "dtos.Memory": {
+            "type": "object",
+            "required": [
+                "allocatable",
+                "capacity",
+                "unit"
+            ],
+            "properties": {
+                "allocatable": {
+                    "description": "Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)",
+                    "type": "number"
+                },
+                "capacity": {
+                    "description": "Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)",
+                    "type": "number"
+                },
+                "unit": {
+                    "description": "Unit of capacity and allocatable (e.g., \"cores\" for CPU, \"Ki\" for Memory)",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Metric": {
+            "type": "object",
+            "properties": {
+                "targetUtilization": {
+                    "description": "Target utilization percentage for the metric. The utilization is measured relative to the resource request, not the limit.",
+                    "type": "integer",
+                    "example": 70
+                },
+                "type": {
+                    "description": "The type of metric to scale on.",
+                    "type": "string",
+                    "enum": [
+                        "cpu",
+                        "memory"
+                    ],
+                    "example": "cpu"
+                }
+            }
+        },
+        "dtos.NodeOutput": {
+            "type": "object",
+            "required": [
+                "arch",
+                "createdAt",
+                "name",
+                "os",
+                "resources",
+                "status"
+            ],
+            "properties": {
+                "arch": {
+                    "description": "Node architecture",
+                    "type": "string",
+                    "example": "arm64"
+                },
+                "createdAt": {
+                    "description": "Node creation date",
+                    "type": "string",
+                    "example": "2024-08-19T14:27:00+00:00"
+                },
+                "name": {
+                    "description": "Node name",
+                    "type": "string",
+                    "example": "phariaai-worker"
+                },
+                "os": {
+                    "description": "Node Operational System",
+                    "type": "string",
+                    "example": "Debian GNU/Linux 11 (bullseye)"
+                },
+                "resources": {
+                    "description": "Node hardware resources information",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.NodeResources"
+                        }
+                    ]
+                },
+                "status": {
+                    "description": "Node current status",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.NodeStatus"
+                        }
+                    ]
+                }
+            }
+        },
+        "dtos.NodePaginatedResult": {
+            "type": "object",
+            "required": [
+                "data",
+                "limit",
+                "page",
+                "total"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.NodeOutput"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.NodeResources": {
+            "type": "object",
+            "required": [
+                "cpu",
+                "gpus",
+                "memory"
+            ],
+            "properties": {
+                "cpu": {
+                    "$ref": "#/definitions/dtos.Cpu"
+                },
+                "gpus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Gpu"
+                    }
+                },
+                "memory": {
+                    "$ref": "#/definitions/dtos.Memory"
+                }
+            }
+        },
+        "dtos.NodeStatus": {
+            "type": "object",
+            "required": [
+                "diskHealthy",
+                "memoryHealthy",
+                "ready"
+            ],
+            "properties": {
+                "diskHealthy": {
+                    "description": "Disk is healthy",
+                    "type": "boolean"
+                },
+                "memoryHealthy": {
+                    "description": "Memory is healthy",
+                    "type": "boolean"
+                },
+                "ready": {
+                    "description": "Node is ready for usage",
+                    "type": "boolean"
+                }
+            }
+        },
+        "dtos.NodeTaint": {
+            "type": "object",
+            "properties": {
+                "effect": {
+                    "type": "string",
+                    "example": "NoSchedule"
+                },
+                "key": {
+                    "type": "string",
+                    "example": "nvidia.com/gpu"
+                },
+                "nodes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "gpu-node-1",
+                        " gpu-node-2"
+                    ]
+                },
+                "value": {
+                    "type": "string",
+                    "example": "present"
+                },
+                "warning": {
+                    "type": "string",
+                    "example": "Deselecting this taint may prevent scheduling on nodes: gpu-node-1, gpu-node-2."
+                }
+            }
+        },
+        "dtos.PatchUsecaseRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "usecase-description"
+                },
+                "isPublic": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "assistant",
+                        "ui"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "example": "usecase-name"
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": "project-id"
+                }
+            }
+        },
+        "dtos.Probe": {
+            "type": "object",
+            "required": [
+                "initialDelay"
+            ],
+            "properties": {
+                "initialDelay": {
+                    "description": "InitialDelay is the delay before the probe begins checking container health.\nFormat: duration string (e.g., \"30s\", \"5m\", \"1h\").",
+                    "type": "string",
+                    "default": "20s",
+                    "example": "30s"
+                }
+            }
+        },
+        "dtos.ProblemDetail400": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 3000
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Bad Request"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/400"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Bad Request"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProblemDetail401": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 1100
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Unauthorized"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/401"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 401
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Unauthorized"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProblemDetail403": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 1002
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Forbidden"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/403"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 403
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Forbidden"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProblemDetail404": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Not Found"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/404"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 404
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Not Found"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProblemDetail422": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 2000
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Unprocessable Entity"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/422"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 422
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Unprocessable Entity"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProblemDetail500": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "detail": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                },
+                "instance": {
+                    "type": "string",
+                    "example": "https://api.example.com/docs/errors/500"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 500
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Internal Server Error"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ReferenceEnvVar": {
+            "type": "object",
+            "required": [
+                "name",
+                "secret"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "DATABASE_PASSWORD"
+                },
+                "secret": {
+                    "$ref": "#/definitions/dtos.EnvRef"
+                }
+            }
+        },
+        "dtos.ResourceGpu": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "nvidia.com/gpu"
+                },
+                "value": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "dtos.ResourceLimit": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "description": "The maximum amount of CPU allowed for the deployment. (Example: \"1000m\" for 1 CPU)",
+                    "type": "string",
+                    "example": "1000m"
+                },
+                "gpu": {
+                    "description": "The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.ResourceGpu"
+                        }
+                    ]
+                },
+                "memory": {
+                    "description": "The maximum amount of memory allowed for the deployment. (Example: \"512Mi\" for 512 MiB of memory)",
+                    "type": "string",
+                    "example": "512Mi"
+                }
+            }
+        },
+        "dtos.ResourceRequest": {
+            "type": "object",
+            "properties": {
+                "cpu": {
+                    "description": "The amount of CPU requested for the deployment. (Example: \"500m\" for 500 milliCPU)",
+                    "type": "string",
+                    "example": "500m"
+                },
+                "memory": {
+                    "description": "The amount of memory requested for the deployment. (Example: \"256Mi\" for 256 MiB of memory)",
+                    "type": "string",
+                    "example": "256Mi"
+                }
+            }
+        },
+        "dtos.Resources": {
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "description": "Resource limits imposed on the deployment. Must be greater than or equal to requests.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.ResourceLimit"
+                        }
+                    ]
+                },
+                "requests": {
+                    "description": "Resource requests required for the deployment.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.ResourceRequest"
+                        }
+                    ]
+                }
+            }
+        },
+        "dtos.ServiceMonitor": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "path": {
+                    "description": "Path is the path where the metrics are scraped from the usecase.\nIf not provided, default is `/metrics`.",
+                    "type": "string",
+                    "example": "/custom-metrics"
+                },
+                "scrapingInterval": {
+                    "description": "Interval which metrics should be scraped. It follows Prometheus Duration format.\nSee https://prometheus.io/docs/prometheus/latest/querying/basics/#float-literals-and-time-durations for reference.\nIf not provided, default is 30s.",
+                    "type": "string",
+                    "example": "60s"
+                }
+            }
+        },
+        "dtos.Toleration": {
+            "type": "object",
+            "properties": {
+                "effect": {
+                    "description": "Effect if taint is not tolerated.",
+                    "type": "string",
+                    "example": "NoSchedule"
+                },
+                "key": {
+                    "description": "Toleration key name.",
+                    "type": "string",
+                    "example": "nvidia.com/gpu.present"
+                },
+                "value": {
+                    "description": "Toleration value.",
+                    "type": "string",
+                    "example": "true"
+                }
+            }
+        },
+        "dtos.UpdateUsecaseRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "example": "usecase-description"
+                },
+                "isPublic": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "assistant",
+                        "ui"
+                    ]
+                },
+                "name": {
+                    "type": "string",
+                    "example": "usecase-name"
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": "project-id"
+                }
+            }
+        },
+        "dtos.UsecaseConfig": {
+            "type": "object",
+            "required": [
+                "image"
+            ],
+            "properties": {
+                "autoscaling": {
+                    "$ref": "#/definitions/dtos.Autoscaling"
+                },
+                "availability": {
+                    "$ref": "#/definitions/dtos.Availability"
+                },
+                "envVars": {
+                    "description": "Environment variables that are going to be available in the usecase",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "key": "value",
+                        "key2": "value2"
+                    }
+                },
+                "image": {
+                    "$ref": "#/definitions/dtos.Image"
+                },
+                "ingress": {
+                    "$ref": "#/definitions/dtos.Ingress"
+                },
+                "resources": {
+                    "$ref": "#/definitions/dtos.Resources"
+                },
+                "secretEnvVars": {
+                    "description": "Environment variables sourced from Kubernetes secrets",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.ReferenceEnvVar"
+                    }
+                },
+                "serviceMonitor": {
+                    "$ref": "#/definitions/dtos.ServiceMonitor"
+                }
+            }
+        },
+        "dtos.UsecaseDeploymentCreatedOutput": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UsecaseDeploymentOutput": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "id",
+                "message",
+                "status",
+                "url"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "message": {
+                    "description": "This field is meant to be populated with any errors that might happen during deployment.",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Current deployment status",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/deployment.Status"
+                        }
+                    ]
+                },
+                "url": {
+                    "description": "The URL that the usecase can be reached with.",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UsecaseDeploymentPaginatedResult": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.UsecaseDeploymentOutput"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.UsecaseOutput": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "deployment",
+                "description",
+                "id",
+                "name"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "deployment": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.UsecaseDeploymentOutput"
+                        }
+                    ],
+                    "x-nullable": true
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "isPublic": {
+                    "type": "boolean"
+                },
+                "labels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "projectId": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UsecasePaginatedResult": {
+            "type": "object",
+            "required": [
+                "data",
+                "limit",
+                "page",
+                "total"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.UsecaseOutput"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "v1.Chat": {
+            "type": "object",
+            "properties": {
+                "bosToken": {
+                    "description": "Beginning of sequence token",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "<|begin_of_text|>"
+                },
+                "eosToken": {
+                    "description": "End of sequence token",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "<|end_of_text|>"
+                },
+                "prompt": {
+                    "description": "Prompt template for chat models",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "{% set loop_messages = messages %}{% for message in loop_messages %}{% set content = '<|start_header_id|>' + message['role'] + '<|end_header_id|>' + message['content'] | trim + '<|eot_id|>' %}{% if loop.index0 == 0 %}{% set content = bos_token + content %}{% endif %}{{ content }}{% endfor %}{{ '<|start_header_id|>assistant<|end_header_id|>' }}"
+                }
+            }
+        },
+        "v1.CreateModelRequest": {
+            "type": "object",
+            "required": [
+                "config",
+                "inferenceRuntime",
+                "name",
+                "storageURI",
+                "type"
+            ],
+            "properties": {
+                "config": {
+                    "description": "Deployment configuration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.ModelDeploymentConfig"
+                        }
+                    ]
+                },
+                "inferenceRuntime": {
+                    "description": "Model inference runtime. PhariaAI only supports custom (luminous) or vllm.",
+                    "type": "string",
+                    "example": "luminous"
+                },
+                "metadata": {
+                    "description": "Finetuning parameters. Only used for fully-finetuned models. When type is fully-finetuned-model, this field is required.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.Metadata"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "Model unique name.",
+                    "type": "string",
+                    "maxLength": 63,
+                    "example": "pharia-1-llm-7b-control"
+                },
+                "storageURI": {
+                    "description": "Where the model weights are stored.",
+                    "type": "string",
+                    "example": "https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar"
+                },
+                "type": {
+                    "description": "Model type.",
+                    "type": "string",
+                    "enum": [
+                        "base-model",
+                        "fully-finetuned-model"
+                    ],
+                    "example": "base-model"
+                }
+            }
+        },
+        "v1.FoundationModelOutput": {
+            "type": "object",
+            "required": [
+                "defaultConfig",
+                "displayName",
+                "inferenceRuntime",
+                "name",
+                "storageURI",
+                "type"
+            ],
+            "properties": {
+                "defaultConfig": {
+                    "description": "Default recommended model settings.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.ModelDeploymentConfig"
+                        }
+                    ]
+                },
+                "displayName": {
+                    "description": "Model display name.",
+                    "type": "string",
+                    "example": "luminous-base"
+                },
+                "inferenceRuntime": {
+                    "description": "Model inference runtime.",
+                    "type": "string",
+                    "example": "luminous"
+                },
+                "name": {
+                    "description": "Model name.",
+                    "type": "string",
+                    "example": "luminous-base"
+                },
+                "storageURI": {
+                    "description": "Where the model weights are stored.",
+                    "type": "string",
+                    "example": "https://alephalpha.jfrog.io/artifactory/model-weights/luminous-base.tar.gz"
+                },
+                "type": {
+                    "description": "Model type.",
+                    "type": "string",
+                    "enum": [
+                        "base-model",
+                        "fully-finetuned-model"
+                    ],
+                    "example": "base-model"
+                }
+            }
+        },
+        "v1.GeneratorConfig": {
+            "type": "object",
+            "required": [
+                "maxContextSize"
+            ],
+            "properties": {
+                "maxContextSize": {
+                    "description": "Maximum number of tokens to be processed in a single batch. Changing this value will affect the performance of the model.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 2048
+                }
+            }
+        },
+        "v1.InferenceRuntime": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "vllm"
+                }
+            }
+        },
+        "v1.InferenceRuntimes": {
+            "type": "object",
+            "properties": {
+                "runtimes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1.InferenceRuntime"
+                    }
+                }
+            }
+        },
+        "v1.Metadata": {
+            "type": "object",
+            "required": [
+                "baseModel",
+                "referenceID"
+            ],
+            "properties": {
+                "baseModel": {
+                    "description": "The base model that was used for finetuning.",
+                    "type": "string",
+                    "example": "pharia-1-llm-7b-control"
+                },
+                "referenceID": {
+                    "description": "The ID for the job that created the finetuned model in PhariaFinetuning API.",
+                    "type": "string",
+                    "example": "Pharia-1-LLM-7B-control-hf_20250415_094007-mex"
+                }
+            }
+        },
+        "v1.ModelDeploymentConfig": {
+            "type": "object",
+            "required": [
+                "replicas",
+                "resources"
+            ],
+            "properties": {
+                "generatorConfig": {
+                    "description": "General configuration for how the model should produce outputs.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.GeneratorConfig"
+                        }
+                    ]
+                },
+                "replicas": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "resources": {
+                    "$ref": "#/definitions/dtos.Resources"
+                },
+                "templates": {
+                    "description": "Customisation of templates for chat and prompt models. If prompt template is not provided, the\ndefault prompt template `{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}`\nwill be used for models different than the foundation models.\nIf the model requires chat template, and is not provided, the model won't be able to be used for chat.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.Template"
+                        }
+                    ]
+                },
+                "tolerations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Toleration"
+                    }
+                }
+            }
+        },
+        "v1.ModelDeploymentOutput": {
+            "type": "object",
+            "required": [
+                "config",
+                "message",
+                "status"
+            ],
+            "properties": {
+                "config": {
+                    "description": "Deployment resource settings",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.ModelDeploymentConfig"
+                        }
+                    ]
+                },
+                "message": {
+                    "description": "This field is meant to be populated with any errors that might happen during deployment.",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Current deployment status",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/deployment.Status"
+                        }
+                    ]
+                }
+            }
+        },
+        "v1.ModelOutput": {
+            "type": "object",
+            "required": [
+                "createdAt",
+                "deployment",
+                "id",
+                "inferenceRuntime",
+                "name",
+                "storageURI",
+                "type",
+                "updatedAt"
+            ],
+            "properties": {
+                "createdAt": {
+                    "type": "string",
+                    "example": "2024-08-19T14:27:00+00:00"
+                },
+                "deployment": {
+                    "$ref": "#/definitions/v1.ModelDeploymentOutput"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "inferenceRuntime": {
+                    "description": "Model inference runtime. PhariaAI only supports custom (luminous) or vllm.",
+                    "type": "string",
+                    "example": "vllm"
+                },
+                "metadata": {
+                    "description": "Finetuning parameters. Only used for fully-finetuned models.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.Metadata"
+                        }
+                    ]
+                },
+                "name": {
+                    "description": "Model unique name.",
+                    "type": "string",
+                    "example": "pharia-1-llm-7b-control"
+                },
+                "storageURI": {
+                    "description": "Where the model weights are stored.",
+                    "type": "string",
+                    "example": "https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar"
+                },
+                "type": {
+                    "description": "Model type.",
+                    "type": "string",
+                    "enum": [
+                        "base-model",
+                        "fully-finetuned-model"
+                    ],
+                    "example": "base-model"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2024-08-19T14:27:00+00:00"
+                }
+            }
+        },
+        "v1.ModelPaginatedResult": {
+            "type": "object",
+            "required": [
+                "data",
+                "limit",
+                "page",
+                "total"
+            ],
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1.ModelOutput"
+                    }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "v1.Template": {
+            "type": "object",
+            "properties": {
+                "chat": {
+                    "description": "Template for chat models.",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.Chat"
+                        }
+                    ]
+                },
+                "prompt": {
+                    "description": "Template for prompt models",
+                    "type": "string",
+                    "maxLength": 2048,
+                    "example": "{% promptrange instruction %}{{instruction}}{% endpromptrange %}\n{% if input %}\n{% promptrange input %}{{input}}{% endpromptrange %}\n{% endif %}"
+                }
+            }
+        },
+        "v1.UpdateModelRequest": {
+            "type": "object",
+            "properties": {
+                "config": {
+                    "description": "Deployment configuration",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.ModelDeploymentConfig"
+                        }
+                    ]
+                },
+                "inferenceRuntime": {
+                    "description": "Model inference runtime",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "tags": [
+        {
+            "description": "**Authentication Overview**  \n\nThe API uses Bearer Token Authentication to authorize requests. Each request must include an `Authorization` header with a valid bearer token.\n\n**Authorization Header Format:**  \n```http\nAuthorization: Bearer <token>\n```\n\n**Token Requirements**\n- The token must be obtained from the PhariaAI identity provider (IDP).\n- Ensure the token is valid, unexpired, and has the required permissions.\n",
+            "name": "authentication"
+        },
+        {
+            "description": "**Usecases (Applications)**\n\nUsecases are full-stack end to end AI applications. The application exposes the necessary REST endpoints so\nAI usecases can be consumed and, optionally, a front-end (UI) to interact with the implemented workflows.\n\nOnce you have finished the usecase implementation and have published a Docker image to a registry, it is time to deploy the usecase!\n\nThe endpoints below enable you to create a usecase by providing a name and a description, list all created usecases, retrieve a single usecase by id, and update them.\n\nAlso, most importantly, the API enables you to deploy a created usecase. The deployment of usecases requires some more technical information.\n\n**Deployment**\n\nWe rely on [Kubernetes (K8s)](https://kubernetes.io/docs/home/) to deploy the usecases, which means that they are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/) running in a K8s cluster.\n\nTo deploy usecases you must provide: the registry where the usecase image is located, the image tag (version), the environment variables you wish to inject into the usecase and other K8s configurations parameters, such as `imagePullSecrets`, `autoscaling`, `ingress`, and resource `requests` and `limits` for CPU and memory required to run the usecase. A complete specification is provided further below.\n\nBy default, a usecase is created with the below resources configuration:\n\n```yaml\nresources:\n    requests:\n        cpu: 250m\n        memory: 500Mi\n    limits:\n        cpu: 500m\n        memory: 1Gi\n```\n\nThe API also provides endpoints to track the deployment status to assist in any troubleshooting if required. To retrieve the deployment status, use the endpoints to get a usecase by its ID.\n\n**Consuming usecases**\n\nOnce the deployment is up and running, now it's time to actually consume it! \n\n_1. (Optional) Usecase Ingress_\n\nIf the usecase was deployed with the ingress enabled, the service can be accessed at the URL provided in the deployment status. _Note: this requires that ingress creation is enabled in the PhariaOS API configuration; otherwise, the deployment request will be rejected._\n\n_2. Applications Proxy Server_\n\nThe PhariaOS Applications Proxy Server is available to fulfill the usecases consumption. The applications proxy can be accessed at https://pharia-os-applications.product.pharia.com.\n\nRequests to the proxy are redirected to the usecases by providing the usecase (application) UUID as a URL path parameter, which is **required**.\n\n> The incoming request endpoint to the proxy server is the redirected endpoint to the usecase: \n> `https://pharia-os-applications.product.pharia.com/{applicationId}/summarization -> $internal_use_case_URL/summarization`\n\n**Expected Responses**\n\nA valid request and resource path will return the expected resource in the response.\n\nIf the request path does not include the usecase (application) UUID, one of two responses is expected:\n* If the request path contains only a single part, the response is `BadRequest (400)`.\n* If the request path contains multiple parts, the response is `BadGateway (502)`, as the proxy is unable to validate our route the request to any usecase (application).\n\n**Examples**\n\n1. Sending a `POST` request to the proxy server. The request is targeted to the usecase `execute` endpoint.\n\n```sh\ncurl --request POST \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/execute \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n\t\"question\": \"hello\"\n         }'\n```\n\n2. Sending a `GET` request to the proxy server. The request is targeted to the usecase `health` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/health\n```\n\n3. Sending a `GET` request for the user interface. The request is targeted to the usecase `ui` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/ui/assets/usecase.js\n```\n\n**Undeployment**\n\nOnce the usecase has fullfilled the purposes and no longer needs to run and consume resources in your K8s cluster, the API provides an endpoint to undeploy the usecase.\n\n**Deleting usecases**\n\nA usecase may be deleted on request only if it is not currently **active** (that is: deployed, deploying, or undeploying). Deletion cleans the usecase and all associated records from the database.",
+            "name": "usecases"
+        }
+    ]
+}

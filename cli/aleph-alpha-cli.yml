@@ -1,0 +1,69 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/phariaai-applications/quick-start-custom-apps.html
+clis:
+- name: pharia-ai-cli
+  package: '@aleph-alpha/pharia-ai-cli'
+  registry: npm
+  version: 0.30.9
+  url: https://www.npmjs.com/package/@aleph-alpha/pharia-ai-cli
+  purpose: 'Scaffold, preview, register, publish and deploy custom PhariaAI applications (UI + service + Skill).'
+  install:
+  - 'npx @aleph-alpha/pharia-ai-cli <command>'
+  - 'npm install -g @aleph-alpha/pharia-ai-cli'
+  help: 'npx @aleph-alpha/pharia-ai-cli <COMMAND> --help'
+  prerequisites:
+  - 'Node.js 20.0 or higher'
+  - 'pnpm 9.1 or higher'
+  - 'uv installed locally'
+  - 'PhariaAI 0.52.4 or higher, with custom Skills and custom applications enabled and OCI registry credentials'
+  commands:
+  - {command: create, description: 'Scaffold a new application; prompts for an app name and a template (base / summary / qa). Generates an application UI, an application service and an application Skill.'}
+  - {command: preview, description: 'Start the application locally and emit a preview URL to add to the PhariaAssistant developer-mode server list.'}
+  - {command: register, description: 'Register the application so it becomes available in PhariaAI. Supports optional labels, which then filter the registered-application list through the PhariaOS API.'}
+  - {command: publish, description: 'Publish the application.'}
+  - {command: deploy, description: 'Deploy the application into the PhariaAI installation.'}
+  - {command: undeploy, description: 'Remove a deployed application.'}
+  configuration: 'Environment variables in <app>/.env drive every command.'
+- name: pharia-skill
+  package: pharia-skill
+  registry: pypi
+  version: 0.20.0
+  url: https://pypi.org/project/pharia-skill/
+  purpose: 'Build and publish WebAssembly Skills that PhariaEngine / Pharia Kernel serves.'
+  install:
+  - 'pip install pharia-skill'
+  - 'uv sync --dev (inside a generated skill project)'
+  docs: https://pharia-skill.readthedocs.io
+  commands:
+  - {command: 'pharia-skill build <skill-name>', description: 'Compile the Python skill to a WebAssembly component.'}
+  - {command: 'pharia-skill publish <skill-name>', description: 'Publish the built skill to the configured OCI registry so PhariaEngine can serve it. Afterwards the skill entry is added to namespace.toml.'}
+  quick_start: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-engine/quick-start.html
+- name: pharia-skill-cli
+  package: pharia-skill-cli
+  registry: crates.io
+  version: 0.4.9
+  url: https://crates.io/crates/pharia-skill-cli
+  source: https://github.com/Aleph-Alpha/pharia-skill-cli
+  purpose: 'Rust CLI that helps you publish skills on Pharia Kernel — the Rust-side counterpart to the pharia-skill Python CLI.'
+  install:
+  - 'cargo install pharia-skill-cli'
+key_flows:
+- name: create and run a custom application
+  steps:
+  - 'npx @aleph-alpha/pharia-ai-cli create'
+  - 'cd <app>/ui && pnpm install && pnpm run dev'
+  - 'cd <app>/service && uv sync --dev && uv run dev'
+  - 'cd <app>/skill && uv sync --dev'
+- name: publish a skill so PhariaEngine serves it
+  steps:
+  - 'cd <app>/skill && set -a && source ../.env'
+  - 'uv run pharia-skill build <skill-name>'
+  - 'uv run pharia-skill publish <skill-name>'
+  - 'Add the new skill entry to namespace.toml'
+- name: preview, register and deploy
+  steps:
+  - 'npx @aleph-alpha/pharia-ai-cli preview'
+  - 'npx @aleph-alpha/pharia-ai-cli register'
+  - 'npx @aleph-alpha/pharia-ai-cli deploy'
+  - 'npx @aleph-alpha/pharia-ai-cli undeploy'

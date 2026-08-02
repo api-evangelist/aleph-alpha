@@ -1,0 +1,51 @@
+generated: '2026-08-02'
+method: probed
+source: live probes of every apis.yml and OpenAPI servers[] host
+summary: 'No /.well-known/ discovery document was retrievable on any Aleph Alpha host.
+  The marketing/web origin (aleph-alpha.com, www.aleph-alpha.com) answers every /.well-known/*
+  path with an nginx 403 Forbidden HTML body; the API gateway (api.aleph-alpha.com)
+  answers every path — including /.well-known/* — with 401 "No client token provided",
+  so nothing is served anonymously. No security.txt, no OIDC/OAuth discovery, no api-catalog,
+  no ai-plugin.json, and no A2A agent card were found.'
+hosts:
+- host: https://aleph-alpha.com
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/oauth-protected-resource, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+- host: https://www.aleph-alpha.com
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/oauth-protected-resource, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+- host: https://api.aleph-alpha.com
+  note: 'Gateway requires a client token for every path; 401 is returned uniformly and is not evidence of existence.'
+  documents:
+  - {path: /.well-known/security.txt, status: 401}
+  - {path: /.well-known/openid-configuration, status: 401}
+  - {path: /.well-known/oauth-authorization-server, status: 401}
+  - {path: /.well-known/oauth-protected-resource, status: 401}
+  - {path: /.well-known/api-catalog, status: 401}
+  - {path: /.well-known/ai-plugin.json, status: 401}
+  - {path: /.well-known/agent-card.json, status: 401}
+  - {path: /.well-known/agent.json, status: 401}
+- host: https://docs.aleph-alpha.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}

@@ -1,0 +1,34 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/phariaai-applications/ui-library.html
+summary: 'Aleph Alpha publishes a first-party design system for building custom PhariaAI application
+  UIs. It is a Vue component library styled with UnoCSS, installed and instrumented automatically
+  when an application is scaffolded with `pharia-ai-cli create`.'
+families:
+- name: Aleph Alpha Design System (Vue)
+  package: '@aleph-alpha/ds-components-vue'
+  registry: npm
+  version: 2.1.0
+  url: https://www.npmjs.com/package/@aleph-alpha/ds-components-vue
+  loader: "import AADesignSystem from '@aleph-alpha/ds-component-vue'; app.use(AADesignSystem)"
+  usage_example: "import { AaButton } from '@aleph-alpha/ds-components-vue'"
+  components_note: 'The docs demonstrate AaButton; the full component inventory is not enumerated in the public documentation.'
+- name: Design System Icons
+  package: '@aleph-alpha/ds-icons'
+  registry: npm
+  version: 1.0.0
+  url: https://www.npmjs.com/package/@aleph-alpha/ds-icons
+  loader: "presetAlephAlphaIcons() in uno.config.ts"
+- name: Design System CSS preset
+  package: '@aleph-alpha/config-css'
+  registry: npm
+  version: 1.2.1
+  url: https://www.npmjs.com/package/@aleph-alpha/config-css
+  loader: "presetAlephAlpha() and getDesignSystemContentPathConfig('vue') in uno.config.ts"
+styling: UnoCSS
+embedded_surfaces:
+- name: PhariaAssistant custom applications
+  description: 'Registered custom applications appear in the PhariaAssistant left sidebar and are previewed through developer-mode server URLs.'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/phariaai-applications/quick-start-custom-apps.html
+- name: PhariaAssistant branding
+  description: 'Logos, name, theme colours, fonts and helpful links are configurable through the API (Helm-chart-based UI customization was deprecated in v1.250800.0).'

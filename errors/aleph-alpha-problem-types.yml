@@ -1,0 +1,281 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/aleph-alpha-pharia-data-openapi.json, openapi/aleph-alpha-pharia-inference-openapi.json,
+  openapi/aleph-alpha-pharia-os-openapi.json, openapi/aleph-alpha-pharia-search-openapi.json, openapi/aleph-alpha-pharia-studio-openapi.json,
+  openapi/aleph-alpha-responses-openapi.json
+format: vendor-json
+envelope:
+  note: 'The Responses API returns an OpenAI-style error envelope: {"error": {"message", "type", "param",
+    "code"}}. Example: {"error":{"message":"Response with ID ''resp_nonexistent'' not found.","type":"not_found_error","param":null,"code":"response_not_found"}}'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/managing-responses.html
+named_error_codes:
+- code: MODEL_PACKAGE_CONFLICT
+  api: PhariaInference
+  meaning: A model package was changed; model packages are immutable.
+  remediation: Increment the version in the worker deployment of the worker that runs the model.
+  source: https://docs.aleph-alpha.com/phariaai-admin-guide/latest/pharia-inference/troubleshooting.html
+- code: INVALID_REQUEST
+  api: PhariaInference
+  meaning: Request rejected; the message indicates the problem (e.g. model package version lower than
+    the registered version).
+  remediation: Match or exceed the registered model package version in the worker deployment.
+  source: https://docs.aleph-alpha.com/phariaai-admin-guide/latest/pharia-inference/troubleshooting.html
+- code: queue-full
+  http_status: 503
+  api: PhariaInference
+  meaning: '"Sorry we had to reject your request because we could not guarantee to finish it in a reasonable
+    timeframe. This specific model is very busy at this moment."'
+  remediation: Retry later or use another model.
+  source: https://docs.aleph-alpha.com/phariaai-admin-guide/latest/pharia-inference/troubleshooting.html
+- code: response_not_found
+  http_status: 404
+  api: Responses
+  meaning: No stored response with the given id (also returned when chaining previous_response_id from
+    a store=false response).
+  remediation: Store the response (store=true, the default) before chaining from it.
+  source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/managing-responses.html
+- code: too_early_error
+  http_status: 425
+  api: Responses
+  meaning: Delete blocked while a response is still in progress (response_in_progress).
+  remediation: Wait until processing completes or fails, then retry.
+  source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/managing-responses.html
+problems:
+- status: 400
+  title: BAD REQUEST
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations
+- status: 400
+  title: Bad Request
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations/{transformationID}
+- status: 400
+  title: Bad Request - Invalid stage ID format or malformed request body
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 400
+  title: The request was malformed and couldn't be processed.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#POST /search_stores
+- status: 400
+  title: Bad Request
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#GET /usecases
+- status: 400
+  title: Bad Request
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_project_projects_post
+- status: 400
+  title: Bad Request
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 401
+  title: UNAUTHORIZED When access token is invalid.
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations
+- status: 401
+  title: Unauthorized
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations/{transformationID}
+- status: 401
+  title: Unauthorized - Authentication required
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 401
+  title: Unauthorized
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#GET /cluster/gpus
+- status: 401
+  title: Unauthorized
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_project_projects_post
+- status: 401
+  title: Unauthorized
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 403
+  title: Forbidden - Insufficient permissions to update this stage
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 403
+  title: Forbidden - Non-admin user attempted to create a public stage
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#POST /stages
+- status: 403
+  title: Forbidden
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#GET /cluster/gpus
+- status: 403
+  title: Forbidden
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_project_projects_post
+- status: 403
+  title: Forbidden
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 404
+  title: A resource with the specified ID was not found.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#DELETE /search_stores/{searchStoreID}/documents/{documentName}
+- status: 404
+  title: Repository not found - The specified repository does not exist
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /repositories/{repositoryID}/datasets
+- status: 404
+  title: Dataset or repository not found
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /repositories/{repositoryID}/datasets/{datasetID}/datapoints
+- status: 404
+  title: A search store with the specified ID was not found.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /search_stores/{searchStoreID}
+- status: 404
+  title: A resource with the specified name was not found.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /search_stores/{searchStoreID}/documents/{documentName}
+- status: 404
+  title: Not Found
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations/{transformationID}
+- status: 404
+  title: Not Found - Stage with the specified ID does not exist
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 404
+  title: Not Found
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#GET /cluster/nodes/{nodeName}
+- status: 404
+  title: Workspace not found
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#get_many_projects_projects_get
+- status: 404
+  title: Project not found
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#get_project_projects__project_id__get
+- status: 404
+  title: List of Project user not found
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#get_project_userlist_workspaces__workspace_id__projects__project_id__userlist_get
+- status: 404
+  title: List of Workspace users not found
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#get_workspace_userlist_with_groups_workspaces__workspace_id__userlist_get
+- status: 404
+  title: Not Found
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 409
+  title: Conflict
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#POST /stages
+- status: 409
+  title: The filter index configuration cannot be deleted because it is used.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-search-openapi.json#DELETE /filter_indexes/{namespace}/{filterIndex}
+- status: 409
+  title: The index configuration cannot be deleted because it is used.
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-search-openapi.json#DELETE /indexes/{namespace}/{index}
+- status: 409
+  title: Prerequisites not met or project name already exists
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_project_projects_post
+- status: 409
+  title: Prerequisites not met
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#get_project_projects__project_id__get
+- status: 413
+  title: Request Entity Too Large
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#POST /transformations/{transformationID}/runs
+- status: 422
+  title: Unprocessable Entity - Invalid transformation names or unsupported destination types
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 422
+  title: UnprocessableEntity
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#POST /repositories/{repositoryID}/datasets
+- status: 422
+  title: Unprocessable Entity
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#DELETE /usecases/{usecaseID}
+- status: 422
+  title: Validation Error
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_trace_projects__project_id__traces_post
+- status: 422
+  title: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it
+    automatically.
+  media_types: null
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 425
+  title: Too Early
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 500
+  title: Internal Server Error
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /stages/{stageID}/files/{fileID}/presigned-url
+- status: 500
+  title: INTERNAL SERVER ERROR
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#GET /transformations
+- status: 500
+  title: Internal Server Error - An unexpected error occurred while updating the stage
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /stages/{stageID}
+- status: 500
+  title: Internal Server Error
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-os-openapi.json#GET /cluster/gpus
+- status: 500
+  title: Internal Server Error
+  media_types: null
+  source_operation: openapi/aleph-alpha-pharia-studio-openapi.json#create_project_projects_post
+- status: 500
+  title: Internal Server Error
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 501
+  title: Not Implemented
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 502
+  title: Bad Gateway
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
+- status: 503
+  title: Service Unavailable
+  media_types:
+  - application/json
+  source_operation: openapi/aleph-alpha-pharia-data-openapi.json#PATCH /repositories/{repositoryID}/datasets/{datasetID}

@@ -1,0 +1,144 @@
+generated: '2026-08-02'
+method: searched
+source: https://pypi.org, https://crates.io, https://registry.npmjs.org, https://github.com/Aleph-Alpha
+docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-studio/add-sdks.html
+packages:
+- language: python
+  registry: pypi
+  name: aleph-alpha-client
+  version: 11.5.1
+  url: https://pypi.org/project/aleph-alpha-client/
+  install: pip install aleph-alpha-client
+  source: https://github.com/Aleph-Alpha/aleph-alpha-client
+  description: Python client to interact with Aleph Alpha API endpoints (PhariaInference).
+  official: true
+- language: python
+  registry: pypi
+  name: pharia-inference-sdk
+  version: 0.1.6
+  url: https://pypi.org/project/pharia-inference-sdk/
+  install: pip install pharia-inference-sdk
+  source: https://github.com/Aleph-Alpha/pharia-inference-sdk
+  description: PhariaInference SDK.
+  official: true
+- language: python
+  registry: pypi
+  name: pharia-studio-sdk
+  version: 0.1.7
+  url: https://pypi.org/project/pharia-studio-sdk/
+  install: pip install pharia-studio-sdk
+  source: https://github.com/Aleph-Alpha/pharia-studio-sdk
+  description: PhariaStudio SDK.
+  official: true
+- language: python
+  registry: pypi
+  name: pharia-data-sdk
+  version: 0.1.6
+  url: https://pypi.org/project/pharia-data-sdk/
+  install: pip install pharia-data-sdk
+  source: https://github.com/Aleph-Alpha/pharia-data-sdk
+  description: PhariaData SDK.
+  official: true
+- language: python
+  registry: pypi
+  name: pharia-skill
+  version: 0.20.0
+  url: https://pypi.org/project/pharia-skill/
+  install: pip install pharia-skill
+  source: https://github.com/Aleph-Alpha/pharia-kernel-sdk-py
+  docs: https://pharia-skill.readthedocs.io
+  description: SDK for building Python skills for Pharia Kernel.
+  official: true
+- language: rust
+  registry: crates.io
+  name: aleph-alpha-client
+  version: 0.30.0
+  url: https://crates.io/crates/aleph-alpha-client
+  install: cargo add aleph-alpha-client
+  source: https://github.com/Aleph-Alpha/aleph-alpha-client-rs
+  description: Interact with large language models provided by the Aleph Alpha API in Rust code.
+  official: true
+- language: rust
+  registry: crates.io
+  name: pharia-skill
+  version: 0.6.1
+  url: https://crates.io/crates/pharia-skill
+  install: cargo add pharia-skill
+  source: https://github.com/Aleph-Alpha/pharia-kernel-sdk-rs
+  description: SDK for building Skills that run within Pharia Kernel.
+  official: true
+- language: rust
+  registry: crates.io
+  name: pharia-skill-macros
+  version: 0.6.1
+  url: https://crates.io/crates/pharia-skill-macros
+  install: cargo add pharia-skill-macros
+  description: Procedural macros for use within the pharia-skill crate.
+  official: true
+- language: rust
+  registry: crates.io
+  name: pharia-skill-test
+  version: 0.6.1
+  url: https://crates.io/crates/pharia-skill-test
+  install: cargo add pharia-skill-test
+  description: Test helpers for testing Pharia Kernel skill components locally.
+  official: true
+- language: rust
+  registry: crates.io
+  name: pharia-skill-cli
+  version: 0.4.9
+  url: https://crates.io/crates/pharia-skill-cli
+  install: cargo install pharia-skill-cli
+  source: https://github.com/Aleph-Alpha/pharia-skill-cli
+  description: A simple CLI that helps you publish skills on Pharia Kernel.
+  official: true
+  kind: cli
+- language: rust
+  registry: crates.io
+  name: pharia-common
+  version: 0.4.1
+  url: https://crates.io/crates/pharia-common
+  install: cargo add pharia-common
+  source: https://github.com/Aleph-Alpha/pharia-common-rs
+  description: Common utilities for Rust services deployed as part of Pharia AI.
+  official: true
+- language: javascript
+  registry: npm
+  name: '@aleph-alpha/pharia-ai-cli'
+  version: 0.30.9
+  url: https://www.npmjs.com/package/@aleph-alpha/pharia-ai-cli
+  install: npm install -g @aleph-alpha/pharia-ai-cli
+  description: The pharia-ai CLI used to scaffold, build and publish custom PhariaAI applications.
+  official: true
+  kind: cli
+- language: javascript
+  registry: npm
+  name: '@aleph-alpha/ds-components-vue'
+  version: 2.1.0
+  url: https://www.npmjs.com/package/@aleph-alpha/ds-components-vue
+  install: npm install @aleph-alpha/ds-components-vue
+  description: Aleph Alpha Design System components for Vue.js projects.
+  official: true
+  kind: ui-components
+- language: javascript
+  registry: npm
+  name: '@aleph-alpha/ds-icons'
+  version: 1.0.0
+  url: https://www.npmjs.com/package/@aleph-alpha/ds-icons
+  install: npm install @aleph-alpha/ds-icons
+  description: Aleph Alpha Design System Icons package.
+  official: true
+  kind: ui-components
+- language: javascript
+  registry: npm
+  name: '@aleph-alpha/config-css'
+  version: 1.2.1
+  url: https://www.npmjs.com/package/@aleph-alpha/config-css
+  install: npm install @aleph-alpha/config-css
+  description: UnoCSS preset for the Aleph Alpha design system.
+  official: true
+  kind: ui-components
+not_found:
+- registry: npm
+  name: aleph-alpha-client
+  note: No first-party JavaScript/TypeScript client for the PhariaInference API was found on npm (probed 2026-08-02, 404). The Responses API is OpenAI-compatible, so the OpenAI SDKs are the documented JS path.

@@ -1,0 +1,109 @@
+generated: '2026-08-02'
+method: searched
+source: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/
+derived_from:
+- openapi/aleph-alpha-pharia-inference-openapi.json
+- openapi/aleph-alpha-responses-openapi.json
+- openapi/aleph-alpha-pharia-data-openapi.json
+- openapi/aleph-alpha-pharia-search-openapi.json
+- openapi/aleph-alpha-pharia-studio-openapi.json
+authentication:
+  style: bearer
+  header: 'Authorization: Bearer <token>'
+  token_source: 'A bearer token is obtained from PhariaStudio (profile icon -> Copy Bearer Token), or minted via the PhariaInference token endpoints (newToken / tokens / deleteToken).'
+  format: JWT
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/get-token.html
+  detail: authentication/aleph-alpha-authentication.yml
+  note: 'The PhariaOS Manager API declares the same Authorization header as an apiKey scheme (ApiKeyAuth) in its Swagger 2.0 definition.'
+idempotency:
+  supported: true
+  mechanism: content-addressed-put
+  header: null
+  detail: 'Aleph Alpha does not publish an Idempotency-Key header. Idempotency is instead expressed
+    structurally: the write surface across PhariaSearch and PhariaData is predominantly PUT against
+    a caller-chosen name/id, so repeating the call converges on the same resource rather than
+    creating duplicates.'
+  idempotent_operations:
+  - 'PUT /namespaces/{namespace} (PhariaSearch)'
+  - 'PUT /indexes/{namespace}/{index} (PhariaSearch)'
+  - 'PUT /filter_indexes/{namespace}/{filterIndex} (PhariaSearch)'
+  - 'PUT /collections/{namespace}/{collection} (PhariaSearch)'
+  - 'PUT /collections/{namespace}/{collection}/docs/{name} (PhariaSearch)'
+  - 'PUT /collections/{namespace}/{collection}/indexes/{index} (PhariaSearch)'
+  - 'PUT /search_stores/{searchStoreID}/documents/{documentName} (PhariaData)'
+  - 'PUT /search_stores/{searchStoreID}/documents/{documentName}/metadata (PhariaData)'
+  - 'PUT /repositories/{repositoryID}/datasets/{datasetID}/datapoints (PhariaData)'
+  - 'PUT /stages/{stageID}/files/{fileID} (PhariaData)'
+  - 'PUT /usecases/{usecaseID} (PhariaOS)'
+  - 'PUT /v1/models/{modelID} (PhariaOS)'
+  immutability:
+  - 'Model packages in PhariaInference are immutable; re-submitting a changed package raises MODEL_PACKAGE_CONFLICT rather than mutating in place.'
+  response_replay:
+  - 'A stored Responses API response is retrievable by id and can be replayed as an SSE stream (GET /v1/responses/{response_id}?stream=true), giving a safe re-read path after a client-side failure.'
+  gap: 'No documented request-level idempotency key for POST creation endpoints (e.g. POST /v1/responses, POST /complete). Retrying a failed POST may duplicate work.'
+pagination:
+  supported: true
+  styles:
+  - {api: PhariaData, style: page-and-size, note: 'Collection endpoints accept page/size query parameters.'}
+  - {api: PhariaSearch, style: none-documented, note: 'Collection listings return full arrays; no cursor is declared in the spec.'}
+  - {api: Responses, style: cursor, note: 'Conversation and response listings follow the OpenAI list convention (after/limit/order).'}
+  changelog: 'Pagination changes were shipped in PhariaAI v1.251000.3, v1.251100.0 and v1.251100.1.'
+versioning:
+  scheme: uri-path
+  api_versions:
+    pharia_inference: '4.7.0 (served by api.aleph-alpha.com/version; earlier majors v1, v2, v3 remain documented)'
+    pharia_data: '1.0.0 (a v2 ingestion/retrieval platform shipped in PhariaAI v1.260600.0)'
+    pharia_studio: '0.1.0'
+    pharia_search: '0.0.0'
+    pharia_os: '1.0'
+    responses: '0.4.23'
+  product_versions: 'PhariaAI releases use a v1.<yymm><patch> train, e.g. v1.260700.0 = July 2026.'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  note: 'Every historical PhariaInference major/minor keeps its own published OpenAPI document, which is an unusually strong versioning artifact.'
+error_envelope:
+  style: openai-compatible
+  shape: '{"error": {"message": ..., "type": ..., "param": ..., "code": ...}}'
+  problem_json: false
+  detail: errors/aleph-alpha-problem-types.yml
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/managing-responses.html
+streaming:
+  supported: true
+  transport: server-sent-events
+  surfaces:
+  - 'Responses API: real-time token delivery via SSE; stored responses replayable with ?stream=true.'
+  - 'PhariaInference: streaming completion and chat completion.'
+  - 'PhariaData: transformation and stage run events streams (/transformations/{transformationID}/runs/events, /stages/{stageID}/runs/events).'
+rate_limiting:
+  client_signalling: not-documented
+  server_side: 'Rate limiting/throttling is a deployment-side control: external OpenAI-compatible
+    API connectors expose throttling and load-threshold configuration, and the inference scheduler
+    queues tasks per model, returning HTTP 503 with a queue-full message under peak load rather
+    than a 429 with rate-limit headers.'
+  docs: https://docs.aleph-alpha.com/phariaai-install-config-guide/latest/configuration/forward-external-apis.html
+  gap: 'No X-RateLimit-* / RateLimit-* response headers are documented.'
+request_tracing:
+  supported: true
+  mechanism: opentelemetry
+  detail: 'PhariaStudio ingests OTLP traces (POST /projects/{project_id}/traces_v2) and models
+    traces, spans and events as first-class API resources. OpenTelemetry tracing was extended
+    across PhariaData components in PhariaAI v1.260400.0.'
+  correlation_header: not-documented
+metadata:
+  supported: true
+  detail: 'Responses carry a metadata object; datasets, collections and documents accept caller-supplied metadata, and PhariaSearch exposes a separate document metadata endpoint.'
+data_retention:
+  detail: 'Responses and conversations are stored by default and expire under an automatic
+    retention policy. store=false skips persistence (and forfeits previous_response_id chaining).
+    Soft delete is the default; hard delete exists for GDPR erasure and is irreversible.
+    Incognito endpoints that retain no conversation history or uploaded documents shipped in v1.260600.0.'
+  docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/managing-responses.html
+compatibility:
+  openai: 'The Responses API implements the OpenAI Responses API specification; the OpenAI Python
+    SDK, PydanticAI and LangGraph (via langchain-openai) work against it by pointing base_url at
+    the deployment. PhariaInference also exposes /chat/completions and /embeddings.'
+cross_links:
+  authentication: authentication/aleph-alpha-authentication.yml
+  errors: errors/aleph-alpha-problem-types.yml
+  lifecycle: lifecycle/aleph-alpha-lifecycle.yml
+  data_model: data-model/aleph-alpha-data-model.yml
+  agentic_access: agentic-access/aleph-alpha-agentic-access.yml

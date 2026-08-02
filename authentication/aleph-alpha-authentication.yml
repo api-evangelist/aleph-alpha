@@ -1,0 +1,28 @@
+generated: '2026-08-02'
+method: derived
+source: openapi/aleph-alpha-pharia-data-openapi.json, openapi/aleph-alpha-pharia-inference-openapi.json,
+  openapi/aleph-alpha-pharia-os-openapi.json, openapi/aleph-alpha-pharia-search-openapi.json,
+  openapi/aleph-alpha-pharia-studio-openapi.json, openapi/aleph-alpha-responses-openapi.json
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: Bearer
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  sources:
+  - openapi/aleph-alpha-pharia-data-openapi.json
+  - openapi/aleph-alpha-pharia-inference-openapi.json
+  - openapi/aleph-alpha-pharia-search-openapi.json
+  - openapi/aleph-alpha-pharia-studio-openapi.json
+  - openapi/aleph-alpha-responses-openapi.json
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/aleph-alpha-pharia-os-openapi.json
