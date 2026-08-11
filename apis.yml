@@ -39,111 +39,699 @@ tags:
 - Enterprise Software
 - Government
 apis:
-- aid: aleph-alpha:pharia-inference
-  name: PhariaInference API
-  description: 'Access and interact with Aleph Alpha models and functionality over
-    HTTP endpoints. Provides completion, chat completions, embeddings, semantic and
-    batch semantic embeddings, tokenization and detokenization, model listing and
-    model settings, plus API token management. Version 4.7.0 is the version currently
-    served by the hosted gateway at api.aleph-alpha.com.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+- aid: aleph-alpha:aleph-alpha-api-description-api
+  name: Aleph Alpha API description API
+  description: The API description API from Aleph Alpha — 2 operation(s) for api description.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - Inference
-  - Completion
-  - Chat
-  - Embeddings
-  - Tokenization
+  - API description
   properties:
   - type: OpenAPI
-    url: openapi/aleph-alpha-pharia-inference-openapi.json
+    url: openapi/aleph-alpha-api-description-api-openapi.yml
   - type: Documentation
-    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
-- aid: aleph-alpha:pharia-data
-  name: PhariaData API
-  description: 'The PhariaData API provides a comprehensive suite of endpoints to manage
-    data workflows within the Pharia Data Platform — repositories, datasets, datapoints,
-    stages, files, downloads, connectors, transformations and transformation runs,
-    plus search stores and document management.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-data.html
-  baseURL: https://api.aleph-alpha.com/v1/studio/data
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-application-traces-api
+  name: Aleph Alpha Application Traces API
+  description: The Application Traces API from Aleph Alpha — 2 operation(s) for application traces.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
   tags:
-  - Data
-  - Datasets
-  - Repositories
-  - Transformations
-  - Search Store
+  - Application Traces
   properties:
   - type: OpenAPI
-    url: openapi/aleph-alpha-pharia-data-openapi.json
-- aid: aleph-alpha:pharia-search
-  name: PhariaSearch / Document Index API
-  description: 'The Document Index is a service that provides semantic search over
-    your knowledge base. It handles chunking and embedding of documents and keeps
-    embeddings in sync, and exposes namespaces, collections, documents, indexes and
-    filter indexes for hybrid semantic and keyword retrieval.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-search.html
-  baseURL: https://api.aleph-alpha.com/v1/studio/search
+    url: openapi/aleph-alpha-application-traces-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-benchmark-executions-api
+  name: Aleph Alpha Benchmark Executions API
+  description: >-
+    Endpoints for handling execution instances of benchmarks. These provides an overview of all evaluation
+    steps during execution (run, evaluation, aggregation).
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
   tags:
-  - Search
-  - Semantic Search
-  - Document Index
-  - Retrieval
-  - Embeddings
+  - Benchmark Executions
   properties:
   - type: OpenAPI
-    url: openapi/aleph-alpha-pharia-search-openapi.json
-- aid: aleph-alpha:pharia-studio
-  name: PhariaStudio API
-  description: 'PhariaStudio is the collaborative development environment for building,
-    debugging, evaluating and deploying organisation-specific AI solutions. Its API
-    covers projects, traces, spans and events, evaluation datasets, benchmarks and
-    benchmark executions, lineages, workspaces and model access.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-studio.html
-  baseURL: https://api.aleph-alpha.com/v1/studio
+    url: openapi/aleph-alpha-benchmark-executions-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-benchmarks-api
+  name: Aleph Alpha Benchmarks API
+  description: >-
+    Endpoints for handling benchmarks. A Benchmark provides a way to compare and evaluate the quality
+    of your task results for a specific dataset.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
   tags:
-  - Studio
-  - Evaluation
-  - Tracing
-  - Observability
   - Benchmarks
   properties:
   - type: OpenAPI
-    url: openapi/aleph-alpha-pharia-studio-openapi.json
-- aid: aleph-alpha:pharia-os
-  name: PhariaOS Manager API
-  description: 'PhariaOS is a resource management system that oversees the entire lifecycle
-    of AI resources, from inception to maintenance. The Manager API covers cluster
-    GPUs, nodes and taints, use cases and deployments, foundation models, inference
-    runtimes and model registration. Published as a Swagger 2.0 definition.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-os.html
-  baseURL: https://api.aleph-alpha.com/v1/os
-  tags:
-  - Operations
-  - Kubernetes
-  - Deployments
-  - Model Management
-  - GPU
-  properties:
-  - type: OpenAPI
-    url: openapi/aleph-alpha-pharia-os-openapi.json
-- aid: aleph-alpha:responses
-  name: Responses API (Stateful Responses)
-  description: 'A stateful, OpenAI-compatible Responses API for building agentic applications
-    on PhariaAI. Supports conversations, response persistence and retrieval, guardrail
-    checks, client-executed function tools and server-executed MCP (Model Context Protocol)
-    tools that the service invokes in an agentic loop on the caller''s behalf.'
-  humanURL: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+    url: openapi/aleph-alpha-benchmarks-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-cluster-api
+  name: Aleph Alpha Cluster API
+  description: The cluster API from Aleph Alpha — 4 operation(s) for cluster.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - Responses
+  - cluster
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-cluster-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-collection-api
+  name: Aleph Alpha Collection API
+  description: Management of document collections
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Collection
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-collection-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-connectors-api
+  name: Aleph Alpha Connectors API
+  description: Available connectors for the Data Platform to ingest data from external sources.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Connectors
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-connectors-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-conversations-api
+  name: Aleph Alpha Conversations API
+  description: Create, retrieve, update, delete, and list conversations.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
   - Conversations
-  - Agents
-  - Tool Calling
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-conversations-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-datasets-api
+  name: Aleph Alpha Datasets API
+  description: >-
+    Represents the primary data abstraction within the data platform, serving as a structured collection
+    of data points. Datasets can be either manually uploaded or generated through data transformations,
+    providing a versatile means for organizing, storing, and retrieving data across various use cases.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-datasets-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-document-api
+  name: Aleph Alpha Document API
+  description: >-
+    A Document represents an individual item stored within a Search Store. Documents can contain content
+    from various modalities, such as text, images, or pre-chunked data.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Document
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-document-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-downloads-api
+  name: Aleph Alpha Downloads API
+  description: >-
+    Endpoints for managing and tracking dataset download requests within the data platform. These endpoints
+    allow users to initiate new downloads, retrieve details of specific download requests, and list download
+    activity for datasets, with optional filters by date and repository. Download management helps streamline
+    access to dataset files and provides caching capabilities.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Downloads
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-downloads-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-evaluation-datasets-api
+  name: Aleph Alpha Evaluation Datasets API
+  description: >-
+    Endpoints for handling evaluation datasets, which are specific datasets to be used for evaluation
+    in the Pharia Studio SDK.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Evaluation Datasets
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-evaluation-datasets-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-events-api
+  name: Aleph Alpha Events API
+  description: >-
+    Endpoints for handling Events. Events capture detailed information about specific occurrences within
+    a Span. This includes logs, exceptions, and other relevant data points that provide a granular view
+    of the operations within a Span. Events are crucial for diagnosing issues and understanding the execution
+    context.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-events-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-filter-index-api
+  name: Aleph Alpha Filter Index API
+  description: Management of search filter indexes
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Filter Index
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-filter-index-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-guardrails-api
+  name: Aleph Alpha Guardrails API
+  description: Check content against guardrail policies.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
   - Guardrails
   properties:
   - type: OpenAPI
-    url: openapi/aleph-alpha-responses-openapi.json
+    url: openapi/aleph-alpha-guardrails-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-index-api
+  name: Aleph Alpha Index API
+  description: Management of search indexes
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Index
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-index-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-lineages-api
+  name: Aleph Alpha Lineages API
+  description: >-
+    Lineages represent the results of a benchmark execution. A single lineage represents an evaluation
+    of a single example with a task and evaluation logic. They contain all task and evaluation logic input
+    and outputs.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Lineages
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-lineages-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-models-api
+  name: Aleph Alpha Models API
+  description: The models API from Aleph Alpha — 6 operation(s) for models.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - models
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-models-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-namespace-api
+  name: Aleph Alpha Namespace API
+  description: Management of namespaces
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Namespace
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-namespace-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-operations-api
+  name: Aleph Alpha Operations API
+  description: Health checks and operational endpoints.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-operations-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-permissions-api
+  name: Aleph Alpha Permissions API
+  description: The permissions API from Aleph Alpha — 1 operation(s) for permissions.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - permissions
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-permissions-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-projects-api
+  name: Aleph Alpha Projects API
+  description: >-
+    A Project is an abstraction representing a group of running operations associated with the same task
+    in the Studio. Endpoints under this tag allow you to create, update, delete, and retrieve projects.
+    Projects help in organizing and managing tasks efficiently.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-projects-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-repositories-api
+  name: Aleph Alpha Repositories API
+  description: >-
+    A collection of data organized by a common type, modality, and schema, stored within datasets (lists
+    of data points) in the repositories. To share datasets externally, they must first be exported as
+    files, which will then be stored in the internal storage of the data platform.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Repositories
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-repositories-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-responses-api
+  name: Aleph Alpha Responses API
+  description: >-
+    Create, retrieve, and delete responses. Supports streaming and multi-turn conversations via response
+    chaining.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Responses
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-responses-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-search-store-api
+  name: Aleph Alpha Search Store API
+  description: >-
+    A Search Store is a structured data repository optimized for indexing and retrieving searchable entities.
+    It supports full-text search, metadata-based filtering, and relevance ranking. Each Search Store can
+    manage multiple indexed documents, making it ideal for fast, scalable information retrieval across
+    different modalities.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Search Store
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-search-store-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-service-api
+  name: Aleph Alpha Service API
+  description: Service health and status
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Service
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-service-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-spans-api
+  name: Aleph Alpha Spans API
+  description: >-
+    Endpoints for managing Spans. A Span is a single unit of work within a Trace and represents an individual
+    operation in the execution sequence. Spans help in breaking down the Trace into more manageable parts,
+    providing detailed insights into each operation's performance and behavior.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Spans
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-spans-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-stages-api
+  name: Aleph Alpha Stages API
+  description: >-
+    Stages serve as the data platform's entry point for data collection, where source files are securely
+    stored, enabling subsequent transformations and dataset generation. Files can be uploaded directly
+    into stages via the HTTP API or through connectors, which support automated and continuous synchronization
+    with your source systems. Stages provide secure, persistent storage and act as an interface for importing
+    and exporting data files within the platform. To improve data discoverability, comprehension, and
+    quality for end users, the data platform offers datasets as the recommended abstraction for organizing
+    and sharing data.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Stages
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-stages-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-steering-api
+  name: Aleph Alpha Steering API
+  description: The steering API from Aleph Alpha — 1 operation(s) for steering.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - steering
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-steering-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-tasks-api
+  name: Aleph Alpha Tasks API
+  description: Requests for different types of tasks you can request with our models.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-tasks-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-tokens-api
+  name: Aleph Alpha Tokens API
+  description: Manage tokens associated with your user account for API access.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-tokens-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-traces-api
+  name: Aleph Alpha Traces API
+  description: >-
+    Trace management endpoints. A Trace provides a mechanism similar to OpenTelemetry for tracking the
+    execution flow of a task. It allows you to monitor and analyze the sequence of operations, their timings,
+    and other related metrics. Tracing is essential for performance monitoring and debugging.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Traces
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-traces-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-transformations-api
+  name: Aleph Alpha Transformations API
+  description: >-
+    Available transformations can be applied to an input data object of type A to produce an output data
+    object of type B. The output data object will consist of a sequence of items, each of which will conform
+    to an Avro schema specified in the transformation as OutputSchema. Currently, the input data object
+    can be a File located in a Stage within the Data Platform. Future versions will support receiving
+    Datasets from Repositories in the Data Platform as input data objects. The output data object can
+    be loaded into various types of data storage within the Data Platform, with Repositories being the
+    first supported storage type. When triggering a transformation, this has to be specified as destination.
+    After loading the output into the destination, it can also be sent to an external service through
+    available connectors in the Data Platform. The first available connector will be the Document Index
+    Collection Connector.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Transformations
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-transformations-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-usecases-api
+  name: Aleph Alpha Usecases API
+  description: "**Usecases (Applications)**\n\nUsecases are full-stack end to end AI applications. The\
+    \ application exposes the necessary REST endpoints so\nAI usecases can be consumed and, optionally,\
+    \ a front-end (UI) to interact with the implemented workflows.\n\nOnce you have finished the usecase\
+    \ implementation and have published a Docker image to a registry, it is time to deploy the usecase!\n\
+    \nThe endpoints below enable you to create a usecase by providing a name and a description, list all\
+    \ created usecases, retrieve a single usecase by id, and update them.\n\nAlso, most importantly, the\
+    \ API enables you to deploy a created usecase. The deployment of usecases requires some more technical\
+    \ information.\n\n**Deployment**\n\nWe rely on [Kubernetes (K8s)](https://kubernetes.io/docs/home/)\
+    \ to deploy the usecases, which means that they are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/)\
+    \ running in a K8s cluster.\n\nTo deploy usecases you must provide: the registry where the usecase\
+    \ image is located, the image tag (version), the environment variables you wish to inject into the\
+    \ usecase and other K8s configurations parameters, such as `imagePullSecrets`, `autoscaling`, `ingress`,\
+    \ and resource `requests` and `limits` for CPU and memory required to run the usecase. A complete\
+    \ specification is provided further below.\n\nBy default, a usecase is created with the below resources\
+    \ configuration:\n\n```yaml\nresources:\n    requests:\n        cpu: 250m\n        memory: 500Mi\n\
+    \    limits:\n        cpu: 500m\n        memory: 1Gi\n```\n\nThe API also provides endpoints to track\
+    \ the deployment status to assist in any troubleshooting if required. To retrieve the deployment status,\
+    \ use the endpoints to get a usecase by its ID.\n\n**Consuming usecases**\n\nOnce the deployment is\
+    \ up and running, now it's time to actually consume it! \n\n_1. (Optional) Usecase Ingress_\n\nIf\
+    \ the usecase was deployed with the ingress enabled, the service can be accessed at the URL provided\
+    \ in the deployment status. _Note: this requires that ingress creation is enabled in the PhariaOS\
+    \ API configuration; otherwise, the deployment request will be rejected._\n\n_2. Applications Proxy\
+    \ Server_\n\nThe PhariaOS Applications Proxy Server is available to fulfill the usecases consumption.\
+    \ The applications proxy can be accessed at https://pharia-os-applications.product.pharia.com.\n\n\
+    Requests to the proxy are redirected to the usecases by providing the usecase (application) UUID as\
+    \ a URL path parameter, which is **required**.\n\n> The incoming request endpoint to the proxy server\
+    \ is the redirected endpoint to the usecase: \n> `https://pharia-os-applications.product.pharia.com/{applicationId}/summarization\
+    \ -> $internal_use_case_URL/summarization`\n\n**Expected Responses**\n\nA valid request and resource\
+    \ path will return the expected resource in the response.\n\nIf the request path does not include\
+    \ the usecase (application) UUID, one of two responses is expected:\n* If the request path contains\
+    \ only a single part, the response is `BadRequest (400)`.\n* If the request path contains multiple\
+    \ parts, the response is `BadGateway (502)`, as the proxy is unable to validate our route the request\
+    \ to any usecase (application).\n\n**Examples**\n\n1. Sending a `POST` request to the proxy server.\
+    \ The request is targeted to the usecase `execute` endpoint.\n\n```sh\ncurl --request POST \\\n  --url\
+    \ https://pharia-os-applications.product.pharia.com/{applicationId}/execute \\\n  --header 'Content-Type:\
+    \ application/json' \\\n  --data '{\n\t\"question\": \"hello\"\n         }'\n```\n\n2. Sending a `GET`\
+    \ request to the proxy server. The request is targeted to the usecase `health` endpoint.\n\n```sh\n\
+    curl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/health\n\
+    ```\n\n3. Sending a `GET` request for the user interface. The request is targeted to the usecase `ui`\
+    \ endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/ui/assets/usecase.js\n\
+    ```\n\n**Undeployment**\n\nOnce the usecase has fullfilled the purposes and no longer needs to run\
+    \ and consume resources in your K8s cluster, the API provides an endpoint to undeploy the usecase.\n\
+    \n**Deleting usecases**\n\nA usecase may be deleted on request only if it is not currently **active**\
+    \ (that is: deployed, deploying, or undeploying). Deletion cleans the usecase and all associated records\
+    \ from the database."
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - usecases
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-usecases-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-users-api
+  name: Aleph Alpha Users API
+  description: The users API from Aleph Alpha — 2 operation(s) for users.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - users
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-users-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-v1-models-api
+  name: Aleph Alpha V1/models API
+  description: The v1/models API from Aleph Alpha — 4 operation(s) for v1/models.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - v1/models
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-v1-models-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-workspaces-api
+  name: Aleph Alpha Workspaces API
+  description: >-
+    A Workspace is a shared environment where users can collaborate on projects. Workspaces help in organizing
+    and managing projects in large organizations efficiently.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Workspaces
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-workspaces-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
   - type: Documentation
     url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
 maintainers:
