@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stateful Responses API",
+    "version": "0.4.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Responses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Post Responses Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/responses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Handle POST /v1/responses - with history reconstruction and storage.\n\nIf previous_response_id is provided, reconstructs the conversation history\nand includes it in the request to the backend. Stores the request-response\npair for future history reconstruction.\n\nInstructions resolution priority:\n1. prompt.id (render template with variables)\n2. explicit instructions field\n3. inherited from previous_response_id\n4. default_system_prompt from config\n\nSupports both streaming (stream=true) and non-strea"
+        },
+        {
+          "info": {
+            "name": "Get Responses Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/responses/:response_id",
+            "params": [
+              {
+                "name": "response_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "stream",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_deleted",
+                "value": "",
+                "type": "query",
+                "description": "Include soft-deleted responses. Admin-only; returns 403 for non-admin callers."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Handle GET /v1/responses/{response_id} - retrieve stored response.\n\nSupports both streaming and non-streaming retrieval.\nFor req_* IDs (background requests), checks pending status first."
+        },
+        {
+          "info": {
+            "name": "Update Response Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/responses/:response_id",
+            "params": [
+              {
+                "name": "response_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "recovery_from_delete",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Handle PATCH /v1/responses/{response_id} - update a stored response."
+        },
+        {
+          "info": {
+            "name": "Delete Response Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/responses/:response_id",
+            "params": [
+              {
+                "name": "response_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "hard_delete",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Handle DELETE /v1/responses/{response_id} - delete stored response.\n\nIf the answer is not found, return 200 anyways."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Tokens API",
+    "version": "4.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get issued API tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/users/me/tokens",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will return a list of API tokens that are registered for this user (only token metadata is returned, not the actual tokens)\n"
+        },
+        {
+          "info": {
+            "name": "Create a new API token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/users/me/tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new token to authenticate against the API with (the actual API token is only returned when calling this endpoint)\n"
+        },
+        {
+          "info": {
+            "name": "Delete an API token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/users/me/tokens/:token_id",
+            "params": [
+              {
+                "name": "token_id",
+                "value": "",
+                "type": "path",
+                "description": "API token ID"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an API token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

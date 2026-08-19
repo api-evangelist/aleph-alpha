@@ -1,0 +1,1076 @@
+openapi: 3.2.0
+info:
+  description: A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.
+  title: PhariaOS Manager Usecases API
+  contact:
+    name: Aleph Alpha
+    url: https://www.aleph-alpha.com
+  version: '1.0'
+servers:
+- url: https://api.pharia.example.com/v1/os
+tags:
+- description: "**Usecases (Applications)**\n\nUsecases are full-stack end to end AI applications. The application exposes the necessary REST endpoints so\nAI usecases can be consumed and, optionally, a front-end (UI) to interact with the implemented workflows.\n\nOnce you have finished the usecase implementation and have published a Docker image to a registry, it is time to deploy the usecase!\n\nThe endpoints below enable you to create a usecase by providing a name and a description, list all created usecases, retrieve a single usecase by id, and update them.\n\nAlso, most importantly, the API enables you to deploy a created usecase. The deployment of usecases requires some more technical information.\n\n**Deployment**\n\nWe rely on [Kubernetes (K8s)](https://kubernetes.io/docs/home/) to deploy the usecases, which means that they are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/) running in a K8s cluster.\n\nTo deploy usecases you must provide: the registry where the usecase image is located, the image tag (version), the environment variables you wish to inject into the usecase and other K8s configurations parameters, such as `imagePullSecrets`, `autoscaling`, `ingress`, and resource `requests` and `limits` for CPU and memory required to run the usecase. A complete specification is provided further below.\n\nBy default, a usecase is created with the below resources configuration:\n\n```yaml\nresources:\n    requests:\n        cpu: 250m\n        memory: 500Mi\n    limits:\n        cpu: 500m\n        memory: 1Gi\n```\n\nThe API also provides endpoints to track the deployment status to assist in any troubleshooting if required. To retrieve the deployment status, use the endpoints to get a usecase by its ID.\n\n**Consuming usecases**\n\nOnce the deployment is up and running, now it's time to actually consume it! \n\n_1. (Optional) Usecase Ingress_\n\nIf the usecase was deployed with the ingress enabled, the service can be accessed at the URL provided in the deployment status. _Note: this requires that ingress creation is enabled in the PhariaOS API configuration; otherwise, the deployment request will be rejected._\n\n_2. Applications Proxy Server_\n\nThe PhariaOS Applications Proxy Server is available to fulfill the usecases consumption. The applications proxy can be accessed at https://pharia-os-applications.product.pharia.com.\n\nRequests to the proxy are redirected to the usecases by providing the usecase (application) UUID as a URL path parameter, which is **required**.\n\n> The incoming request endpoint to the proxy server is the redirected endpoint to the usecase: \n> `https://pharia-os-applications.product.pharia.com/{applicationId}/summarization -> $internal_use_case_URL/summarization`\n\n**Expected Responses**\n\nA valid request and resource path will return the expected resource in the response.\n\nIf the request path does not include the usecase (application) UUID, one of two responses is expected:\n* If the request path contains only a single part, the response is `BadRequest (400)`.\n* If the request path contains multiple parts, the response is `BadGateway (502)`, as the proxy is unable to validate our route the request to any usecase (application).\n\n**Examples**\n\n1. Sending a `POST` request to the proxy server. The request is targeted to the usecase `execute` endpoint.\n\n```sh\ncurl --request POST \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/execute \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n\t\"question\": \"hello\"\n         }'\n```\n\n2. Sending a `GET` request to the proxy server. The request is targeted to the usecase `health` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/health\n```\n\n3. Sending a `GET` request for the user interface. The request is targeted to the usecase `ui` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/ui/assets/usecase.js\n```\n\n**Undeployment**\n\nOnce the usecase has fullfilled the purposes and no longer needs to run and consume resources in your K8s cluster, the API provides an endpoint to undeploy the usecase.\n\n**Deleting usecases**\n\nA usecase may be deleted on request only if it is not currently **active** (that is: deployed, deploying, or undeploying). Deletion cleans the usecase and all associated records from the database."
+  name: usecases
+paths:
+  /usecases:
+    get:
+      description: List all usecases
+      tags:
+      - usecases
+      summary: List all usecases
+      parameters:
+      - description: 'Filter is a JSON string containing filter criteria.
+
+
+          Example: {"name":"test", "projectId":"project-id", "labels":["assistant","ui"]}
+
+
+          Labels filtering uses OR logic: returns usecases with ANY of the specified labels'
+        name: filter
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 10
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecasePaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    post:
+      description: Create a new usecase
+      tags:
+      - usecases
+      summary: Create a new usecase
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtos.CreateUsecaseRequest'
+        description: Usecase object that needs to be created
+        required: true
+  /usecases/{usecaseID}:
+    get:
+      description: Retrieve a usecase by its ID
+      tags:
+      - usecases
+      summary: Get usecase by ID
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    put:
+      description: Update a usecase
+      tags:
+      - usecases
+      summary: Update a usecase
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtos.UpdateUsecaseRequest'
+        description: Usecase object that needs to be updated
+        required: true
+    delete:
+      description: 'Delete a usecase if it is not active or pending (deployment status: undeployed, error)'
+      tags:
+      - usecases
+      summary: Delete a usecase
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    patch:
+      description: Patch a usecase
+      tags:
+      - usecases
+      summary: Patch a usecase
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtos.PatchUsecaseRequest'
+        description: Usecase object that needs to be patched
+        required: true
+  /usecases/{usecaseID}/deployments:
+    get:
+      description: List all deployments of a usecase
+      tags:
+      - usecases
+      summary: List all deployments of a usecase
+      parameters:
+      - description: ID of the usecase
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: 'DeploymentFilter is a struct that contains the filter fields for the deployment
+
+          example: {"status":"deployed"}'
+        name: filter
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 10
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseDeploymentPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    post:
+      description: Triggers a usecase deployment
+      tags:
+      - usecases
+      summary: Deploy a usecase
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseDeploymentCreatedOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/dtos.DeployUsecaseRequest'
+        description: Usecase deployment configuration
+        required: true
+    delete:
+      description: Triggers a usecase undeployment
+      tags:
+      - usecases
+      summary: Undeploy a usecase
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail422'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /usecases/{usecaseID}/deployments/{deploymentID}:
+    get:
+      description: Get a usecase deployment by ID
+      tags:
+      - usecases
+      summary: Get a usecase deployment by ID
+      parameters:
+      - description: Usecase ID
+        name: usecaseID
+        in: path
+        required: true
+        schema:
+          type: string
+      - description: Deployment ID
+        name: deploymentID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.UsecaseDeploymentOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+components:
+  schemas:
+    dtos.CreateUsecaseRequest:
+      type: object
+      required:
+      - description
+      - name
+      properties:
+        description:
+          type: string
+          example: usecase-description
+        isPublic:
+          type: boolean
+          example: true
+        labels:
+          type: array
+          items:
+            type: string
+          example:
+          - assistant
+          - ui
+        name:
+          type: string
+          example: usecase-name
+        projectId:
+          type: string
+          example: project-id
+    dtos.Ingress:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: true
+    dtos.UsecaseOutput:
+      type: object
+      required:
+      - createdAt
+      - deployment
+      - description
+      - id
+      - name
+      properties:
+        createdAt:
+          type: string
+        deployment:
+          allOf:
+          - $ref: '#/components/schemas/dtos.UsecaseDeploymentOutput'
+        description:
+          type: string
+        id:
+          type: string
+        isPublic:
+          type: boolean
+        labels:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        projectId:
+          type: string
+    dtos.ProblemDetail400:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 3000
+        detail:
+          type: string
+          example: Bad Request
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/400
+        status:
+          type: integer
+          example: 400
+        title:
+          type: string
+          example: Bad Request
+        type:
+          type: string
+    dtos.ResourceRequest:
+      type: object
+      properties:
+        cpu:
+          description: 'The amount of CPU requested for the deployment. (Example: "500m" for 500 milliCPU)'
+          type: string
+          example: 500m
+        memory:
+          description: 'The amount of memory requested for the deployment. (Example: "256Mi" for 256 MiB of memory)'
+          type: string
+          example: 256Mi
+    deployment.Status:
+      type: string
+      enum:
+      - undeploying
+      - undeployed
+      - deploying
+      - deployed
+      - error
+      - superseded
+      x-enum-varnames:
+      - StatusUndeploying
+      - StatusUndeployed
+      - StatusDeploying
+      - StatusDeployed
+      - StatusError
+      - StatusSuperseded
+    dtos.ReferenceEnvVar:
+      type: object
+      required:
+      - name
+      - secret
+      properties:
+        name:
+          type: string
+          example: DATABASE_PASSWORD
+        secret:
+          $ref: '#/components/schemas/dtos.EnvRef'
+    dtos.Probe:
+      type: object
+      required:
+      - initialDelay
+      properties:
+        initialDelay:
+          description: 'InitialDelay is the delay before the probe begins checking container health.
+
+            Format: duration string (e.g., "30s", "5m", "1h").'
+          type: string
+          default: 20s
+          example: 30s
+    dtos.EnvRef:
+      type: object
+      required:
+      - key
+      - name
+      properties:
+        key:
+          type: string
+          example: password
+        name:
+          type: string
+          example: usecase-abc123-db-credentials
+    dtos.ResourceLimit:
+      type: object
+      properties:
+        cpu:
+          description: 'The maximum amount of CPU allowed for the deployment. (Example: "1000m" for 1 CPU)'
+          type: string
+          example: 1000m
+        gpu:
+          description: The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceGpu'
+        memory:
+          description: 'The maximum amount of memory allowed for the deployment. (Example: "512Mi" for 512 MiB of memory)'
+          type: string
+          example: 512Mi
+    dtos.UsecasePaginatedResult:
+      type: object
+      required:
+      - data
+      - limit
+      - page
+      - total
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.UsecaseOutput'
+        limit:
+          type: integer
+        page:
+          type: integer
+        total:
+          type: integer
+    dtos.DeployUsecaseRequest:
+      type: object
+      required:
+      - config
+      properties:
+        config:
+          $ref: '#/components/schemas/dtos.UsecaseConfig'
+    dtos.UsecaseConfig:
+      type: object
+      required:
+      - image
+      properties:
+        autoscaling:
+          $ref: '#/components/schemas/dtos.Autoscaling'
+        availability:
+          $ref: '#/components/schemas/dtos.Availability'
+        envVars:
+          description: Environment variables that are going to be available in the usecase
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+            key2: value2
+        image:
+          $ref: '#/components/schemas/dtos.Image'
+        ingress:
+          $ref: '#/components/schemas/dtos.Ingress'
+        resources:
+          $ref: '#/components/schemas/dtos.Resources'
+        secretEnvVars:
+          description: Environment variables sourced from Kubernetes secrets
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.ReferenceEnvVar'
+        serviceMonitor:
+          $ref: '#/components/schemas/dtos.ServiceMonitor'
+    dtos.Image:
+      type: object
+      required:
+      - registry
+      - repository
+      - tag
+      properties:
+        registry:
+          type: string
+          example: docker.io
+        repository:
+          type: string
+          example: alephalpha/phariaos-usecase
+        tag:
+          type: string
+          example: 0.0.1
+    dtos.UpdateUsecaseRequest:
+      type: object
+      required:
+      - description
+      - name
+      properties:
+        description:
+          type: string
+          example: usecase-description
+        isPublic:
+          type: boolean
+          example: true
+        labels:
+          type: array
+          items:
+            type: string
+          example:
+          - assistant
+          - ui
+        name:
+          type: string
+          example: usecase-name
+        projectId:
+          type: string
+          example: project-id
+    dtos.Availability:
+      type: object
+      properties:
+        startup:
+          description: Defines the probe that will be used during container startup.
+          allOf:
+          - $ref: '#/components/schemas/dtos.Probe'
+    dtos.UsecaseDeploymentOutput:
+      type: object
+      required:
+      - createdAt
+      - id
+      - message
+      - status
+      - url
+      properties:
+        createdAt:
+          type: string
+        id:
+          type: string
+        message:
+          description: This field is meant to be populated with any errors that might happen during deployment.
+          type: string
+        status:
+          description: Current deployment status
+          allOf:
+          - $ref: '#/components/schemas/deployment.Status'
+        url:
+          description: The URL that the usecase can be reached with.
+          type: string
+    dtos.ResourceGpu:
+      type: object
+      properties:
+        name:
+          type: string
+          example: nvidia.com/gpu
+        value:
+          type: integer
+          example: 1
+    dtos.UsecaseDeploymentPaginatedResult:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.UsecaseDeploymentOutput'
+        limit:
+          type: integer
+        page:
+          type: integer
+        total:
+          type: integer
+    dtos.ProblemDetail404:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2
+        detail:
+          type: string
+          example: Not Found
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/404
+        status:
+          type: integer
+          example: 404
+        title:
+          type: string
+          example: Not Found
+        type:
+          type: string
+    dtos.Metric:
+      type: object
+      properties:
+        targetUtilization:
+          description: Target utilization percentage for the metric. The utilization is measured relative to the resource request, not the limit.
+          type: integer
+          example: 70
+        type:
+          description: The type of metric to scale on.
+          type: string
+          enum:
+          - cpu
+          - memory
+          example: cpu
+    dtos.UsecaseDeploymentCreatedOutput:
+      type: object
+      properties:
+        id:
+          type: string
+    dtos.PatchUsecaseRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          example: usecase-description
+        isPublic:
+          type: boolean
+          example: true
+        labels:
+          type: array
+          items:
+            type: string
+          example:
+          - assistant
+          - ui
+        name:
+          type: string
+          example: usecase-name
+        projectId:
+          type: string
+          example: project-id
+    dtos.Resources:
+      type: object
+      properties:
+        limits:
+          description: Resource limits imposed on the deployment. Must be greater than or equal to requests.
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceLimit'
+        requests:
+          description: Resource requests required for the deployment.
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceRequest'
+    dtos.ProblemDetail500:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1
+        detail:
+          type: string
+          example: Internal Server Error
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/500
+        status:
+          type: integer
+          example: 500
+        title:
+          type: string
+          example: Internal Server Error
+        type:
+          type: string
+    dtos.ProblemDetail422:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2000
+        detail:
+          type: string
+          example: Unprocessable Entity
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/422
+        status:
+          type: integer
+          example: 422
+        title:
+          type: string
+          example: Unprocessable Entity
+        type:
+          type: string
+    dtos.Autoscaling:
+      type: object
+      properties:
+        enabled:
+          description: Enable or disable autoscaling for the deployment. When enabled, uses CPU at 70% by default if no metrics specified.
+          type: boolean
+          example: true
+        maxReplicas:
+          description: The maximum number of replicas allowed when autoscaling is enabled.
+          type: integer
+          default: 5
+          example: 5
+        metrics:
+          description: Scaling metrics. If empty, defaults to CPU at 70%.
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.Metric'
+        minReplicas:
+          description: The minimum number of replicas to maintain when autoscaling is enabled.
+          type: integer
+          default: 1
+          example: 1
+    dtos.ProblemDetail403:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1002
+        detail:
+          type: string
+          example: Forbidden
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/403
+        status:
+          type: integer
+          example: 403
+        title:
+          type: string
+          example: Forbidden
+        type:
+          type: string
+    dtos.ProblemDetail401:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1100
+        detail:
+          type: string
+          example: Unauthorized
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/401
+        status:
+          type: integer
+          example: 401
+        title:
+          type: string
+          example: Unauthorized
+        type:
+          type: string
+    dtos.ServiceMonitor:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          example: true
+        path:
+          description: 'Path is the path where the metrics are scraped from the usecase.
+
+            If not provided, default is `/metrics`.'
+          type: string
+          example: /custom-metrics
+        scrapingInterval:
+          description: 'Interval which metrics should be scraped. It follows Prometheus Duration format.
+
+            See https://prometheus.io/docs/prometheus/latest/querying/basics/#float-literals-and-time-durations for reference.
+
+            If not provided, default is 30s.'
+          type: string
+          example: 60s
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: Authorization
+      in: header

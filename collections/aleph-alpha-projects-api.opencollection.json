@@ -1,0 +1,177 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaStudio Projects API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Many Projects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects",
+            "params": [
+              {
+                "name": "with_user_details",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the user details in the response."
+              }
+            ]
+          },
+          "docs": "Get Many Projects"
+        },
+        {
+          "info": {
+            "name": "Create Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/projects",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new `Project`."
+        },
+        {
+          "info": {
+            "name": "Get Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the project."
+              },
+              {
+                "name": "with_user_details",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the user details in the response."
+              }
+            ]
+          },
+          "docs": "Get a `Project` by its id."
+        },
+        {
+          "info": {
+            "name": "Update Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the project."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a project's details."
+        },
+        {
+          "info": {
+            "name": "Delete Project",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/projects/:project_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the project."
+              }
+            ]
+          },
+          "docs": "Delete a `Project` by its id."
+        },
+        {
+          "info": {
+            "name": "Get Project Userlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/workspaces/:workspace_id/projects/:project_id/userlist",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the project."
+              }
+            ]
+          },
+          "docs": "Get a list of all non-service users of a Project by the `Project` identifier."
+        },
+        {
+          "info": {
+            "name": "Update Project Userlist",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/workspaces/:workspace_id/projects/:project_id/userlist",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path",
+                "description": "The UUID of the project."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the list of users of a `Project`"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

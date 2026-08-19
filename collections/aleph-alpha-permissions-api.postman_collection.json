@@ -1,0 +1,147 @@
+{
+  "item": [
+    {
+      "id": "8c040269-0368-49b8-a5a2-634919778178",
+      "name": "permissions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fa7ff505-f919-492e-9281-eeacb0bc800c",
+          "name": "Check user privileges",
+          "request": {
+            "name": "Check user privileges",
+            "description": {
+              "content": "Post an array of permissions as an authenticated users.\nWe return the subset of the posted permissions that have been granted to the user.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "check_privileges"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a89e66d2-7e01-4ed0-9571-7247e1532fec",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "check_privileges"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"permission\": \"string\"\n  },\n  {\n    \"permission\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c0c75cdd-bbde-47ee-8472-142847343ae4",
+    "name": "Aleph Alpha Permissions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Access and interact with Aleph Alpha models and functionality over HTTP endpoints.\n\nContact Support:\n Email: support@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

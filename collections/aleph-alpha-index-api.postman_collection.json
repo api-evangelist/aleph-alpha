@@ -1,0 +1,1416 @@
+{
+  "item": [
+    {
+      "id": "104f5d9e-280b-4c7b-b3b5-7ed30c316f2f",
+      "name": "Index",
+      "description": {
+        "content": "Management of search indexes",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ae75fb3b-4f16-4fd6-9e59-081ace9306d3",
+          "name": "List of index configurations in namespace.",
+          "request": {
+            "name": "List of index configurations in namespace.",
+            "description": {
+              "content": "List all index configurations that exist in the given namespace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "indexes",
+                ":namespace"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9da4a548-0128-417f-b6f4-ff76f2014f49",
+              "name": "A list of index config names",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "indexes",
+                    ":namespace"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"index-config-1\",\n  \"index-config-2\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ab82bcbe-0f94-4f31-b244-dbb256197c92",
+          "name": "Get a namespace-wide index configuration.",
+          "request": {
+            "name": "Get a namespace-wide index configuration.",
+            "description": {
+              "content": "Gets the parameters for the given index configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "indexes",
+                ":namespace",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3d2c23d9-cec1-43b8-8e65-974eb450f477",
+              "name": "An index config",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "indexes",
+                    ":namespace",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chunk_size\": \"384\",\n  \"chunk_overlap\": \"5\",\n  \"hybrid_index\": \"bm25\",\n  \"embedding\": {\n    \"strategy\": \"semantic_embed\",\n    \"model_name\": \"luminous-base\",\n    \"representation\": \"asymmetric\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4feaae11-243d-4d8c-a1f8-6afdae24c7b8",
+          "name": "Define a namespace-wide index configuration.",
+          "request": {
+            "name": "Define a namespace-wide index configuration.",
+            "description": {
+              "content": "Defines a namespace-wide index configuration. Once a configuration is defined it can be assigned\nto the collections of the namespace.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "indexes",
+                ":namespace",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chunk_size\": \"<integer>\",\n  \"chunk_overlap\": \"0\",\n  \"embedding_type\": \"<string>\",\n  \"hybrid_index\": \"<string>\",\n  \"embedding\": {\n    \"strategy\": \"<string>\",\n    \"model_name\": \"<string>\",\n    \"representation\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fea7276f-d92c-48e3-958a-63a330ffdad3",
+              "name": "No content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "indexes",
+                    ":namespace",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"chunk_size\": \"384\",\n  \"chunk_overlap\": \"5\",\n  \"hybrid_index\": \"bm25\",\n  \"embedding\": {\n    \"strategy\": \"semantic_embed\",\n    \"model_name\": \"luminous-base\",\n    \"representation\": \"asymmetric\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d225c07-f28e-4e54-b776-bc295db5f5ba",
+          "name": "Delete a namespace-wide index configuration.",
+          "request": {
+            "name": "Delete a namespace-wide index configuration.",
+            "description": {
+              "content": "Deletes the index configuration for the given namespace. This is not possible if the index configuration\nis assigned to any collection.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "indexes",
+                ":namespace",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9aa24e3a-1c8c-4c4d-ae0c-2c699fca8a4b",
+              "name": "Index configuration successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "indexes",
+                    ":namespace",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "37059eac-0ede-4731-9f53-6cd1dc35c4b4",
+              "name": "The index configuration cannot be deleted because it is used.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "indexes",
+                    ":namespace",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5628b25-6475-45cb-b30c-d90ce22b8275",
+          "name": "Get path of indexes assigned to the given collection.",
+          "request": {
+            "name": "Get path of indexes assigned to the given collection.",
+            "description": {
+              "content": "Gets a list of paths of indexes that are assigned to the given collections. Details of the index\n(i.e. its parameters) can be retrieved via the /indexes/namespace/index endpoint.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "indexes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9d253a98-acb2-4f1d-acff-fa2c04972044",
+              "name": "A list of index names",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "indexes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"index_1\",\n  \"index_2\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b22a8ee3-1d36-42b9-8028-ba9a4b43d967",
+          "name": "Assign an existing index config to an existing collection.",
+          "request": {
+            "name": "Assign an existing index config to an existing collection.",
+            "description": {
+              "content": "Assigns an index config that exists in the same namespace as the collection to the collection.\nAll current and future documents of the collection will asynchronously be added to the index and\nwill eventually be available for search through the index specific search endpoint\n/collections/{namespace}/{collection}/indexes/{index}/search.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "indexes",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a8e3f02e-a77c-454e-b3c9-252e133a35d7",
+              "name": "Index successfully assigned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "indexes",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e88ec67-32a4-43ac-8b2f-2613bef857f4",
+          "name": "Removes an index from collection.",
+          "request": {
+            "name": "Removes an index from collection.",
+            "description": {
+              "content": "Removes the assigned index from a collection. This makes the search endpoint for this index\nimmediately unavailable and deletes asynchronously all data associated to the index.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "indexes",
+                ":index"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a8318ab5-d985-4960-b11b-af4283b74e9b",
+              "name": "Index successfully removed from collection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "indexes",
+                    ":index"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3f658f26-a837-4b42-ae52-2929d899fcf0",
+          "name": "Index based search.",
+          "request": {
+            "name": "Index based search.",
+            "description": {
+              "content": "Find documents by a query that is much shorter than the actual document.\n\nNote that the embeddings of documents required to find documents through this\nare computed asynchronously, i.e. after a document was successfully\ninserted into a collection it might not immediately be found through this request.\n\nYou can filter search results by modality and metadata.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "indexes",
+                ":index",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"max_results\": \"<integer>\",\n  \"min_score\": \"<float>\",\n  \"filters\": [\n    {\n      \"with\": [\n        {\n          \"modality\": \"<string>\"\n        },\n        {\n          \"modality\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"with\": [\n        {\n          \"modality\": \"<string>\"\n        },\n        {\n          \"modality\": \"<string>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b4d571ef-f7a6-4e43-8d43-5caf5c65f4b7",
+              "name": "The most similar documents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "indexes",
+                    ":index",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"text\",\n      \"text\": \"Who likes pizza?\"\n    },\n    {\n      \"modality\": \"image\",\n      \"image\": \"<base64_encoded_image>\"\n    }\n  ],\n  \"max_results\": \"5\",\n  \"filters\": [\n    {\n      \"with\": [\n        {\n          \"modality\": \"text\"\n        }\n      ]\n    },\n    {\n      \"without\": [\n        {\n          \"metadata\": {\n            \"field\": \"colour\",\n            \"equal_to\": \"red\"\n          }\n        },\n        {\n          \"metadata\": {\n            \"field\": \"weight_in_kg\",\n            \"greater_than_or_equal_to\": \"10\"\n          }\n        },\n        {\n          \"metadata\": {\n            \"field\": \"weight_in_kg\",\n            \"less_than\": \"60\"\n          }\n        },\n        {\n          \"metadata\": {\n            \"field\": \"expiry_date\",\n            \"before\": \"2024-07-18T14:01:31Z\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"path\": {\n      \"name\": \"string\",\n      \"collection\": \"string\",\n      \"namespace\": \"string\"\n    },\n    \"section\": [\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 6043,\n      \"position\": 3655\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 5424,\n      \"position\": 8676\n    },\n    \"score\": 104.81934055995734\n  },\n  {\n    \"path\": {\n      \"name\": \"string\",\n      \"collection\": \"string\",\n      \"namespace\": \"string\"\n    },\n    \"section\": [\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 7763,\n      \"position\": 3924\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 709,\n      \"position\": 7317\n    },\n    \"score\": 7284.847345616934\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9a0e2b56-8505-4cff-af59-261822134034",
+          "name": "Exports embeddings in Embedding Projector format.",
+          "request": {
+            "name": "Exports embeddings in Embedding Projector format.",
+            "description": {
+              "content": "Exports embeddings from the indexed collection identified by the path. The exported\nfile is a ZIP containing two tab-separated value (TSV) files, one with the raw\nembeddings and the other with identifying metadata for each embedding. You can import\nthese files into the Embedding Projector to visualise them in a lower dimension.\n\nExports contain no more than 100,000 embeddings; larger collections will be\nrandomly downsampled to meet this contraint. This is the maximum embedding count that\nthe Embedding Projector supports.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "indexes",
+                ":index",
+                "export",
+                "embedding_projector"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/zip"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c765477a-e7de-4c72-b278-4be61e8bd492",
+              "name": "The exported ZIP file to download",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "indexes",
+                    ":index",
+                    "export",
+                    "embedding_projector"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/zip"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/zip"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "253dbcdc-e3bc-49d3-ae68-8f63949db377",
+    "name": "Aleph Alpha Document Index API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Document Index is a service that provides semantic search over your knowledge base. It\ntakes care of the chunking and embedding of your documents, and it keeps these embeddings in\nsync when your documents change.\n\n\nContact Support:\n Email: support@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

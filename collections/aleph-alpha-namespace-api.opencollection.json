@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Document Index Namespace API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Namespace",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List namespaces.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/namespaces",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all namespaces"
+        },
+        {
+          "info": {
+            "name": "Create namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/namespaces/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create namespace"
+        },
+        {
+          "info": {
+            "name": "Delete namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/namespaces/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete namespace. Only possible if there are no collections in the namespace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

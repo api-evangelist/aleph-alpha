@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Models API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the tokenizer of a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/models/:modelName/tokenizer",
+            "params": [
+              {
+                "name": "modelName",
+                "value": "",
+                "type": "path",
+                "description": "Name of the model"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a representation of the tokenizer that was used to train that model"
+        },
+        {
+          "info": {
+            "name": "Available models (Deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/models_available",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will return all currently available models."
+        },
+        {
+          "info": {
+            "name": "Settings of models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/model-settings",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Only models available to the client will be listed."
+        },
+        {
+          "info": {
+            "name": "Get All Model Cards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/models",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all `ModelCard` from the list of models that are available."
+        },
+        {
+          "info": {
+            "name": "Complete",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/models/complete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a streamed complete request against the inference api. This always sets `stream=True` in the request body."
+        },
+        {
+          "info": {
+            "name": "Chat Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/models/chat/completions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Chat Completion"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

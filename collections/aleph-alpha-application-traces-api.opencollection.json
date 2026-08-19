@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaStudio Application Traces API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Application Traces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Traces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/traces_v2",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_time",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "application_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Traces"
+        },
+        {
+          "info": {
+            "name": "Receive Otlp Traces",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/projects/:project_id/traces_v2",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "OTLP traces receiver endpoint. Currently only supports http/protobuf format. This endpoint is a receiver for traces from OpenTelemetry collectors or other OTLP compatible exporters."
+        },
+        {
+          "info": {
+            "name": "Get Trace By Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/traces_v2/:trace_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trace_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get comprehensive details for a specific `Trace`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,221 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Stateful Responses Conversations API",
+    "version": "0.4.23"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Conversations Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/conversations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "metadata.application",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_deleted",
+                "value": "",
+                "type": "query",
+                "description": "Include soft-deleted conversations. Admin-only; returns 403 for non-admin callers."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List conversations for the authenticated user.\n\nAdmin access: when the caller is an admin, ALL users' conversations are\nreturned (titles, metadata, timestamps). This is a privileged operation."
+        },
+        {
+          "info": {
+            "name": "Create Conversation Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/conversations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new conversation."
+        },
+        {
+          "info": {
+            "name": "Get Conversation Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include_deleted",
+                "value": "",
+                "type": "query",
+                "description": "Include soft-deleted conversations. Admin-only; returns 403 for non-admin callers."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a conversation by ID.\n\nAdmin access: when the caller is an admin, ownership checks are bypassed,\nallowing cross-user retrieval."
+        },
+        {
+          "info": {
+            "name": "Update Conversation Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update conversation metadata.\n\nAdmin access: when the caller is an admin, ownership checks are bypassed,\nallowing cross-user metadata updates."
+        },
+        {
+          "info": {
+            "name": "Recover Conversation Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "recovery_from_delete",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Handle PATCH /v1/conversations/{conversation_id} - recover a soft-deleted conversation."
+        },
+        {
+          "info": {
+            "name": "Delete Conversation Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/conversations/:conversation_id",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "hard_delete",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a conversation and all its history entries.\n\nSoft-delete by default. When ``hard_delete=True`` and the caller is an\nadmin, the conversation and all associated history entries are permanently\nremoved from the database.\n\nAdmin access: when the caller is an admin, ownership checks are bypassed,\nallowing cross-user deletion."
+        },
+        {
+          "info": {
+            "name": "List Conversation Responses Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/conversations/:conversation_id/responses",
+            "params": [
+              {
+                "name": "conversation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_deleted",
+                "value": "",
+                "type": "query",
+                "description": "Include soft-deleted responses. Admin-only; returns 403 for non-admin callers."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all responses in a conversation.\n\nAdmin access: when the caller is an admin, ownership checks are bypassed,\nallowing cross-user retrieval of conversation responses."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

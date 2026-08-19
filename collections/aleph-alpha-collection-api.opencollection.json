@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Document Index Collection API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Collection",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List collections in namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all collections that exist in the given namespace"
+        },
+        {
+          "info": {
+            "name": "Create a collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a collection with a path given as namespace/collection.\nCollections need to be created explicitly before documents can be put into a collection.\n"
+        },
+        {
+          "info": {
+            "name": "Delete collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a collection identified by the namespace/collection.\nIf the delete request returns successfully, the collection is deleted, i.e. it cannot be found\nany more neither by collection-path nor through search/lookup. However if the delete request fails\neither deletion failed or the collection will be deleted eventually.\n"
+        },
+        {
+          "info": {
+            "name": "Get count of all documents in a collection that are not yet embedded.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/progress",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets count of all documents in a collection that are saved in the knowledge base, but not embedded for search yet.\nThe count is not exact but an upper boundary of the exact number of documents to be embedded.\n"
+        },
+        {
+          "info": {
+            "name": "Get count of all documents in a collection that are not yet embedded or not yet archived.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/transitioning",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets count of all documents in a collection where the target state does not equal the current state.\nThe count is not exact but an upper boundary of the exact number of documents to be embedded/archived.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaStudio Spans API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Spans",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Many Spans",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/traces/:trace_id/spans",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trace_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get all `Span`."
+        },
+        {
+          "info": {
+            "name": "Create Span",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/projects/:project_id/traces/:trace_id/spans",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trace_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new `Span`. You can only add a `Span` to an active `Trace`. The client is responsible to create and manage the ID of each span, the server does not accept spans with the same ID."
+        },
+        {
+          "info": {
+            "name": "Get Span",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/traces/:trace_id/spans/:span_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trace_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "span_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a `Span` by its id."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1463 @@
+{
+  "item": [
+    {
+      "id": "31fe32c8-efe4-47f8-9364-be8539593ab6",
+      "name": "Downloads",
+      "description": {
+        "content": "Endpoints for managing and tracking dataset download requests within the data platform. These endpoints allow users to initiate new downloads, retrieve details of specific download requests, and list download activity for datasets, with optional filters by date and repository. Download management helps streamline access to dataset files and provides caching capabilities.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1b91b17f-ec4c-4cf7-815f-b9a56841a72f",
+          "name": "List download records for a specific dataset",
+          "request": {
+            "name": "List download records for a specific dataset",
+            "description": {
+              "content": "Retrieves a list of downloads for the specified dataset within a repository. This endpoint supports filtering by date range.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID",
+                "downloads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<string>",
+                  "description": "Filters downloads created after the specified date (in ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<string>",
+                  "description": "Filters downloads created before the specified date (in ISO 8601 format)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) The unique identifier of the repository containing the dataset."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a09d4b82-96fe-4b70-88ad-cb0519a6ff78",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloads\": [\n    {\n      \"downloadId\": \"81233e70-3cce-4e7c-a1bb-a819607f072a\",\n      \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"mediaType\": \"application/x-ndjson\",\n      \"totalDatapoints\": 0,\n      \"url\": \"/stages/3fa85f64-5717-4562-b3fc-2c963f66afa6/files/3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"expireAt\": \"2021-07-01T00:00:00Z\",\n      \"createdAt\": \"2021-07-01T00:00:00Z\"\n    },\n    {\n      \"downloadId\": \"81233e70-3cce-4e7c-a1bb-a819607f072a\",\n      \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"mediaType\": \"application/x-ndjson\",\n      \"totalDatapoints\": 0,\n      \"url\": \"/stages/3fa85f64-5717-4562-b3fc-2c963f66afa6/files/3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"expireAt\": \"2021-07-01T00:00:00Z\",\n      \"createdAt\": \"2021-07-01T00:00:00Z\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 5365\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70a2d236-37a3-4fdc-9fad-2101cdcf3326",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f4120eb-befa-4285-aa3c-8e85cfe61487",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9b0c070-9707-4018-b88c-cf9c64464f51",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01d0b422-ae79-4639-9f08-7347737b1fac",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which downloads are being listed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "766cad4a-ad49-48aa-aeae-4b1ccb6a1344",
+          "name": "Create a download request for a specific dataset",
+          "request": {
+            "name": "Create a download request for a specific dataset",
+            "description": {
+              "content": "Creates a new download request for the specified dataset within a repository. The request can include parameters to define the scope and details of the download.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID",
+                "downloads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"datasetversion\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f52224dd-6da5-4738-9305-b1f0db5889c5",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadId\": \"81233e70-3cce-4e7c-a1bb-a819607f072a\",\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"mediaType\": \"application/x-ndjson\",\n  \"totalDatapoints\": 0,\n  \"url\": \"/stages/3fa85f64-5717-4562-b3fc-2c963f66afa6/files/3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"expireAt\": \"2021-07-01T00:00:00Z\",\n  \"createdAt\": \"2021-07-01T00:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cbd6dd76-2c6b-461a-b22d-b38c625ee422",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "380421ca-8dba-4262-8e97-cb8c06a8b743",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5e386ae-dd1c-4e2c-bfeb-fe82dc56e18f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b62242b-e9f1-41bc-9b01-4a93b5e0ea50",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset to be downloaded."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download is being created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1028f684-2c18-457b-94a8-c8328bc2ace5",
+          "name": "Retrieve download details by ID",
+          "request": {
+            "name": "Retrieve download details by ID",
+            "description": {
+              "content": "Fetches details of a specific download request using the unique repository, dataset, and download identifiers. This endpoint provides information about the version, file location, and metadata of the download.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID",
+                "downloads",
+                ":downloadID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "downloadID",
+                  "description": "(Required) The unique identifier of the download request."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b42b460e-2246-4406-a64c-a84bde797a20",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads",
+                    ":downloadID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "downloadID",
+                      "description": "(Required) The unique identifier of the download request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"downloadId\": \"81233e70-3cce-4e7c-a1bb-a819607f072a\",\n  \"datasetversion\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"mediaType\": \"application/x-ndjson\",\n  \"totalDatapoints\": 0,\n  \"url\": \"/stages/3fa85f64-5717-4562-b3fc-2c963f66afa6/files/3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"expireAt\": \"2021-07-01T00:00:00Z\",\n  \"createdAt\": \"2021-07-01T00:00:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b3c0984-aba2-4e26-b485-184daefe8ed9",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads",
+                    ":downloadID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "downloadID",
+                      "description": "(Required) The unique identifier of the download request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c7af063-be6c-4a70-823f-8222e18fe9f0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads",
+                    ":downloadID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "downloadID",
+                      "description": "(Required) The unique identifier of the download request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09ac8cf7-c255-4c88-ace0-12b8369d07cb",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads",
+                    ":downloadID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "downloadID",
+                      "description": "(Required) The unique identifier of the download request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aabd305f-f02e-41df-b972-8d3a8be86658",
+              "name": "Service Unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "downloads",
+                    ":downloadID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the dataset for the download request."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) The unique identifier of the dataset for which the download was requested."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "downloadID",
+                      "description": "(Required) The unique identifier of the download request."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0ab63ed5-e97c-423c-8530-4d4c696c4456",
+    "name": "PhariaData Downloads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.\n\nContact Support:\n Name: PhariaData API Support\n Email: pharia-data@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

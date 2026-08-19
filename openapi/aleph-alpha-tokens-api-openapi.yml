@@ -1,0 +1,127 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Tokens API
+  version: 4.7.0
+  description: Access and interact with Aleph Alpha models and functionality over HTTP endpoints.
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: tokens
+  description: Manage tokens associated with your user account for API access.
+paths:
+  /users/me/tokens:
+    get:
+      summary: Get issued API tokens
+      description: 'Will return a list of API tokens that are registered for this user (only token metadata is returned, not the actual tokens)
+
+        '
+      operationId: tokens
+      tags:
+      - tokens
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    description:
+                      type: string
+                      example: token used on my laptop
+                      description: 'A simple description that was supplied when creating the token
+
+                        '
+                    token_id:
+                      type: integer
+                      description: 'The token ID to use when calling other endpoints
+
+                        '
+                  required:
+                  - description
+                  - token_id
+    post:
+      summary: Create a new API token
+      description: 'Create a new token to authenticate against the API with (the actual API token is only returned when calling this endpoint)
+
+        '
+      operationId: newToken
+      tags:
+      - tokens
+      security:
+      - token: []
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                  example: token used on my laptop
+                  description: 'a simple description to remember the token by
+
+                    '
+              required:
+              - description
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  metadata:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        description: the description you provided
+                      token_id:
+                        type: number
+                        description: the ID of the API token
+                    required:
+                    - description
+                    - token_id
+                  token:
+                    type: string
+                    description: the API token that can be used in the Authorization header
+                required:
+                - metadata
+                - token
+  /users/me/tokens/{token_id}:
+    parameters:
+    - name: token_id
+      schema:
+        type: integer
+        format: int32
+      in: path
+      description: API token ID
+      required: 'true'
+    delete:
+      summary: Delete an API token
+      operationId: deleteToken
+      tags:
+      - tokens
+      security:
+      - token: []
+      responses:
+        '204':
+          description: No Content
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

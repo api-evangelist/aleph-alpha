@@ -1,0 +1,63 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Document Index Service API
+  version: 0.0.0
+  description: 'The Document Index is a service that provides semantic search over your knowledge base. It
+
+    takes care of the chunking and embedding of your documents, and it keeps these embeddings in
+
+    sync when your documents change.
+
+    '
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1/studio/search'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Service
+  description: Service health and status
+paths:
+  /:
+    get:
+      tags:
+      - Service
+      security:
+      - token: []
+      summary: Ping the Document Index.
+      responses:
+        '200':
+          description: Hello!
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Hello from the Document Index!
+  /health/liveness:
+    get:
+      tags:
+      - Service
+      security:
+      - token: []
+      summary: Liveness state of the Document Index.
+      responses:
+        '200':
+          description: The Document Index is alive
+  /health/readiness:
+    get:
+      tags:
+      - Service
+      security:
+      - token: []
+      summary: Readiness state of the Document Index.
+      responses:
+        '200':
+          description: The Document Index is ready to receive requests
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

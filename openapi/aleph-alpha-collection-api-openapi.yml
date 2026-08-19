@@ -1,0 +1,186 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Document Index Collection API
+  version: 0.0.0
+  description: 'The Document Index is a service that provides semantic search over your knowledge base. It
+
+    takes care of the chunking and embedding of your documents, and it keeps these embeddings in
+
+    sync when your documents change.
+
+    '
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1/studio/search'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Collection
+  description: Management of document collections
+paths:
+  /collections/{namespace}:
+    get:
+      tags:
+      - Collection
+      security:
+      - token: []
+      summary: List collections in namespace.
+      description: List all collections that exist in the given namespace
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          description: A list of collection names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - collection_1
+                - collection_2
+  /collections/{namespace}/{collection}:
+    put:
+      tags:
+      - Collection
+      security:
+      - token: []
+      summary: Create a collection.
+      description: 'Creates a collection with a path given as namespace/collection.
+
+        Collections need to be created explicitly before documents can be put into a collection.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      responses:
+        '200':
+          description: Collection successfully created.
+    delete:
+      tags:
+      - Collection
+      security:
+      - token: []
+      summary: Delete collection.
+      description: 'Deletes a collection identified by the namespace/collection.
+
+        If the delete request returns successfully, the collection is deleted, i.e. it cannot be found
+
+        any more neither by collection-path nor through search/lookup. However if the delete request fails
+
+        either deletion failed or the collection will be deleted eventually.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      responses:
+        '200':
+          description: Collection successfully deleted.
+  /collections/{namespace}/{collection}/progress:
+    get:
+      tags:
+      - Collection
+      security:
+      - token: []
+      summary: Get count of all documents in a collection that are not yet embedded.
+      description: 'Gets count of all documents in a collection that are saved in the knowledge base, but not embedded for search yet.
+
+        The count is not exact but an upper boundary of the exact number of documents to be embedded.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      responses:
+        '200':
+          description: Number of unembedded documents
+          content:
+            application/json:
+              schema:
+                type: integer
+  /collections/{namespace}/{collection}/transitioning:
+    get:
+      tags:
+      - Collection
+      security:
+      - token: []
+      summary: Get count of all documents in a collection that are not yet embedded or not yet archived.
+      description: 'Gets count of all documents in a collection where the target state does not equal the current state.
+
+        The count is not exact but an upper boundary of the exact number of documents to be embedded/archived.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      responses:
+        '200':
+          description: Number of unembedded documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transitioningResult'
+components:
+  parameters:
+    collection:
+      description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
+
+        only a single collection can be searched with a single search/lookup request. The name of the collection
+
+        must be unique within a namespace.
+
+        Collections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        then 100 characters.
+
+        '
+      name: collection
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: wikipedia-de
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+  schemas:
+    transitioningResult:
+      description: 'The result for a transitioning documents query.
+
+        '
+      type: object
+      properties:
+        currently_embedding:
+          type: integer
+        currently_archiving:
+          type: integer
+      required:
+      - currently_embedding
+      - currently_archiving
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

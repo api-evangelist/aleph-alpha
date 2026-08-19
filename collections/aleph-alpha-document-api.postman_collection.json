@@ -1,0 +1,3317 @@
+{
+  "item": [
+    {
+      "id": "ab7d093b-1434-4647-9414-fe9d7826e532",
+      "name": "Document",
+      "description": {
+        "content": "A Document represents an individual item stored within a Search Store. Documents can contain content from various modalities, such as text, images, or pre-chunked data.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b2459b92-88ea-4b98-86ea-f2c81ce4d8b2",
+          "name": "Lists the information of documents in a search store.",
+          "request": {
+            "name": "Lists the information of documents in a search store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "50",
+                  "description": "The number of items to include per page. A value between 1 and 100."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "startsWith",
+                  "description": "Only return documents whose name start with the given prefix."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e93bfd92-674b-4ebc-87ac-24d648520045",
+              "name": "A list of documents.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "startsWith",
+                      "description": "Only return documents whose name start with the given prefix."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 1,\n  \"size\": 1,\n  \"total\": 10,\n  \"results\": [\n    {\n      \"name\": \"document-123\",\n      \"createdAt\": \"2022-01-13T23:18:32.655Z\",\n      \"version\": 4402,\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\",\n        \"key_2\": \"string\"\n      }\n    },\n    {\n      \"name\": \"document-123\",\n      \"createdAt\": \"2004-04-28T09:40:39.559Z\",\n      \"version\": 1076,\n      \"metadata\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3f46e5d-2996-4c03-9f34-5ae876ba8c1a",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "startsWith",
+                      "description": "Only return documents whose name start with the given prefix."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "78d9a8d0-43f3-4a41-8411-fd6b886ae2e8",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "startsWith",
+                      "description": "Only return documents whose name start with the given prefix."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "919aff88-75f9-45f6-89d8-3ffa6215c9c3",
+          "name": "Upload or update a document in the specified Search Store.",
+          "request": {
+            "name": "Upload or update a document in the specified Search Store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaVersion\": \"<string>\",\n  \"contents\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c42b3ce5-ac81-461d-9f7c-f781fa42a324",
+              "name": "The document has been added.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schemaVersion\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"document-123\",\n  \"createdAt\": \"2005-03-18T06:53:58.653Z\",\n  \"version\": 1710,\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2be819af-b1d2-4256-ad06-27d9ed0fe2e6",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schemaVersion\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4cb03aa3-04c9-4499-8422-de29abb4f8de",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schemaVersion\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e7e905ad-5af4-4b9e-915a-4d700730533f",
+          "name": "Retrieve a document by name.",
+          "request": {
+            "name": "Retrieve a document by name.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fe462d48-e47f-4cc4-96ca-5fff6dfa3e48",
+              "name": "The document's metadata, or `null` if no metadata is available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"document-123\",\n  \"createdAt\": \"2005-03-18T06:53:58.653Z\",\n  \"version\": 1710,\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba617f5c-db64-434f-8723-9e70824c78e8",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0edaa833-1b8b-4300-890c-7a05a5938093",
+              "name": "A resource with the specified name was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "881089e4-57ee-43f1-bf47-3b978faef3fc",
+          "name": "Remove a document from the search store.",
+          "request": {
+            "name": "Remove a document from the search store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3bc08e1-61ae-4ef6-b8bc-6538bea8dc73",
+              "name": "The document will be deleted asynchronously.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cd554cb6-c1c1-4ba8-a2d2-fded7687ef4b",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "aba8c11e-997f-49fc-b7ee-d5cc85f7a08e",
+              "name": "A resource with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "631740f6-924f-43eb-9f73-9e49c09d5334",
+          "name": "Get the content of a document by name.",
+          "request": {
+            "name": "Get the content of a document by name.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName",
+                "content"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-content-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "773f3f0e-b16c-472f-9a00-c7d7d2555073",
+              "name": "The content of the document.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "content"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-content-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"modality\": \"text\",\n    \"text\": \"string\"\n  },\n  {\n    \"modality\": \"text\",\n    \"text\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f0d9918-fe4c-42d2-8f13-ed5ee60c3aee",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "content"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-content-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "26120bc9-1313-437a-a260-201932f4b50d",
+              "name": "A resource with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "content"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-content-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4bad84a-2b55-4dfb-91a0-346092ea36c9",
+          "name": "Replaces a document's metadata.",
+          "request": {
+            "name": "Replaces a document's metadata.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName",
+                "metadata"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-metadata-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\",\n  \"key_2\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9646cfdd-efef-49bf-a596-96ee7a271bc8",
+              "name": "The metadata of the document has been replaced.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-metadata-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6c6170d-53af-4d7d-8cf9-daae24ca5019",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-metadata-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dd8d2ba4-2d19-4bec-955e-b202c32292c0",
+              "name": "A resource with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-metadata-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"key_0\": \"<string>\",\n  \"key_1\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0eab915-e838-4c01-b88b-bb8b5265e3b2",
+          "name": "Get the chunks of a document.",
+          "request": {
+            "name": "Get the chunks of a document.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "documents",
+                ":documentName",
+                "chunks"
+              ],
+              "host": [
+                "{{search_stores-searchStoreID-documents-documentName-chunks-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "documentName",
+                  "description": "(Required) The name of the document"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "979f77bf-acb4-4b18-b854-646de85ac0f8",
+              "name": "The list of chunks of the document.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "chunks"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-chunks-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"documentName\": \"document-123\",\n    \"section\": [\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 3385,\n      \"position\": 1402\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 5492,\n      \"position\": 6569\n    }\n  },\n  {\n    \"documentName\": \"document-123\",\n    \"section\": [\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      },\n      {\n        \"modality\": \"<string>\",\n        \"text\": \"<string>\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 3563,\n      \"position\": 2862\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 6889,\n      \"position\": 2416\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d09a55a-a6b6-4ec8-9640-c6697cb4f22b",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "chunks"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-chunks-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d8fcd40f-edaa-4ddd-a81a-9d91b0a58dd1",
+              "name": "A resource with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "documents",
+                    ":documentName",
+                    "chunks"
+                  ],
+                  "host": [
+                    "{{search_stores-searchStoreID-documents-documentName-chunks-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "documentName",
+                      "description": "(Required) The name of the document"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4a1ec5f-2e0b-49af-97b3-506d8000922e",
+          "name": "List document information.",
+          "request": {
+            "name": "List document information.",
+            "description": {
+              "content": "Lists the information of documents in a collection. This includes the document name,\ncreation timestamp and version number.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-Url}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "max_documents",
+                  "value": "100",
+                  "description": "(Required) Maximum number of documents to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "starts_with",
+                  "value": "<string>",
+                  "description": "(Required) Only return documents whose name start with the given prefix."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5b41e047-4926-4945-9b4c-fad3b662737b",
+              "name": "A list of document information",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-Url}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "max_documents",
+                      "value": "100"
+                    },
+                    {
+                      "key": "starts_with",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"path\": {\n      \"name\": \"string\",\n      \"collection\": \"string\",\n      \"namespace\": \"string\"\n    },\n    \"created\": \"2013-03-21T08:32:43.075Z\",\n    \"version\": 6190\n  },\n  {\n    \"path\": {\n      \"name\": \"string\",\n      \"collection\": \"string\",\n      \"namespace\": \"string\"\n    },\n    \"created\": \"1996-04-15T14:26:35.137Z\",\n    \"version\": 8995\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36661360-794d-4ccc-9dcf-862be248865d",
+          "name": "Get a document.",
+          "request": {
+            "name": "Get a document.",
+            "description": {
+              "content": "Get all details of document from namespace and collection by name",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bb0e5173-6767-45f7-8b8f-49decbe7ef9b",
+              "name": "A document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"schema_version\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"text\",\n      \"text\": \"Hello, World!\"\n    }\n  ],\n  \"metadata\": [\n    {\n      \"url\": \"https://example.com/external-uri\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c6a2020-207f-4988-9309-088928727122",
+          "name": "Insert or update a document.",
+          "request": {
+            "name": "Insert or update a document.",
+            "description": {
+              "content": "Inserts a document under the given document path given as namespace/collection/name.\nNote that embeddings required for semantic searches will be computed asynchronously,\ni.e. after a document was successfully\ninserted into a collection it might not immediately be found through a search/lookup request.\nCollections need to be created explicitly before documents can be put into a collection.\nWhen PUT'ing a document that is already embedded, the original version will disappear\nimmediately. The new embeddings of the document will appear asynchronously as if the\ndocument had never been uploaded.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schema_version\": \"<string>\",\n  \"contents\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"metadata\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da86a619-f424-4279-b074-20f1dc8867d7",
+              "name": "No content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"schema_version\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"text\",\n      \"text\": \"Hello, World!\"\n    }\n  ],\n  \"metadata\": [\n    {\n      \"url\": \"https://example.com/external-uri\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2e8fe57-a5fd-4e4c-a57e-a99625874626",
+          "name": "Delete a document.",
+          "request": {
+            "name": "Delete a document.",
+            "description": {
+              "content": "Deletes a document identified by the document path given as namespace/collection/name.\nIf the delete request returns successfully, the document is deleted, i.e. it cannot be found\nany more neither by document-path nor through search/lookup. However if the delete request\nfails, the document might be deleted eventually.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5075b9bd-46ea-4739-ae25-e20e17107d4a",
+              "name": "No content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce9c2aba-b33a-4f64-94fb-6db70cf6aa63",
+          "name": "Get all document versions.",
+          "request": {
+            "name": "Get all document versions.",
+            "description": {
+              "content": "Get all current and previous document versions in the Document Index together with their creation timestamp",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name",
+                "versions"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-versions-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b25429f5-746a-4845-9f82-85acf4f5b46e",
+              "name": "A list of version numbers",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-versions-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"version\": 4270,\n  \"created_timestamp\": \"1986-06-02T16:24:07.882Z\",\n  \"archived_timestamp\": \"2025-08-31T12:23:38.729Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d71d619-a56c-4f22-9fb9-5b88393c5ec9",
+          "name": "Get a specific version of a document.",
+          "request": {
+            "name": "Get a specific version of a document.",
+            "description": {
+              "content": "Get a specific version of a document",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name",
+                "versions",
+                ":version"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-versions-version-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "version",
+                  "description": "(Required) Which version of the document to retrieve."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ceaddd8e-9249-446d-a12a-a3786af63123",
+              "name": "A document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name",
+                    "versions",
+                    ":version"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-versions-version-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "version",
+                      "description": "(Required) Which version of the document to retrieve."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"schema_version\": \"V1\",\n  \"contents\": [\n    {\n      \"modality\": \"text\",\n      \"text\": \"Hello, World!\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31d9c689-983c-4b44-beb3-00b3ab0dcf3a",
+          "name": "Get document chunks for a given index.",
+          "request": {
+            "name": "Get document chunks for a given index.",
+            "description": {
+              "content": "Get all chunks associated with a document in a given index",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":namespace",
+                ":collection",
+                "docs",
+                ":name",
+                "indexes",
+                ":index",
+                "chunks"
+              ],
+              "host": [
+                "{{collections-namespace-collection-docs-name-indexes-index-chunks-Url}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "namespace",
+                  "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection",
+                  "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "name",
+                  "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "index",
+                  "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b5ef62d1-e0d8-46fb-89d9-9817fd72b77c",
+              "name": "A list of document chunks",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":namespace",
+                    ":collection",
+                    "docs",
+                    ":name",
+                    "indexes",
+                    ":index",
+                    "chunks"
+                  ],
+                  "host": [
+                    "{{collections-namespace-collection-docs-name-indexes-index-chunks-Url}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "namespace",
+                      "description": "(Required) Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection",
+                      "description": "(Required) Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "name",
+                      "description": "(Required) Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "index",
+                      "description": "(Required) Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"path\": {\n    \"name\": \"Cope América\",\n    \"collection\": \"Sports\",\n    \"namespace\": \"Sample-Organization\"\n  },\n  \"section\": [\n    {\n      \"modality\": \"text\",\n      \"text\": \"Copa América 2021\"\n    }\n  ],\n  \"start\": {\n    \"modality\": \"text\",\n    \"item\": \"0\",\n    \"position\": \"0\"\n  },\n  \"end\": {\n    \"modality\": \"text\",\n    \"item\": \"0\",\n    \"position\": \"17\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "search_stores-searchStoreID-documents-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "search_stores-searchStoreID-documents-documentName-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "search_stores-searchStoreID-documents-documentName-content-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "search_stores-searchStoreID-documents-documentName-metadata-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "search_stores-searchStoreID-documents-documentName-chunks-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "collections-namespace-collection-docs-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "collections-namespace-collection-docs-name-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "collections-namespace-collection-docs-name-versions-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "collections-namespace-collection-docs-name-versions-version-Url"
+    },
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/search",
+      "key": "collections-namespace-collection-docs-name-indexes-index-chunks-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "ec1151de-1a5a-4e7e-95ad-a5f80463957e",
+    "name": "Aleph Alpha Document API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations tagged Document across 2 of this provider's published API definitions: aleph-alpha-pharia-data-openapi.json, aleph-alpha-pharia-search-openapi.json. Each path carries the servers of the definition it was published in.",
+      "type": "text/plain"
+    }
+  }
+}

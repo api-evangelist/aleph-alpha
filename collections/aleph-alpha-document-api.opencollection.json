@@ -1,0 +1,508 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Document API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Document",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lists the information of documents in a search store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page. A value between 1 and 100."
+              },
+              {
+                "name": "startsWith",
+                "value": "",
+                "type": "path",
+                "description": "Only return documents whose name start with the given prefix."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists the information of documents in a search store."
+        },
+        {
+          "info": {
+            "name": "Retrieve a document by name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieve a document by name."
+        },
+        {
+          "info": {
+            "name": "Upload or update a document in the specified Search Store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Upload or update a document in the specified Search Store."
+        },
+        {
+          "info": {
+            "name": "Remove a document from the search store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove a document from the search store."
+        },
+        {
+          "info": {
+            "name": "Get the content of a document by name.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName/content",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the content of a document by name."
+        },
+        {
+          "info": {
+            "name": "Replaces a document's metadata.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName/metadata",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Replaces a document's metadata."
+        },
+        {
+          "info": {
+            "name": "Get the chunks of a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/documents/:documentName/chunks",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              },
+              {
+                "name": "documentName",
+                "value": "",
+                "type": "path",
+                "description": "The name of the document"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the chunks of a document."
+        },
+        {
+          "info": {
+            "name": "List document information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "max_documents",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of documents to fetch"
+              },
+              {
+                "name": "starts_with",
+                "value": "",
+                "type": "query",
+                "description": "Only return documents whose name start with the given prefix."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists the information of documents in a collection. This includes the document name,\ncreation timestamp and version number.\n"
+        },
+        {
+          "info": {
+            "name": "Get a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all details of document from namespace and collection by name"
+        },
+        {
+          "info": {
+            "name": "Insert or update a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Inserts a document under the given document path given as namespace/collection/name.\nNote that embeddings required for semantic searches will be computed asynchronously,\ni.e. after a document was successfully\ninserted into a collection it might not immediately be found through a search/lookup request.\nCollections need to be created explicitly before documents can be put into a collection.\nWhen PUT'ing a document that is already embedded, the original version will disappear\nimmediately. The new e"
+        },
+        {
+          "info": {
+            "name": "Delete a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes a document identified by the document path given as namespace/collection/name.\nIf the delete request returns successfully, the document is deleted, i.e. it cannot be found\nany more neither by document-path nor through search/lookup. However if the delete request\nfails, the document might be deleted eventually.\n"
+        },
+        {
+          "info": {
+            "name": "Get all document versions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name/versions",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all current and previous document versions in the Document Index together with their creation timestamp"
+        },
+        {
+          "info": {
+            "name": "Get a specific version of a document.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name/versions/:version",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              },
+              {
+                "name": "version",
+                "value": "1",
+                "type": "path",
+                "description": "Which version of the document to retrieve."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a specific version of a document"
+        },
+        {
+          "info": {
+            "name": "Get document chunks for a given index.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/collections/:namespace/:collection/docs/:name/indexes/:index/chunks",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "name",
+                "value": "Climate_change",
+                "type": "path",
+                "description": "Name of the document. The name must be unique within a collection and should not exceed 512 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all chunks associated with a document in a given index"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

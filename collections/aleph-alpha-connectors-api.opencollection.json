@@ -1,0 +1,160 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Connectors API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connectors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all connectors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/connectors",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all connectors"
+        },
+        {
+          "info": {
+            "name": "Create a new connector",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/connectors",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new connector"
+        },
+        {
+          "info": {
+            "name": "Get a connector",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/connectors/:connectorID",
+            "params": [
+              {
+                "name": "connectorID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connector to get."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get a connector"
+        },
+        {
+          "info": {
+            "name": "Update a connector",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/data/connectors/:connectorID",
+            "params": [
+              {
+                "name": "connectorID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connector to patch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update a connector"
+        },
+        {
+          "info": {
+            "name": "Get all files for a connector",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/connectors/:connectorID/files",
+            "params": [
+              {
+                "name": "connectorID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connector to get files for."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all files for a connector"
+        },
+        {
+          "info": {
+            "name": "Get all runs for a connector",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/connectors/:connectorID/runs",
+            "params": [
+              {
+                "name": "connectorID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the connector to get files for."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "status of run."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get all runs for a connector"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

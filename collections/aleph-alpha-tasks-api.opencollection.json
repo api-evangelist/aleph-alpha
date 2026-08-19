@@ -1,0 +1,414 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Tasks API",
+    "version": "4.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/complete",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Will complete a prompt using a specific model. To obtain a valid model, use `GET` `/model-settings`.\n"
+        },
+        {
+          "info": {
+            "name": "JSON Completion",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/complete/json",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "In contrast to the `/complete` endpoint, the model generates a completion in valid JSON format, even if not requested explicitly in the prompt.\nNote: If the max_tokens, i.e., the maximum number of allowed completion tokens is encountered before the completion is finished by the model,\nthen the JSON output will be cut off and therefore invalid.\n\nJSON completion is currently only available for luminous workers.\n\nTo obtain a valid model, use `GET /models_available`.\n"
+        },
+        {
+          "info": {
+            "name": "Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/chat/completions",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves one or multiple chat completions for a given prompt"
+        },
+        {
+          "info": {
+            "name": "Embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/embeddings",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates embeddings from text input. This follows industry standard embedding endpoints\n(e.g. OpenAI) and provides vector representations that can be used for semantic similarity,\nsearch, clustering, recommendations, anomaly detection, and classification tasks.\nTo ensure deployed embedding models support this endpoint, they need to be configured with\n`embedding_task.supported = true` in the model settings.\n"
+        },
+        {
+          "info": {
+            "name": "Semantic Embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/semantic_embed",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Embeds a prompt using a specific model and semantic embedding method. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Batched Semantic Embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/batch_semantic_embed",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Embeds multiple prompts using a specific model and semantic embedding method. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Semantic Embeddings with instructions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/instructable_embed",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Embeds the input using an instruction and a specific model. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Embeddings (Deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/embed",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Embeds a text using a specific model. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Evaluate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/evaluate",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Evaluates the model's likelihood to produce a completion given a prompt."
+        },
+        {
+          "info": {
+            "name": "Explanation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/explain",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Better understand the source of a completion, specifically on how much each section of a\nprompt impacts each token of the completion.\n"
+        },
+        {
+          "info": {
+            "name": "Tokenize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/tokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Tokenize a prompt for a specific model. To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Detokenize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/detokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Detokenize a list of tokens into a string. To obtain a valid model, use `GET` `/model-settings`."
+        },
+        {
+          "info": {
+            "name": "Query Recent Usage (Deprecated)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/users/me/requests",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "A list of the ten most recent tasks successfully completed by the API. Contains statistics\nabout the task, including duration of execution and cost in credits.\n"
+        },
+        {
+          "info": {
+            "name": "Transcribe audio",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/transcribe",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Transcribes an audio file using a specified transcription model"
+        },
+        {
+          "info": {
+            "name": "Translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/translate",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Translates input text from one to another specified target language\n"
+        },
+        {
+          "info": {
+            "name": "Rerank",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/rerank",
+            "params": [
+              {
+                "name": "nice",
+                "value": "",
+                "type": "query",
+                "description": "Setting this to True, will signal to the API that you intend to be nice to other users\nby de-prioritizing your request below concurrent ones.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint takes in a query and a list of documents and produces an array with each text assigned\na relevance score. To claim that a deployed reranker model supports this endpoint, it needs to be\nconfigured with `rerank_task.supported = true` in the model settings.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

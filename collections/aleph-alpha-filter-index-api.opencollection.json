@@ -1,0 +1,249 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Document Index Filter Index API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Filter Index",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List of filter index configurations in namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/filter_indexes/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all filter index configurations that exist in the given namespace."
+        },
+        {
+          "info": {
+            "name": "Get namespace-wide filter index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/filter_indexes/:namespace/:filterIndex",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "filterIndex",
+                "value": "creation-date",
+                "type": "path",
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the parameters for the given filter index configuration."
+        },
+        {
+          "info": {
+            "name": "Define a namespace-wide filter index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/filter_indexes/:namespace/:filterIndex",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "filterIndex",
+                "value": "creation-date",
+                "type": "path",
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Defines a namespace-wide filter index configuration. Once a configuration is defined it can be assigned\nto indexes that are assigned to a collections of the namespace which then allows to filter searches on this index\nbased on the field defined in the configuration.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a namespace-wide filter index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/filter_indexes/:namespace/:filterIndex",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "filterIndex",
+                "value": "creation-date",
+                "type": "path",
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the filter index configuration for the given namespace. This is not possible if the filter index\nis added to any assigned index.\n"
+        },
+        {
+          "info": {
+            "name": "Gets the filter indexes assigned to an assigned (search) index.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index/filter_indexes",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the filter indexes assigned to an assigned (search) index. Searches on the assigned\nindex can use these filter indexes.\n"
+        },
+        {
+          "info": {
+            "name": "Assign an existing filter index config to an assigned (search) index.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index/filter_indexes/:filterIndex",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              },
+              {
+                "name": "filterIndex",
+                "value": "creation-date",
+                "type": "path",
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Assigns a filter index config that exists in the same namespace as the collection to an\nindex assigned to the collection. This allows you to filter results from searches over the\nsearch index.\n"
+        },
+        {
+          "info": {
+            "name": "Unassigns a filter index config from an assigned (search) index.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index/filter_indexes/:filterIndex",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              },
+              {
+                "name": "filterIndex",
+                "value": "creation-date",
+                "type": "path",
+                "description": "Filter index for an index assigned to a collection. Filter indexes are used to allow\nfiltering of results when searching on documents in a collection. An filter index name\ncan only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthan 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Unassigns a filter index config from an assigned (search) index. Subsequent searches on the\nindex will no longer be able to use the filter.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

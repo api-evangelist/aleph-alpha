@@ -1,0 +1,207 @@
+openapi: 3.2.0
+info:
+  title: Stateful Responses Guardrails API
+  version: 0.4.23
+  description: Check content against guardrail policies.
+servers:
+- url: '{host}'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Guardrails
+  description: Check content against guardrail policies.
+paths:
+  /v1/check:
+    post:
+      tags:
+      - Guardrails
+      summary: Post Check Endpoint
+      description: Check content against guardrails for an application.
+      operationId: post_check_endpoint_v1_check_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it automatically.
+        '425':
+          description: Too Early
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '501':
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    Violation:
+      properties:
+        category:
+          type: string
+          title: Category
+        provider:
+          type: string
+          title: Provider
+        stage:
+          type: string
+          title: Stage
+        step:
+          type: integer
+          title: Step
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - category
+      - provider
+      - stage
+      - step
+      title: Violation
+      description: 'A single guardrail violation.
+
+
+        Attribution fields (``provider``, ``stage``, ``step``) identify which
+
+        pipeline stage produced the violation so callers running multi-provider
+
+        pipelines can tell regex matches from llama-guard classifications.
+
+
+        ``reason`` is an optional human-readable explanation. Regex matches do
+
+        not populate it (the category is sufficient); ``provider_error`` and
+
+        richer providers may set it to surface why a step failed or matched.'
+    CheckRequest:
+      properties:
+        application_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Application Id
+        check_type:
+          type: string
+          title: Check Type
+        input:
+          type: string
+          title: Input
+        context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Context
+      type: object
+      required:
+      - check_type
+      - input
+      title: CheckRequest
+      description: Inbound request to check content against guardrails.
+    CheckResponse:
+      properties:
+        safe:
+          type: boolean
+          title: Safe
+        violations:
+          items:
+            $ref: '#/components/schemas/Violation'
+          type: array
+          title: Violations
+      type: object
+      required:
+      - safe
+      - violations
+      title: CheckResponse
+      description: Result of a guardrail check.
+    ErrorDetail:
+      properties:
+        message:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Type
+        param:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+      type: object
+      required:
+      - message
+      - type
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

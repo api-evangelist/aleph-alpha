@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaStudio Lineages API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lineages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Many Benchmark Lineages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/evaluation/benchmarks/:benchmark_id/executions/:execution_id/lineages",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search term to find results containing this text in any searchable field (case insensitive)."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "The column to sort by. Can be a predefined column or 'evaluation.KEY' for JSONB sorting."
+              },
+              {
+                "name": "sort_direction",
+                "value": "",
+                "type": "query",
+                "description": "The direction to sort by."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve. Starts at 1."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items per page."
+              }
+            ]
+          },
+          "docs": "Get many `BenchmarkLineage`s. Results are sorted by descending creation date."
+        },
+        {
+          "info": {
+            "name": "Create Benchmark Lineages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/projects/:project_id/evaluation/benchmarks/:benchmark_id/executions/:execution_id/lineages",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create new `BenchmarkLineage`s. Accepts gzip encoding."
+        },
+        {
+          "info": {
+            "name": "Get Benchmark Lineage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/projects/:project_id/evaluation/benchmarks/:benchmark_id/executions/:execution_id/lineages/:lineage_id",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "benchmark_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "execution_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "lineage_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a `BenchmarkLineage` by ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,636 @@
+openapi: 3.2.0
+info:
+  title: PhariaStudio Benchmarks API
+  version: 0.1.0
+  description: Endpoints for handling benchmarks. A Benchmark provides a way to compare and evaluate the quality of your task results for a specific dataset.
+servers:
+- url: '{host}/v1/studio'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- BearerAuth: []
+tags:
+- name: Benchmarks
+  description: Endpoints for handling benchmarks. A Benchmark provides a way to compare and evaluate the quality of your task results for a specific dataset.
+paths:
+  /projects/{project_id}/evaluation/benchmarks:
+    post:
+      tags:
+      - Benchmarks
+      summary: Create Benchmark
+      description: Create a new `Benchmark`.
+      operationId: create_benchmark_projects__project_id__evaluation_benchmarks_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostBenchmarkRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: string
+                title: Response Create Benchmark Projects  Project Id  Evaluation Benchmarks Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Benchmarks
+      summary: Get Many Benchmarks
+      description: Get a list of `Benchmark`s .
+      operationId: get_many_benchmarks_projects__project_id__evaluation_benchmarks_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          description: Search term to find results containing this text in any searchable field (case insensitive).
+          title: Search
+        description: Search term to find results containing this text in any searchable field (case insensitive).
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/BenchmarkSortableColumns'
+          description: The column to sort by.
+          default: created_at
+        description: The column to sort by.
+      - name: sort_direction
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+          description: The direction to sort by.
+          default: desc
+        description: The direction to sort by.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          exclusiveMinimum: 0
+          description: The page number to retrieve. Starts at 1.
+          default: 1
+          title: Page
+        description: The page number to retrieve. Starts at 1.
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          exclusiveMinimum: 0
+          description: The number of items per page.
+          default: 25
+          title: Size
+        description: The number of items per page.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse_GetBenchmarkResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/evaluation/benchmarks/{benchmark_id}:
+    get:
+      tags:
+      - Benchmarks
+      summary: Get Benchmark
+      description: Get a `Benchmark` by its ID.
+      operationId: get_benchmark_projects__project_id__evaluation_benchmarks__benchmark_id__get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/GetBenchmarkResponse'
+                - type: 'null'
+                title: Response Get Benchmark Projects  Project Id  Evaluation Benchmarks  Benchmark Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Benchmarks
+      summary: Delete Benchmark
+      description: Delete a specific`Benchmark`.
+      operationId: delete_benchmark_projects__project_id__evaluation_benchmarks__benchmark_id__delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - Benchmarks
+      summary: Patch Benchmark
+      description: Update a specific`Benchmark`.
+      operationId: patch_benchmark_projects__project_id__evaluation_benchmarks__benchmark_id__patch
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchBenchmarkRequest'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PatchBenchmarkRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+          description: The name of the benchmark.
+          examples:
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchamrk.
+          examples:
+          - This is a benchmark.
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: The metadata of the benchmark.
+      type: object
+      title: PatchBenchmarkRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PagedResponse_GetBenchmarkResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/GetBenchmarkResponse'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[GetBenchmarkResponse]
+    AggregationLogic:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: The code of the aggregation logic.
+          examples:
+          - logic
+        evaluation_schema:
+          additionalProperties: true
+          type: object
+          title: Evaluation Schema
+          description: The evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        aggregation_schema:
+          additionalProperties: true
+          type: object
+          title: Aggregation Schema
+          description: The aggregated evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+      type: object
+      required:
+      - logic
+      - evaluation_schema
+      - aggregation_schema
+      title: AggregationLogic
+    GetBenchmarkResponse:
+      properties:
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: The timestamp when this resource was last updated in UTC.
+        updated_by:
+          type: string
+          title: Updated By
+          description: The ID of the user that updated the resource.
+          examples:
+          - '12345'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          title: Id
+          description: The unique id of the benchmark.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+          description: The universal unique id of the project.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        dataset_id:
+          type: string
+          title: Dataset Id
+          description: The unique id of the dataset.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        dataset_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dataset Name
+          description: The name of the dataset.
+          examples:
+          - Dataset
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the benchmark. This field is searchable.
+          examples:
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark. This field is searchable.
+          examples:
+          - This is a benchmark.
+        benchmark_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Benchmark Metadata
+          description: The metadata of the benchmark.
+          examples:
+          - key: value
+        evaluation_logic:
+          $ref: '#/components/schemas/EvaluationLogic'
+          description: The evaluation logic of the benchmark.
+        aggregation_logic:
+          $ref: '#/components/schemas/AggregationLogic'
+          description: The aggregation logic of the benchmark.
+        last_executed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Executed At
+          description: The timestamp when this benchmark was last executed in UTC.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+      type: object
+      required:
+      - updated_at
+      - updated_by
+      - created_at
+      - created_by
+      - id
+      - project_id
+      - dataset_id
+      - name
+      - description
+      - benchmark_metadata
+      - evaluation_logic
+      - aggregation_logic
+      - last_executed_at
+      title: GetBenchmarkResponse
+    BenchmarkSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - last_executed_at
+      - created_at
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkSortableColumns
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    EvaluationLogic:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: The code of the evaluation logic.
+          examples:
+          - logic
+        input_schema:
+          additionalProperties: true
+          type: object
+          title: Input Schema
+          description: The input schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        output_schema:
+          additionalProperties: true
+          type: object
+          title: Output Schema
+          description: The output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        expected_output_schema:
+          additionalProperties: true
+          type: object
+          title: Expected Output Schema
+          description: The expected output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        evaluation_schema:
+          additionalProperties: true
+          type: object
+          title: Evaluation Schema
+          description: The evaluation schema of the evaluation logic, as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+      type: object
+      required:
+      - logic
+      - input_schema
+      - output_schema
+      - expected_output_schema
+      - evaluation_schema
+      title: EvaluationLogic
+    PostBenchmarkRequest:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+          description: The unique id of the dataset.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the benchmark.
+          examples:
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark.
+          examples:
+          - This is a benchmark.
+        benchmark_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Benchmark Metadata
+          description: The metadata of the benchmark.
+          examples:
+          - key: value
+        evaluation_logic:
+          $ref: '#/components/schemas/EvaluationLogic'
+          description: The evaluation logic of the benchmark.
+        aggregation_logic:
+          $ref: '#/components/schemas/AggregationLogic'
+          description: The aggregation logic of the benchmark.
+      type: object
+      required:
+      - dataset_id
+      - name
+      - evaluation_logic
+      - aggregation_logic
+      title: PostBenchmarkRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

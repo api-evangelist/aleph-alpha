@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Permissions API
+  version: 4.7.0
+  description: Access and interact with Aleph Alpha models and functionality over HTTP endpoints.
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: permissions
+paths:
+  /check_privileges:
+    post:
+      operationId: postCheckPrivileges
+      summary: Check user privileges
+      description: 'Post an array of permissions as an authenticated users.
+
+        We return the subset of the posted permissions that have been granted to the user.
+
+        '
+      tags:
+      - permissions
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Permissions'
+components:
+  schemas:
+    Permissions:
+      title: List of permissions
+      type: array
+      items:
+        type: object
+        properties:
+          permission:
+            type: string
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

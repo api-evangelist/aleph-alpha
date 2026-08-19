@@ -1,0 +1,195 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Search Store API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search Store",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Lists all search store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page. A value between 1 and 100."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Lists all search store."
+        },
+        {
+          "info": {
+            "name": "Create a new Search Store instance for indexing and retrieval.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/search_stores",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new Search Store instance for indexing and retrieval."
+        },
+        {
+          "info": {
+            "name": "Fetch details of a specific Search Store by its ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Fetch details of a specific Search Store by its ID."
+        },
+        {
+          "info": {
+            "name": "Update metadata of an existing Search Store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update metadata of an existing Search Store."
+        },
+        {
+          "info": {
+            "name": "Delete a Search Store and all its associated documents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a Search Store and all its associated documents."
+        },
+        {
+          "info": {
+            "name": "Get count of all documents in a Search Store that are currently being embedded or archived.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/transitioning",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get count of all documents in a Search Store that are currently being embedded or archived."
+        },
+        {
+          "info": {
+            "name": "Perform a semantic search within the specified Search Store.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/search_stores/:searchStoreID/search",
+            "params": [
+              {
+                "name": "searchStoreID",
+                "value": "7d78f98d-1c47-4c0b-8101-41b43b45e2cb",
+                "type": "path",
+                "description": "The ID of the search store"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Perform a semantic search within the specified Search Store."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

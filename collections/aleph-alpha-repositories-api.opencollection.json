@@ -1,0 +1,120 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Repositories API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Repositories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of repositories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve, used for paginated responses."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page in the response."
+              },
+              {
+                "name": "media_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter repositories by their specific media type, such as application/x-ndjson, application/csv"
+              },
+              {
+                "name": "modality",
+                "value": "",
+                "type": "query",
+                "description": "Filter repositories by modality, indicating the format or approach, like text."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search for repositories by their specific name."
+              }
+            ]
+          },
+          "docs": "Fetches a paginated list of all available repositories with optional filters for media type, modality, and name."
+        },
+        {
+          "info": {
+            "name": "Create a new repository",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/repositories",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new repository to store datasets with specified properties such as name, media type, and modality."
+        },
+        {
+          "info": {
+            "name": "Retrieve repository details by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the repository."
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information for a specific repository identified by its unique ID. Includes properties such as name, media type, modality, schema, creation date, and last updated date."
+        },
+        {
+          "info": {
+            "name": "Delete repository by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the repository."
+              }
+            ]
+          },
+          "docs": "Delete the repository by ID. All datasets in this repository will be immediately soft-deleted and hard-deleted asynchronously, along with all existing downloads. This operation is not reversible."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,2095 @@
+{
+  "item": [
+    {
+      "id": "5e896c5b-d4dd-4ba7-8268-b3e97c574d90",
+      "name": "v1/models",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bfe40b19-ca11-4587-8f7d-f9c01123291d",
+          "name": "List all foundation models",
+          "request": {
+            "name": "List all foundation models",
+            "description": {
+              "content": "List all available foundation models",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "foundation-models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort models ascending (asc) or descending (desc). Ascending is the default."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "040a5887-727e-4364-b11d-6f188ba235e3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "foundation-models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"defaultConfig\": {\n      \"replicas\": 4414,\n      \"resources\": {\n        \"limits\": {\n          \"description\": \"Resource limits imposed on the deployment. Must be greater than or equal to requests.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"requests\": {\n          \"description\": \"Resource requests required for the deployment.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"generatorConfig\": {\n        \"maxContextSize\": 2048\n      },\n      \"templates\": {\n        \"chat\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n      },\n      \"tolerations\": [\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        },\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        }\n      ]\n    },\n    \"displayName\": \"luminous-base\",\n    \"inferenceRuntime\": \"luminous\",\n    \"name\": \"luminous-base\",\n    \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/luminous-base.tar.gz\",\n    \"type\": \"base-model\"\n  },\n  {\n    \"defaultConfig\": {\n      \"replicas\": 5991,\n      \"resources\": {\n        \"limits\": {\n          \"description\": \"Resource limits imposed on the deployment. Must be greater than or equal to requests.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"requests\": {\n          \"description\": \"Resource requests required for the deployment.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"generatorConfig\": {\n        \"maxContextSize\": 2048\n      },\n      \"templates\": {\n        \"chat\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n      },\n      \"tolerations\": [\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        },\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        }\n      ]\n    },\n    \"displayName\": \"luminous-base\",\n    \"inferenceRuntime\": \"luminous\",\n    \"name\": \"luminous-base\",\n    \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/luminous-base.tar.gz\",\n    \"type\": \"base-model\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "943d81ed-2d3f-4471-9c48-4a7f46ed0143",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "foundation-models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2bbd6eb-295c-4f24-adec-1d04962421b8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "foundation-models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b92329b-483f-4a19-a31a-505c44a46355",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "foundation-models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ead27d0-7d98-49da-bf5c-50673e9a1254",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "foundation-models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4f386f4-050b-4323-b4d6-124de8eb9593",
+          "name": "List all inference runtimes",
+          "request": {
+            "name": "List all inference runtimes",
+            "description": {
+              "content": "List all available inference runtimes supported to deploy models. Currently the supported inference runtimes are Aleph Alpha authorial Luminous and vLLM",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "inference-runtimes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter is a struct that contains the filter fields for the Inference Runtimes.\nexample: {\"supportedModel\":\"Llama-3.1-8B-Instruct\"}"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "69bed24f-61eb-4d72-8e4f-8f35e2d67ab4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "inference-runtimes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runtimes\": [\n    {\n      \"name\": \"vllm\"\n    },\n    {\n      \"name\": \"vllm\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e23b27b-e75d-4ddf-aa75-1cf43d46ac65",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "inference-runtimes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4557a1e8-ff38-444b-b922-957fcce303ec",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "inference-runtimes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c909adb-d65d-4745-9d8a-dd1a3f777bee",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "inference-runtimes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6a84e53-5877-4d17-a5b3-9f4b229db295",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "inference-runtimes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95c73139-3dfe-4c04-92b8-2da73d90ee50",
+          "name": "List all models",
+          "request": {
+            "name": "List all models",
+            "description": {
+              "content": "List all models",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "ModelFilter is a struct that contains the filter fields for the model.\nexample: {\"name\":\"model-name\", \"type\":\"base-model\", \"inferenceRuntime\":\"vllm\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "68d282b5-823c-4fdb-b994-0ebe40b3dc05",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n      \"deployment\": {\n        \"config\": {\n          \"replicas\": 9569,\n          \"resources\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generatorConfig\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"templates\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tolerations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"message\": \"string\",\n        \"status\": \"undeploying\"\n      },\n      \"id\": \"string\",\n      \"inferenceRuntime\": \"vllm\",\n      \"name\": \"pharia-1-llm-7b-control\",\n      \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n      \"type\": \"base-model\",\n      \"updatedAt\": \"2024-08-19T14:27:00+00:00\",\n      \"metadata\": {\n        \"baseModel\": \"pharia-1-llm-7b-control\",\n        \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n      }\n    },\n    {\n      \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n      \"deployment\": {\n        \"config\": {\n          \"replicas\": 1813,\n          \"resources\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"generatorConfig\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"templates\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"tolerations\": [\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          ]\n        },\n        \"message\": \"string\",\n        \"status\": \"error\"\n      },\n      \"id\": \"string\",\n      \"inferenceRuntime\": \"vllm\",\n      \"name\": \"pharia-1-llm-7b-control\",\n      \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n      \"type\": \"base-model\",\n      \"updatedAt\": \"2024-08-19T14:27:00+00:00\",\n      \"metadata\": {\n        \"baseModel\": \"pharia-1-llm-7b-control\",\n        \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n      }\n    }\n  ],\n  \"limit\": 8466,\n  \"page\": 1118,\n  \"total\": 3072\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd95f682-7adf-427c-9b62-6bcaa4810c1c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e74440ce-f6b0-49ca-986d-13cd0adbda06",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f94fd56-c011-4cc8-81af-14ea4257b8a0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ae40f48-800f-42ee-865c-037100f26b6b",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "258ab272-eb97-4d2e-887c-9032350021c8",
+          "name": "Create a new model",
+          "request": {
+            "name": "Create a new model",
+            "description": {
+              "content": "Create a new model",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"<string>\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"<string>\"\n      },\n      \"requests\": {\n        \"cpu\": \"<string>\",\n        \"memory\": \"<string>\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": \"<integer>\"\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"<string>\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"<string>\",\n        \"key\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"effect\": \"<string>\",\n        \"key\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\",\n  \"name\": \"<string>\",\n  \"storageURI\": \"<string>\",\n  \"type\": \"<string>\",\n  \"metadata\": {\n    \"baseModel\": \"<string>\",\n    \"referenceID\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cbab0234-a908-4cae-ba36-927e43091a3b",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"luminous\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n  \"deployment\": {\n    \"config\": {\n      \"replicas\": \"<integer>\",\n      \"resources\": {\n        \"limits\": {\n          \"description\": \"Resource limits imposed on the deployment. Must be greater than or equal to requests.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"requests\": {\n          \"description\": \"Resource requests required for the deployment.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"generatorConfig\": {\n        \"maxContextSize\": 2048\n      },\n      \"templates\": {\n        \"chat\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n      },\n      \"tolerations\": [\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        },\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        }\n      ]\n    },\n    \"message\": \"string\",\n    \"status\": \"error\"\n  },\n  \"id\": \"string\",\n  \"inferenceRuntime\": \"vllm\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"updatedAt\": \"2024-08-19T14:27:00+00:00\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e7e52561-362a-42de-ae8d-65f3e0df8c7f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"luminous\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e73c6f28-7be8-44ea-b754-a95f719053fa",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"luminous\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d0fe900-a19a-4ca8-b35a-fd9b67af077c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"luminous\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13a1ac0f-1a34-47cf-bdb4-143ae727f5e6",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"luminous\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6dd4da7c-71a1-466d-b4d2-84cb84f6acc2",
+          "name": "Get model by ID",
+          "request": {
+            "name": "Get model by ID",
+            "description": {
+              "content": "Retrieve a model by its ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models",
+                ":modelID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "modelID",
+                  "description": "(Required) Model ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfe0ab6e-e3f7-4c3a-b0f4-7570b9c96da9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n  \"deployment\": {\n    \"config\": {\n      \"replicas\": \"<integer>\",\n      \"resources\": {\n        \"limits\": {\n          \"description\": \"Resource limits imposed on the deployment. Must be greater than or equal to requests.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"requests\": {\n          \"description\": \"Resource requests required for the deployment.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"generatorConfig\": {\n        \"maxContextSize\": 2048\n      },\n      \"templates\": {\n        \"chat\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n      },\n      \"tolerations\": [\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        },\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        }\n      ]\n    },\n    \"message\": \"string\",\n    \"status\": \"error\"\n  },\n  \"id\": \"string\",\n  \"inferenceRuntime\": \"vllm\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"updatedAt\": \"2024-08-19T14:27:00+00:00\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edf811b8-ae29-42c8-800b-199212a2f36c",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4589535-8b19-4969-826a-8b688ec4a8b9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5effc175-4ee6-4bf6-9018-c9da20095bcc",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "323cadd8-07ed-48b7-b3b9-6928b382ce86",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe197a46-082b-4bb9-8615-80e243c769a6",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "101f8898-1c6c-45d9-bace-7e31b78b468f",
+          "name": "Update a model",
+          "request": {
+            "name": "Update a model",
+            "description": {
+              "content": "Update a model",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models",
+                ":modelID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "modelID",
+                  "description": "(Required) Model ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"<string>\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"<string>\"\n      },\n      \"requests\": {\n        \"cpu\": \"<string>\",\n        \"memory\": \"<string>\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": \"<integer>\"\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"<string>\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"<string>\",\n        \"key\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"effect\": \"<string>\",\n        \"key\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "efd776be-990f-4b40-b4e2-e7b0df261cd2",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n  \"deployment\": {\n    \"config\": {\n      \"replicas\": \"<integer>\",\n      \"resources\": {\n        \"limits\": {\n          \"description\": \"Resource limits imposed on the deployment. Must be greater than or equal to requests.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"requests\": {\n          \"description\": \"Resource requests required for the deployment.\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"generatorConfig\": {\n        \"maxContextSize\": 2048\n      },\n      \"templates\": {\n        \"chat\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n      },\n      \"tolerations\": [\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        },\n        {\n          \"effect\": \"NoSchedule\",\n          \"key\": \"nvidia.com/gpu.present\",\n          \"value\": \"true\"\n        }\n      ]\n    },\n    \"message\": \"string\",\n    \"status\": \"error\"\n  },\n  \"id\": \"string\",\n  \"inferenceRuntime\": \"vllm\",\n  \"name\": \"pharia-1-llm-7b-control\",\n  \"storageURI\": \"https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar\",\n  \"type\": \"base-model\",\n  \"updatedAt\": \"2024-08-19T14:27:00+00:00\",\n  \"metadata\": {\n    \"baseModel\": \"pharia-1-llm-7b-control\",\n    \"referenceID\": \"Pharia-1-LLM-7B-control-hf_20250415_094007-mex\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5abf531a-f950-4135-b312-ad0ef8dc5285",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4144fc3-9dce-4cfb-9dd3-391d13571f4d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1cf3007-8586-4495-aa8d-d42c00d29a83",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b047374-259a-44b8-9928-8dccaa9f051b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f9dc0f1-1821-4d83-8c77-c4f663c6d026",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"replicas\": \"<integer>\",\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"generatorConfig\": {\n      \"maxContextSize\": 2048\n    },\n    \"templates\": {\n      \"chat\": {\n        \"bosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"eosToken\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"prompt\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"prompt\": \"{% promptrange instruction %}{{instruction}}{% endpromptrange %}\\n{% if input %}\\n{% promptrange input %}{{input}}{% endpromptrange %}\\n{% endif %}\"\n    },\n    \"tolerations\": [\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      },\n      {\n        \"effect\": \"NoSchedule\",\n        \"key\": \"nvidia.com/gpu.present\",\n        \"value\": \"true\"\n      }\n    ]\n  },\n  \"inferenceRuntime\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0763c3ba-da59-467b-ba08-e8a9abdc456d",
+          "name": "Delete a model",
+          "request": {
+            "name": "Delete a model",
+            "description": {
+              "content": "Delete a model",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models",
+                ":modelID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "modelID",
+                  "description": "(Required) Model ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f3071ae5-6d9c-4c78-916c-f41f25e50c1d",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "88ae949c-af2f-489b-a3d1-0dc80334d77e",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69bb61bf-4bf8-4525-9522-38e73b1f2df3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a94f748d-4bd7-418d-b394-a830b0d31a8c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea2f5110-bdc3-4ac9-a26c-05bc99a4a565",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12121902-36d1-4ddb-a2b7-2e4a695bb654",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":modelID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "modelID",
+                      "description": "(Required) Model ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.pharia.example.com/v1/os",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3c7c63a4-f598-4bd4-8b1b-77372eeffd7e",
+    "name": "PhariaOS Manager V1/models API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.\n\nContact Support:\n Name: Aleph Alpha",
+      "type": "text/plain"
+    }
+  }
+}

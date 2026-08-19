@@ -1,0 +1,394 @@
+openapi: 3.2.0
+info:
+  title: PhariaStudio Application Traces API
+  version: 0.1.0
+servers:
+- url: '{host}/v1/studio'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- BearerAuth: []
+tags:
+- name: Application Traces
+paths:
+  /projects/{project_id}/traces_v2:
+    get:
+      tags:
+      - Application Traces
+      summary: Get Traces
+      operationId: get_traces_projects__project_id__traces_v2_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      - name: start_time
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Start Time
+      - name: end_time
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+      - name: application_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Application Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/TraceStatus'
+          - type: 'null'
+          title: Status
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - Application Traces
+      summary: Receive Otlp Traces
+      description: OTLP traces receiver endpoint. Currently only supports http/protobuf format. This endpoint is a receiver for traces from OpenTelemetry collectors or other OTLP compatible exporters.
+      operationId: receive_otlp_traces_projects__project_id__traces_v2_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/traces_v2/{trace_id}:
+    get:
+      tags:
+      - Application Traces
+      summary: Get Trace By Id
+      description: Get comprehensive details for a specific `Trace`.
+      operationId: get_trace_by_id_projects__project_id__traces_v2__trace_id__get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Trace Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceResponseV2'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TraceResponseV2:
+      properties:
+        id:
+          type: string
+          title: Id
+        spans:
+          items:
+            $ref: '#/components/schemas/TraceSpan'
+          type: array
+          title: Spans
+      type: object
+      required:
+      - id
+      - spans
+      title: TraceResponseV2
+      description: Studio Trace model for detailed view.
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
+    TraceSummary:
+      properties:
+        trace_id:
+          type: string
+          title: Trace Id
+        root_service_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Root Service Name
+        root_trace_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Root Trace Name
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        duration_ms:
+          type: integer
+          title: Duration Ms
+      type: object
+      required:
+      - trace_id
+      - start_time
+      - duration_ms
+      title: TraceSummary
+      description: Summary information for a trace.
+    SpanStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: SpanStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TraceSpan:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        parent_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+        end_time:
+          type: string
+          format: date-time
+          title: End Time
+        status:
+          $ref: '#/components/schemas/SpanStatus'
+        type:
+          $ref: '#/components/schemas/SpanType'
+        attributes:
+          additionalProperties: true
+          type: object
+          title: Attributes
+        created_at:
+          type: string
+          title: Created At
+        created_by:
+          type: string
+          title: Created By
+        events:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/TraceEvent'
+            type: array
+          - type: 'null'
+          title: Events
+      type: object
+      required:
+      - start_time
+      - end_time
+      - status
+      - type
+      - attributes
+      - created_at
+      - created_by
+      title: TraceSpan
+      description: Studio Span model.
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    TraceListResponse:
+      properties:
+        traces:
+          items:
+            $ref: '#/components/schemas/TraceSummary'
+          type: array
+          title: Traces
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+      type: object
+      required:
+      - traces
+      - total
+      - page
+      - size
+      - num_pages
+      title: TraceListResponse
+      description: Response model for trace listing.
+    TraceEvent:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        body:
+          anyOf:
+          - $ref: '#/components/schemas/JsonSerializable-Output'
+          - type: 'null'
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        created_at:
+          type: string
+          title: Created At
+        created_by:
+          type: string
+          title: Created By
+      type: object
+      required:
+      - timestamp
+      - created_at
+      - created_by
+      title: TraceEvent
+      description: Studio Event model.
+    TraceStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: TraceStatus
+      description: Status of a trace.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

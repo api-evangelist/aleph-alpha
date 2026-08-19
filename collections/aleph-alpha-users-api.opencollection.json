@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Users API",
+    "version": "4.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Login with email and password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/users/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This should not be used by most API consumers, who should generate API tokens using the login page and use bearer authentication.\nThis endpoint allows bootstrapping the API via login to generate more API tokens.\n"
+        },
+        {
+          "info": {
+            "name": "Get settings for own user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/users/me",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns details of this user. Can be called by a user which has access to this user id or by an admin for any user.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

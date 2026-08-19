@@ -1,0 +1,599 @@
+openapi: 3.2.0
+info:
+  title: PhariaData Search Store API
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  contact:
+    name: PhariaData API Support
+    url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
+    email: pharia-data@aleph-alpha.com
+  license:
+    name: Open Aleph License
+  version: 1.0.0
+servers:
+- url: '{host}/v1/studio/data'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- Bearer: []
+tags:
+- name: Search Store
+  description: A Search Store is a structured data repository optimized for indexing and retrieving searchable entities. It supports full-text search, metadata-based filtering, and relevance ranking. Each Search Store can manage multiple indexed documents, making it ideal for fast, scalable information retrieval across different modalities.
+paths:
+  /search_stores:
+    post:
+      tags:
+      - Search Store
+      summary: Create a new Search Store instance for indexing and retrieval.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchStoreCreate'
+      responses:
+        '201':
+          description: 'Successfully created a new search store. Returns the unique ID of
+
+            the created search store.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchStoreInformation'
+        '400':
+          description: The request was malformed and couldn't be processed.
+      security:
+      - Bearer: []
+    get:
+      tags:
+      - Search Store
+      summary: Lists all search store.
+      parameters:
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: A list of search stores.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchStoreInformationPage'
+        '400':
+          description: The request was malformed and couldn't be processed.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}:
+    get:
+      tags:
+      - Search Store
+      summary: Fetch details of a specific Search Store by its ID.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      responses:
+        '200':
+          description: A search store.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchStoreInformation'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+    patch:
+      tags:
+      - Search Store
+      summary: Update metadata of an existing Search Store.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchStoreUpdate'
+      responses:
+        '200':
+          description: The search store has been updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchStoreUpdate'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - Search Store
+      summary: Delete a Search Store and all its associated documents.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      responses:
+        '202':
+          description: The search store and all its documents will be deleted.
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/transitioning:
+    get:
+      tags:
+      - Search Store
+      summary: Get count of all documents in a Search Store that are currently being embedded or archived.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      responses:
+        '200':
+          description: Number of documents currently being embedded or archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/transitioningResult'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/search:
+    post:
+      tags:
+      - Search Store
+      summary: Perform a semantic search within the specified Search Store.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchStoreSearchRequest'
+      responses:
+        '200':
+          description: A list of ranked search results.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchStoreQueryResult'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+components:
+  parameters:
+    PageSize:
+      in: query
+      name: size
+      description: The number of items to include per page. A value between 1 and 100.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+        example: 10
+    PageNumber:
+      in: query
+      name: page
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+    SearchStoreID:
+      in: path
+      name: searchStoreID
+      description: The ID of the search store
+      required: true
+      schema:
+        type: string
+      example: 7d78f98d-1c47-4c0b-8101-41b43b45e2cb
+  schemas:
+    SearchStoreUpdate:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/SearchStoreMetadata'
+    MetadataSchema:
+      type: object
+      additionalProperties:
+        type: string
+        enum:
+        - string
+        - integer
+        - float
+        - boolean
+        - date_time
+      description: 'A dictionary of metadata fields on which to filter search results and their types.
+
+
+        Field names must only contain alphanumeric characters, dashes and underscores.
+
+
+        Nested fields can be specified using dot notation (e.g. ''a.b'').
+
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+
+        The maximum length of the field name is 1000 characters.
+
+        '
+      example:
+        approved: boolean
+    SearchStoreQueryResult:
+      description: 'The result for semantic document search.
+
+        An array of document names and content of the found documents in the given collection.
+
+        '
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/DocumentSection'
+        - type: object
+          properties:
+            score:
+              type: number
+              format: float
+              description: 'Search score of the found section, where a higher score indicates a closer match.
+
+                Will be between -1 and 1. A score closer to -1 indicates the section opposes the
+
+                query. A score close 0 suggests the section is unrelated to the query. A score
+
+                close to 1 suggests the section is related to the query. The score depends on
+
+                the index configuration, e.g. the score of a section differs for hybrid and
+
+                non-hybrid indexes. For searches on hybrid indexes, the score can exceed the
+
+                min_score of the query as the min_score only applies to the semantic similarity
+
+                sub-query.
+
+                '
+    SearchStoreProperties:
+      type: object
+      required:
+      - chunkingStrategy
+      - embeddingStrategy
+      properties:
+        chunkingStrategy:
+          $ref: '#/components/schemas/ChunkingStrategy'
+        embeddingStrategy:
+          type: object
+          required:
+          - type
+          - config
+          properties:
+            type:
+              type: string
+              enum:
+              - semantic
+              - instruct
+              - vllm
+            config:
+              oneOf:
+              - $ref: '#/components/schemas/EmbeddingStrategyVllm'
+              - $ref: '#/components/schemas/EmbeddingStrategySemantic'
+              - $ref: '#/components/schemas/EmbeddingStrategyInstruct'
+        metadata:
+          $ref: '#/components/schemas/SearchStoreMetadata'
+        metadataSchema:
+          $ref: '#/components/schemas/MetadataSchema'
+    SearchStoreID:
+      type: string
+      pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+      example: 568cf1c0-5251-4210-8b61-d1eff43011b2
+    EmbeddingStrategyVllm:
+      type: object
+      properties:
+        model:
+          type: string
+          description: The VLLM model name to use for embeddings
+          example: qwen3-embedding-8b
+        instruction:
+          type: object
+          description: 'Optional instruction templates for query and document embeddings. Both fields are optional - you can provide none, one, or both.
+
+
+            If a field is missing, the raw text is embedded as-is.
+
+            If provided and contains `{{text}}`, the placeholder is replaced with the actual text.
+
+            If provided without `{{text}}`, it is treated as a prefix.
+
+
+            Examples:
+
+            - query = "query: {{text}}" with text "capital of germany" → "query: capital of germany"
+
+            - document = "passage:" with text "Berlin is the capital" → "passage: Berlin is the capital"'
+          properties:
+            document:
+              type: string
+              description: Template used to format document text. Use `{{text}}` as placeholder (optional - without it, acts as prefix).
+              example: 'passage: {{text}}'
+            query:
+              type: string
+              description: Template used to format query text. Use `{{text}}` as placeholder (optional - without it, acts as prefix).
+              example: 'query: {{text}}'
+        encodingFormat:
+          type: string
+          enum:
+          - float
+          - base64
+          description: The format to return the embeddings in. Can be either `float` or `base64`.
+          example: float
+        dimensions:
+          type: integer
+          minimum: 1
+          description: The number of dimensions the resulting output embeddings should have. Not supported by all models.
+          example: 1024
+      required:
+      - model
+      example:
+        model: qwen3-embedding-8b
+        instruction:
+          query: 'query: {{text}}'
+          document: 'passage: {{text}}'
+        encodingFormat: float
+        dimensions: 1024
+    ImageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    Text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    EmbeddingStrategySemantic:
+      type: object
+      properties:
+        model:
+          type: string
+        representation:
+          type: string
+          enum:
+          - asymmetric
+          - symmetric
+          description: "The type of embedding representation, which defines how text is\nencoded into a vector.\n\n* `symmetric`: embedding representation where the same encoding model\n  and strategy are used to embed both queries and documents.\n  \n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Symmetric embeddings are suitable for tasks where both the query\n  and the stored documents have a similar nature and should be directly\n  comparable in the same vector space.\n\n* `asymmetric`: embedding representation where different encoding\n   models and/or encoding strategies are used for queries and\n   documents.\n\n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Asymmetric embeddings are used when queries and documents differ in\n  structure, intent, or length, requiring distinct optimizations for\n  retrieval.\n"
+        hybridIndex:
+          type: string
+          enum:
+          - bm25
+      required:
+      - model
+      - representation
+    SearchStoreInformation:
+      allOf:
+      - type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/SearchStoreID'
+          createdAt:
+            $ref: '#/components/schemas/CreatedAt'
+      - $ref: '#/components/schemas/SearchStoreProperties'
+    ModalityImage:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        image:
+          type: string
+          example: <base64-encoded-string>
+    DocumentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        documentName:
+          type: string
+          description: The name of the document this chunk belongs to.
+          example: document-123
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Text'
+            - $ref: '#/components/schemas/Image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+    EmbeddingStrategyInstruct:
+      type: object
+      properties:
+        model:
+          type: string
+        instruction:
+          type: object
+          properties:
+            document:
+              type: string
+              description: Instruction to be used for embedding the document.
+            query:
+              type: string
+              description: Instruction to be used for embedding the query.
+        hybridIndex:
+          type: string
+          enum:
+          - bm25
+      required:
+      - model
+      - instruction
+    SearchStoreMetadata:
+      type: object
+      description: 'Metadata attached to a search store.
+
+
+        This can be useful for storing additional structured information about
+
+        the search store itself or the contained files.
+
+
+        Keys are strings with a maximum length of 64 characters. Values are either
+
+        strings with a maximum length of 512 characters, numbers or boolean values.
+
+        '
+      additionalProperties:
+        anyOf:
+        - type: string
+          maxLength: 512
+        - type: boolean
+        - type: number
+      example:
+        category: research-papers
+        approved: true
+    SearchStoreSearchRequest:
+      type: object
+      properties:
+        query:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ModalityText'
+            - $ref: '#/components/schemas/ModalityImage'
+        filters:
+          type: array
+          items:
+            type: object
+        minScore:
+          type: integer
+        maxResults:
+          type: integer
+    transitioningResult:
+      description: 'The result for a transitioning documents query.
+
+        '
+      type: object
+      properties:
+        currently_embedding:
+          type: integer
+        currently_archiving:
+          type: integer
+      required:
+      - currently_embedding
+      - currently_archiving
+    ModalityText:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    SearchStoreCreate:
+      allOf:
+      - $ref: '#/components/schemas/SearchStoreProperties'
+    SearchStoreInformationPage:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchStoreInformation'
+    ChunkingStrategy:
+      type: object
+      properties:
+        maxChunkSizeTokens:
+          type: integer
+          minimum: 1
+        chunkOverlapTokens:
+          type: integer
+    TextCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+    CreatedAt:
+      type: string
+      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+      example: '2025-12-31'
+    Image:
+      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-tagGroups:
+- name: PhariaData API
+  tags:
+  - Repositories
+  - Datasets
+  - Stages
+  - Downloads
+  - Transformations
+  - Connectors
+- name: Pharia Search API
+  tags:
+  - Search Store
+  - Document

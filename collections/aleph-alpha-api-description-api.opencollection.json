@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha API description API",
+    "version": "4.7.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API description",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Current API version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/version"
+          },
+          "docs": "Will return the version number of the API that is deployed to this environment."
+        },
+        {
+          "info": {
+            "name": "OpenAPI specification",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/openapi.yaml"
+          },
+          "docs": "Returns the latest OpenAPI specification for this API.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

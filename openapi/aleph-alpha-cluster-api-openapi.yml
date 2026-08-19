@@ -1,0 +1,458 @@
+openapi: 3.2.0
+info:
+  description: A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.
+  title: PhariaOS Manager Cluster API
+  contact:
+    name: Aleph Alpha
+    url: https://www.aleph-alpha.com
+  version: '1.0'
+servers:
+- url: https://api.pharia.example.com/v1/os
+tags:
+- name: cluster
+paths:
+  /cluster/gpus:
+    get:
+      description: Retrieve the available GPU resources for the cluster
+      tags:
+      - cluster
+      summary: Get available GPU resources
+      parameters:
+      - description: Sort GPUs ascending (asc) or descending (desc). Ascending is the default.
+        name: sort
+        in: query
+        schema:
+          type: string
+      - description: Group GPUs by profileName or product
+        name: groupBy
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/dtos.Gpu'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /cluster/nodes:
+    get:
+      description: Retrieve all cluster nodes information
+      tags:
+      - cluster
+      summary: List all cluster nodes
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 10
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.NodePaginatedResult'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /cluster/nodes/taints:
+    get:
+      description: Retrieve the taints of a cluster node
+      tags:
+      - cluster
+      summary: Get node taints
+      parameters:
+      - description: Filter nodes with GPU
+        name: gpu
+        in: query
+        schema:
+          type: boolean
+      - description: Sort taints ascending (asc) or descending (desc). Ascending is the default.
+        name: sort
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/dtos.NodeTaint'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /cluster/nodes/{nodeName}:
+    get:
+      description: Retrieve a cluster node by its name
+      tags:
+      - cluster
+      summary: Get node by name
+      parameters:
+      - description: Node name
+        name: nodeName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.NodeOutput'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+components:
+  schemas:
+    dtos.Memory:
+      type: object
+      required:
+      - allocatable
+      - capacity
+      - unit
+      properties:
+        allocatable:
+          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
+          type: number
+        capacity:
+          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
+          type: number
+        unit:
+          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
+          type: string
+    dtos.ProblemDetail404:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2
+        detail:
+          type: string
+          example: Not Found
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/404
+        status:
+          type: integer
+          example: 404
+        title:
+          type: string
+          example: Not Found
+        type:
+          type: string
+    dtos.ProblemDetail500:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1
+        detail:
+          type: string
+          example: Internal Server Error
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/500
+        status:
+          type: integer
+          example: 500
+        title:
+          type: string
+          example: Internal Server Error
+        type:
+          type: string
+    dtos.NodeResources:
+      type: object
+      required:
+      - cpu
+      - gpus
+      - memory
+      properties:
+        cpu:
+          $ref: '#/components/schemas/dtos.Cpu'
+        gpus:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.Gpu'
+        memory:
+          $ref: '#/components/schemas/dtos.Memory'
+    dtos.NodeTaint:
+      type: object
+      properties:
+        effect:
+          type: string
+          example: NoSchedule
+        key:
+          type: string
+          example: nvidia.com/gpu
+        nodes:
+          type: array
+          items:
+            type: string
+          example:
+          - gpu-node-1
+          - ' gpu-node-2'
+        value:
+          type: string
+          example: present
+        warning:
+          type: string
+          example: 'Deselecting this taint may prevent scheduling on nodes: gpu-node-1, gpu-node-2.'
+    dtos.Gpu:
+      type: object
+      required:
+      - allocatable
+      - capacity
+      - manufacturer
+      - memory
+      - metadata
+      - product
+      - unit
+      properties:
+        allocatable:
+          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
+          type: number
+        capacity:
+          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
+          type: number
+        manufacturer:
+          description: GPU manufacturer
+          type: string
+          example: NVIDIA
+        memory:
+          description: GPU memory in Bytes
+          type: string
+          example: '81920'
+        metadata:
+          description: GPU metadata
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            cudaDriverVersion: 550.90.07
+            family: ampere
+            machine: OpenStack-Nova
+        product:
+          description: GPU product name
+          type: string
+          example: NVIDIA-A100-80GB-PCIe
+        profileName:
+          description: GPU label
+          type: string
+          example: nvidia.com/gpu
+        unit:
+          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
+          type: string
+    dtos.Cpu:
+      type: object
+      required:
+      - allocatable
+      - capacity
+      - unit
+      properties:
+        allocatable:
+          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
+          type: number
+        capacity:
+          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
+          type: number
+        unit:
+          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
+          type: string
+    dtos.NodeStatus:
+      type: object
+      required:
+      - diskHealthy
+      - memoryHealthy
+      - ready
+      properties:
+        diskHealthy:
+          description: Disk is healthy
+          type: boolean
+        memoryHealthy:
+          description: Memory is healthy
+          type: boolean
+        ready:
+          description: Node is ready for usage
+          type: boolean
+    dtos.NodeOutput:
+      type: object
+      required:
+      - arch
+      - createdAt
+      - name
+      - os
+      - resources
+      - status
+      properties:
+        arch:
+          description: Node architecture
+          type: string
+          example: arm64
+        createdAt:
+          description: Node creation date
+          type: string
+          example: '2024-08-19T14:27:00+00:00'
+        name:
+          description: Node name
+          type: string
+          example: phariaai-worker
+        os:
+          description: Node Operational System
+          type: string
+          example: Debian GNU/Linux 11 (bullseye)
+        resources:
+          description: Node hardware resources information
+          allOf:
+          - $ref: '#/components/schemas/dtos.NodeResources'
+        status:
+          description: Node current status
+          allOf:
+          - $ref: '#/components/schemas/dtos.NodeStatus'
+    dtos.ProblemDetail403:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1002
+        detail:
+          type: string
+          example: Forbidden
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/403
+        status:
+          type: integer
+          example: 403
+        title:
+          type: string
+          example: Forbidden
+        type:
+          type: string
+    dtos.NodePaginatedResult:
+      type: object
+      required:
+      - data
+      - limit
+      - page
+      - total
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.NodeOutput'
+        limit:
+          type: integer
+        page:
+          type: integer
+        total:
+          type: integer
+    dtos.ProblemDetail401:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1100
+        detail:
+          type: string
+          example: Unauthorized
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/401
+        status:
+          type: integer
+          example: 401
+        title:
+          type: string
+          example: Unauthorized
+        type:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: Authorization
+      in: header

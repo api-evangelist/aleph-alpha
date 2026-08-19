@@ -1,0 +1,2898 @@
+{
+  "item": [
+    {
+      "id": "6a457dbc-bd9f-4fb3-95ed-ef124ffdf386",
+      "name": "Transformations",
+      "description": {
+        "content": "Available transformations can be applied to an input data object of type A to produce an output data object of type B. The output data object will consist of a sequence of items, each of which will conform to an Avro schema specified in the transformation as OutputSchema. Currently, the input data object can be a File located in a Stage within the Data Platform. Future versions will support receiving Datasets from Repositories in the Data Platform as input data objects. The output data object can be loaded into various types of data storage within the Data Platform, with Repositories being the first supported storage type. When triggering a transformation, this has to be specified as destination. After loading the output into the destination, it can also be sent to an external service through available connectors in the Data Platform. The first available connector will be the Document Index Collection Connector.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8b5789ec-bc30-4b6f-8f91-870467566693",
+          "name": "Retrieve a list of available transformations",
+          "request": {
+            "name": "Retrieve a list of available transformations",
+            "description": {
+              "content": "Fetches a paginated list of all available transformations in the Data Platform.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page number to retrieve, used for paginated responses."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "The number of items to include per page in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "Search for transformations by their specific name."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9f4fb389-486e-438c-ad3e-ddca4bd37dc1",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "name",
+                      "value": "DocumentToText"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"transformations\": [\n    {\n      \"name\": \"PDFToText\",\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"inputType\": \"DataPlatform:Stage:File\",\n      \"supportedDestinations\": [\n        \"DataPlatform:Repository\",\n        \"DataPlatform:Repository\"\n      ],\n      \"outputSchema\": {\n        \"type\": \"record\",\n        \"name\": \"PDFToText\",\n        \"fields\": [\n          {\n            \"name\": \"text\",\n            \"type\": \"string\"\n          },\n          {\n            \"name\": \"page\",\n            \"type\": \"int\"\n          }\n        ]\n      },\n      \"supportedInputMediaTypes\": [\n        \"application/pdf\",\n        \"application/pdf\"\n      ],\n      \"parameters\": [\n        {\n          \"name\": \"parser\",\n          \"allowedValues\": [\n            \"pypdf\",\n            \"pypdf\"\n          ],\n          \"description\": \"Parameter to select the parser\"\n        },\n        {\n          \"name\": \"parser\",\n          \"allowedValues\": [\n            \"pypdf\",\n            \"pypdf\"\n          ],\n          \"description\": \"Parameter to select the parser\"\n        }\n      ]\n    },\n    {\n      \"name\": \"PDFToText\",\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"inputType\": \"DataPlatform:Stage:File\",\n      \"supportedDestinations\": [\n        \"DataPlatform:Repository\",\n        \"DataPlatform:Repository\"\n      ],\n      \"outputSchema\": {\n        \"type\": \"record\",\n        \"name\": \"PDFToText\",\n        \"fields\": [\n          {\n            \"name\": \"text\",\n            \"type\": \"string\"\n          },\n          {\n            \"name\": \"page\",\n            \"type\": \"int\"\n          }\n        ]\n      },\n      \"supportedInputMediaTypes\": [\n        \"application/pdf\",\n        \"application/pdf\"\n      ],\n      \"parameters\": [\n        {\n          \"name\": \"parser\",\n          \"allowedValues\": [\n            \"pypdf\",\n            \"pypdf\"\n          ],\n          \"description\": \"Parameter to select the parser\"\n        },\n        {\n          \"name\": \"parser\",\n          \"allowedValues\": [\n            \"pypdf\",\n            \"pypdf\"\n          ],\n          \"description\": \"Parameter to select the parser\"\n        }\n      ]\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c83b0854-6a60-492e-b443-ab7d1266f1ef",
+              "name": "BAD REQUEST",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "name",
+                      "value": "DocumentToText"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4e6d8747-f873-4d08-88fe-d52dc52b6901",
+              "name": "UNAUTHORIZED When access token is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "name",
+                      "value": "DocumentToText"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de90dde5-5f47-46df-9a55-92ed0ba6018b",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "name",
+                      "value": "DocumentToText"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "180be27e-574a-4670-b685-26d2a40fb286",
+          "name": "Retrieve transformation details by ID",
+          "request": {
+            "name": "Retrieve transformation details by ID",
+            "description": {
+              "content": "Retrieves detailed information for a specific transformation identified by its unique ID. Includes properties such as name, input media type, supported destinations, and output schema.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b0f421f4-598f-46cb-921b-f44c732b57f0",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"PDFToText\",\n  \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"inputType\": \"DataPlatform:Stage:File\",\n  \"supportedDestinations\": [\n    \"DataPlatform:Repository\",\n    \"DataPlatform:Repository\"\n  ],\n  \"outputSchema\": {\n    \"type\": \"record\",\n    \"name\": \"PDFToText\",\n    \"fields\": [\n      {\n        \"name\": \"text\",\n        \"type\": \"string\"\n      },\n      {\n        \"name\": \"page\",\n        \"type\": \"int\"\n      }\n    ]\n  },\n  \"supportedInputMediaTypes\": [\n    \"application/pdf\",\n    \"application/pdf\"\n  ],\n  \"parameters\": [\n    {\n      \"name\": \"parser\",\n      \"allowedValues\": [\n        \"pypdf\",\n        \"pypdf\"\n      ],\n      \"description\": \"Parameter to select the parser\"\n    },\n    {\n      \"name\": \"parser\",\n      \"allowedValues\": [\n        \"pypdf\",\n        \"pypdf\"\n      ],\n      \"description\": \"Parameter to select the parser\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9db583a-697a-470d-977b-7a0879fd66ce",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64f201b8-1be2-4339-b75e-4696c1eb63e4",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "797e57dc-6885-4d64-a4fd-5084a42d90fe",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69ffcb01-66b5-4c80-8aee-b3f3e6f1c25c",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ba450aa-3606-4937-a2a7-98e7cc405f29",
+          "name": "Trigger a transformation",
+          "request": {
+            "name": "Trigger a transformation",
+            "description": {
+              "content": "Initiates a transformation process for a specific transformation, identified by its unique ID. The operation applies the transformation to the input data object and stores the result in the specified destination. If connector configurations are provided, the output can also be delivered to external services. Some transformations accept parameters: the list of the allowed parameters for each transformation can be retrieved by the list transformations endpoint. ```Note: If a file is TXT or Markdown format, only files with UTF-8 encoding and LF as line feed character are supported.```\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": {\n    \"type\": \"<string>\",\n    \"fileID\": \"<string>\",\n    \"stageID\": \"<string>\",\n    \"version\": \"<string,null>\"\n  },\n  \"destination\": {\n    \"type\": \"<string>\",\n    \"repositoryID\": \"<string>\",\n    \"mapping\": \"<object,null>\"\n  },\n  \"connector\": {\n    \"type\": \"<string>\",\n    \"collection\": \"<string>\",\n    \"namespace\": \"<string>\"\n  },\n  \"parameters\": {\n    \"key\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3851cf2a-087a-4a2d-bf48-77c7e3665051",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"parameters\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"transformationName\": \"PDFToText\",\n  \"status\": \"completed\",\n  \"createdAt\": \"2021-08-25T15:04:05Z\",\n  \"updatedAt\": \"2021-08-25T15:04:05Z\",\n  \"errors\": [\n    {\n      \"type\": \"ExtractorError\",\n      \"message\": \"Error message\",\n      \"httpCode\": 422,\n      \"dataCode\": \"DATA0001\"\n    },\n    {\n      \"type\": \"ExtractorError\",\n      \"message\": \"Error message\",\n      \"httpCode\": 422,\n      \"dataCode\": \"DATA0001\"\n    }\n  ],\n  \"parameters\": {\n    \"key\": \"value\"\n  },\n  \"metadata\": {\n    \"key\": \"value\"\n  },\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"output\": {\n    \"type\": \"DataPlatform:Repository:Dataset\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "067894d5-9592-44a4-a558-9a88eb5cb4a8",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"parameters\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e723e7f-7f59-45b7-ac86-66fcd060bd67",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"parameters\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f582345-7fb0-49c4-83a4-f0b19ace1931",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"parameters\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edf1795c-bbe0-4e0e-bb56-d8e67236e18f",
+              "name": "Request Entity Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"parameters\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60a0fbd5-bd1e-49b2-bf2d-1d476c28fb19",
+          "name": "Retrieve a list of created runs given a transformation ID",
+          "request": {
+            "name": "Retrieve a list of created runs given a transformation ID",
+            "description": {
+              "content": "Fetches a paginated list of all created runs in the Data Platform for a specific transformation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page number to retrieve, used for paginated responses."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "The number of items to include per page in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "file_id",
+                  "value": "<string>",
+                  "description": "A file ID to filter the list of runs that received this file as input."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3ddd44bc-4645-4715-b21b-c3e43cf2e71c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"transformationName\": \"PDFToText\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2021-08-25T15:04:05Z\",\n      \"updatedAt\": \"2021-08-25T15:04:05Z\",\n      \"errors\": [\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        },\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        }\n      ],\n      \"parameters\": {\n        \"key\": \"value\"\n      },\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"input\": {\n        \"type\": \"DataPlatform:Stage:File\",\n        \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:Repository\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"mapping\": null\n      },\n      \"connector\": {\n        \"type\": \"DocumentIndex:Collection\",\n        \"collection\": \"my-collection\",\n        \"namespace\": \"my-namespace\"\n      },\n      \"output\": {\n        \"type\": \"DataPlatform:Repository:Dataset\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      }\n    },\n    {\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"transformationName\": \"PDFToText\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2021-08-25T15:04:05Z\",\n      \"updatedAt\": \"2021-08-25T15:04:05Z\",\n      \"errors\": [\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        },\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        }\n      ],\n      \"parameters\": {\n        \"key\": \"value\"\n      },\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"input\": {\n        \"type\": \"DataPlatform:Stage:File\",\n        \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:Repository\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"mapping\": null\n      },\n      \"connector\": {\n        \"type\": \"DocumentIndex:Collection\",\n        \"collection\": \"my-collection\",\n        \"namespace\": \"my-namespace\"\n      },\n      \"output\": {\n        \"type\": \"DataPlatform:Repository:Dataset\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      }\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b28664cc-0115-43a4-83c5-63a27ceee05c",
+              "name": "BAD REQUEST",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7b36277-a1c3-4b16-a7c9-22a83c3eb7f1",
+              "name": "UNAUTHORIZED When access token is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b102fa8-e557-4e3f-baec-0337aeb224bf",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08c8c86a-9b98-4cdb-bd06-71da24a6ebb2",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d5fb6d9-9062-4bfa-b0a1-6b8544c3cc0d",
+          "name": "Stream real-time run updates for a transformation",
+          "request": {
+            "name": "Stream real-time run updates for a transformation",
+            "description": {
+              "content": "Opens a Server-Sent Events (SSE) connection that streams live run updates for a specific transformation.\n\n**SSE Events:**\n- `connected`: Connection established\n- `runs:new`: New runs appeared on the current page\n- `runs:updated`: Existing runs changed status\n- `runs:removed`: Runs fell off the current page window (e.g. pushed out by newer runs)\n- `done`: All currently visible runs reached a terminal state\n- `error`: Stream error occurred\n\nThe stream closes automatically when all runs reach a terminal state or when the client disconnects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID",
+                "runs",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page number to retrieve, used for paginated responses."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "The number of items to include per page in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "file_id",
+                  "value": "<string>",
+                  "description": "A file ID to filter the list of runs that received this file as input."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f4c35394-f4a5-4fa8-b3fc-dfc3fa31f347",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/event-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/event-stream"
+                }
+              ],
+              "body": "event: connected\ndata: {\"message\":\"Connected to runs stream\",\"transformationId\":\"...\"}\n\nevent: runs:new\ndata: {\"runs\":[...],\"count\":1,\"total\":5}\n\nevent: runs:updated\ndata: {\"runs\":[...],\"count\":1,\"total\":5}\n\nevent: runs:removed\ndata: {\"runIds\":[\"...\"],\"count\":1,\"total\":4}\n\n: keepalive at 2026-01-01T00:00:00Z\n\nevent: done\ndata: {\"message\":\"All runs have reached a terminal state\"}\n",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "47feeb20-1897-47d7-8472-f575465a8cb1",
+              "name": "BAD REQUEST",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3e85add-2d83-4a0f-a88f-57e88dde345a",
+              "name": "UNAUTHORIZED When access token is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a01f6b08-1e3e-4841-bf46-a8153deeda91",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d38befb-9715-4dc7-9bf1-6fe2e5b55c3f",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    },
+                    {
+                      "key": "file_id",
+                      "value": "cb26237c-3beb-40f3-8e13-77d862f722b5"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a837c82-2726-4e59-9ce7-415ea4a1ebf1",
+          "name": "Retrieve transformation run details by ID",
+          "request": {
+            "name": "Retrieve transformation run details by ID",
+            "description": {
+              "content": "Fetches detailed information for a specific transformation run identified by its unique ID. Includes properties such as status, start time, end time, and output destination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID",
+                "runs",
+                ":runID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "runID",
+                  "description": "(Required) Unique identifier for the transformation run."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d3047486-a28e-4995-898d-1212e64a7ef4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    ":runID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "runID",
+                      "description": "(Required) Unique identifier for the transformation run."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"transformationName\": \"PDFToText\",\n  \"status\": \"completed\",\n  \"createdAt\": \"2021-08-25T15:04:05Z\",\n  \"updatedAt\": \"2021-08-25T15:04:05Z\",\n  \"errors\": [\n    {\n      \"type\": \"ExtractorError\",\n      \"message\": \"Error message\",\n      \"httpCode\": 422,\n      \"dataCode\": \"DATA0001\"\n    },\n    {\n      \"type\": \"ExtractorError\",\n      \"message\": \"Error message\",\n      \"httpCode\": 422,\n      \"dataCode\": \"DATA0001\"\n    }\n  ],\n  \"parameters\": {\n    \"key\": \"value\"\n  },\n  \"metadata\": {\n    \"key\": \"value\"\n  },\n  \"input\": {\n    \"type\": \"DataPlatform:Stage:File\",\n    \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:Repository\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"mapping\": null\n  },\n  \"connector\": {\n    \"type\": \"DocumentIndex:Collection\",\n    \"collection\": \"my-collection\",\n    \"namespace\": \"my-namespace\"\n  },\n  \"output\": {\n    \"type\": \"DataPlatform:Repository:Dataset\",\n    \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"version\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69d012d0-ebdc-41a3-a105-6c93617b57ac",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    ":runID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "runID",
+                      "description": "(Required) Unique identifier for the transformation run."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e9aba47-6ea6-4226-acd1-575f9812daa0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    ":runID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "runID",
+                      "description": "(Required) Unique identifier for the transformation run."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76d15cfd-f6aa-4056-b9ea-76821a75fccc",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    ":runID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "runID",
+                      "description": "(Required) Unique identifier for the transformation run."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2dc5e98-0f42-4630-bf78-ef7481710db9",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    ":runID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "runID",
+                      "description": "(Required) Unique identifier for the transformation run."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "606f1a0d-c978-418d-80a5-a31886e4cfa4",
+          "name": "Trigger multiple transformations in batch",
+          "request": {
+            "name": "Trigger multiple transformations in batch",
+            "description": {
+              "content": "Initiates multiple transformation processes for a specific transformation, identified by its unique ID. This endpoint allows you to execute multiple transformation runs simultaneously by providing an array of transformation configurations. Each transformation in the batch applies to its respective input data object and stores the result in the specified destination. If connector configurations are provided, the outputs can also be delivered to external services. Some transformations accept parameters: the list of the allowed parameters for each transformation can be retrieved by the list transformations endpoint. ```Note: If a file is TXT or Markdown format, only files with UTF-8 encoding and LF as line feed character are supported.```\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "transformations",
+                ":transformationID",
+                "runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "transformationID",
+                  "description": "(Required) Unique identifier for the transformation."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"input\": {\n      \"type\": \"<string>\",\n      \"fileID\": \"<string>\",\n      \"stageID\": \"<string>\",\n      \"version\": \"<string,null>\"\n    },\n    \"destination\": {\n      \"type\": \"<string>\",\n      \"repositoryID\": \"<string>\",\n      \"mapping\": \"<object,null>\"\n    },\n    \"connector\": {\n      \"type\": \"<string>\",\n      \"collection\": \"<string>\",\n      \"namespace\": \"<string>\"\n    },\n    \"parameters\": {\n      \"key\": \"<string>\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"<string>\",\n      \"fileID\": \"<string>\",\n      \"stageID\": \"<string>\",\n      \"version\": \"<string,null>\"\n    },\n    \"destination\": {\n      \"type\": \"<string>\",\n      \"repositoryID\": \"<string>\",\n      \"mapping\": \"<object,null>\"\n    },\n    \"connector\": {\n      \"type\": \"<string>\",\n      \"collection\": \"<string>\",\n      \"namespace\": \"<string>\"\n    },\n    \"parameters\": {\n      \"key\": \"<string>\"\n    }\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cea38b80-ae8c-4c1c-a3dc-5105ad0c03b1",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n    \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"transformationName\": \"PDFToText\",\n    \"status\": \"completed\",\n    \"createdAt\": \"2021-08-25T15:04:05Z\",\n    \"updatedAt\": \"2021-08-25T15:04:05Z\",\n    \"errors\": [\n      {\n        \"type\": \"ExtractorError\",\n        \"message\": \"Error message\",\n        \"httpCode\": 422,\n        \"dataCode\": \"DATA0001\"\n      },\n      {\n        \"type\": \"ExtractorError\",\n        \"message\": \"Error message\",\n        \"httpCode\": 422,\n        \"dataCode\": \"DATA0001\"\n      }\n    ],\n    \"parameters\": {\n      \"key\": \"value\"\n    },\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"output\": {\n      \"type\": \"DataPlatform:Repository:Dataset\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    }\n  },\n  {\n    \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n    \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"transformationName\": \"PDFToText\",\n    \"status\": \"completed\",\n    \"createdAt\": \"2021-08-25T15:04:05Z\",\n    \"updatedAt\": \"2021-08-25T15:04:05Z\",\n    \"errors\": [\n      {\n        \"type\": \"ExtractorError\",\n        \"message\": \"Error message\",\n        \"httpCode\": 422,\n        \"dataCode\": \"DATA0001\"\n      },\n      {\n        \"type\": \"ExtractorError\",\n        \"message\": \"Error message\",\n        \"httpCode\": 422,\n        \"dataCode\": \"DATA0001\"\n      }\n    ],\n    \"parameters\": {\n      \"key\": \"value\"\n    },\n    \"metadata\": {\n      \"key\": \"value\"\n    },\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"output\": {\n      \"type\": \"DataPlatform:Repository:Dataset\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75996175-68b4-4d8b-b57e-4a63bbd1bd65",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "546278cd-ef7f-4c48-8227-8e17c1cfbfa5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b8d7fcc-1edb-40d4-9b66-64902fad05a9",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c4309ac-8ad7-406e-9ae3-fe495f07cd9d",
+              "name": "Request Entity Too Large",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "transformations",
+                    ":transformationID",
+                    "runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "transformationID",
+                      "description": "(Required) Unique identifier for the transformation."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  },\n  {\n    \"input\": {\n      \"type\": \"DataPlatform:Stage:File\",\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"version\": null\n    },\n    \"destination\": {\n      \"type\": \"DataPlatform:Repository\",\n      \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mapping\": null\n    },\n    \"connector\": {\n      \"type\": \"DocumentIndex:Collection\",\n      \"collection\": \"my-collection\",\n      \"namespace\": \"my-namespace\"\n    },\n    \"parameters\": {\n      \"key\": \"value\"\n    }\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "99be058d-5d99-4380-813e-c308998c1169",
+    "name": "PhariaData Transformations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.\n\nContact Support:\n Name: PhariaData API Support\n Email: pharia-data@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

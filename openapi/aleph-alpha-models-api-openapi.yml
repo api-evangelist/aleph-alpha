@@ -1,0 +1,493 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Models API
+  version: '1.0'
+  description: 'Operations tagged models across 3 of this provider''s published API definitions: aleph-alpha-pharia-inference-openapi.json, aleph-alpha-pharia-studio-openapi.json, aleph-alpha-responses-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+- url: '{host}/v1/studio'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+- url: '{host}'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: models
+paths:
+  /models/{modelName}/tokenizer:
+    parameters:
+    - name: modelName
+      in: path
+      description: Name of the model
+      required: 'true'
+      schema:
+        type: string
+    servers:
+    - url: '{host}/v1'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      operationId: getModelTokenizer
+      summary: Get the tokenizer of a model
+      description: Returns a representation of the tokenizer that was used to train that model
+      tags:
+      - models
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /models_available:
+    servers:
+    - url: '{host}/v1'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      summary: Available models (Deprecated)
+      deprecated: 'true'
+      description: Will return all currently available models.
+      operationId: availableModels
+      tags:
+      - models
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    hostings:
+                      type: array
+                      items:
+                        type: string
+  /model-settings:
+    servers:
+    - url: '{host}/v1'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      summary: Settings of models
+      description: Only models available to the client will be listed.
+      operationId: modelSettings
+      tags:
+      - models
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    name:
+                      type: string
+                    status:
+                      type: string
+                      enum:
+                      - available
+                      - unavailable
+                      description: "The current availability status of the model. Currently supported states are:\n  - `available`: The model is configured and a matching worker is connected to serve it.\n  - `unavailable`: The model is configured but no worker has shown recent activity to serve it.\n"
+                    description:
+                      type: string
+                    multimodal:
+                      type: boolean
+                      description: Feature flag for whether or not multimodal prompts are available to users.
+                    max_context_size:
+                      type: number
+                      description: The maximum context size of this model.
+                    semantic_embedding:
+                      type: boolean
+                      description: True if this model supports semantic embeddings.
+                    completion_type:
+                      type: string
+                      enum:
+                      - none
+                      - full
+                      description: 'The completion type supported by the model.
+
+
+                        - `none`: The model has not been trained to support completions. Trying to trigger a completion request will lead to a validation error.
+
+                        - `full`: The model has been trained to support completions.
+
+                        '
+                    embedding_type:
+                      type: string
+                      enum:
+                      - none
+                      - raw
+                      - semantic
+                      - instructable
+                      description: 'The embedding type supported by the model.
+
+
+                        - `none`: The model cannot be used for embeddings. The scheduler will reject requests for embeddings to this model.
+
+                        - `raw`: The model has not explicitly been trained to support embeddings. However, it is possible to retrieve the embedding details technically. This option maps to the `/embed` endpoint.
+
+                        - `semantic`: The model has been trained with a switchable set of weights usable for semantic embedding retrieval. This option maps to the `/semantic_embed` endpoint.
+
+                        - `instructable`: The model has been trained to support any custom instruction for embedding retrieval. This option maps to the `/instructable_embed` endpoint.
+
+
+                        This flag replaces `semantic_embedding_enabled` and should always be set. If `embedding_type` is unset, `semantic_embedding_enabled` will take control. If both `embedding_type` and `semantic_embedding_enabled` are used, implausible combinations are rejected.
+
+                        '
+                    aligned:
+                      type: boolean
+                      description: Specifies whether the model is aligned s.t. end users can be warned about the model's limitations.
+                    chat:
+                      type: boolean
+                      description: True if this model is supported by the chat endpoint.
+                    prompt_template:
+                      type: string
+                      description: A prompt template that can be used for this model.
+                    maximum_completion_tokens:
+                      nullable: 'true'
+                      type: number
+                      description: Maximum number of tokens that can be generated by a user request. Not to be confused with the context size which limits the request size including the prompt.
+                    model_card:
+                      nullable: 'true'
+                      type: string
+                      format: uri
+                      description: Link to further information about the model
+  /models:
+    servers:
+    - url: '{host}/v1/studio'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - models
+      summary: Get All Model Cards
+      description: Get all `ModelCard` from the list of models that are available.
+      operationId: get_all_model_cards_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModelCardResponse'
+                type: array
+                title: Response Get All Model Cards Models Get
+      security:
+      - BearerAuth: []
+  /models/complete:
+    servers:
+    - url: '{host}/v1/studio'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    post:
+      tags:
+      - models
+      summary: Complete
+      description: Send a streamed complete request against the inference api. This always sets `stream=True` in the request body.
+      operationId: complete_models_complete_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCompleteRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - BearerAuth: []
+  /models/chat/completions:
+    servers:
+    - url: '{host}/v1/studio'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    post:
+      tags:
+      - models
+      summary: Chat Completion
+      operationId: chat_completion_models_chat_completions_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    Message:
+      properties:
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - role
+      - content
+      title: Message
+      description: Chat message model.
+    ModelCardResponse:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the model
+          examples:
+          - luminous-base-control
+          - llama-3.1-70b-instruct
+        status:
+          type: string
+          enum:
+          - available
+          - unavailable
+          title: Status
+          description: The current availability status of the model. Currently supported states are 'available' and 'unavailable'
+          examples:
+          - available
+          - unavailable
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: A brief description of the model's capabilities and features
+          examples:
+          - A model that can generate text
+        max_context_size:
+          type: integer
+          title: Max Context Size
+          description: The maximum number of tokens the model can process in a single input
+          examples:
+          - 2048
+          - 8192
+        aligned:
+          type: boolean
+          title: Aligned
+          description: ''
+        semantic_embedding:
+          type: boolean
+          title: Semantic Embedding
+          description: Whether the model can generate semantic embeddings
+        worker_type:
+          type: string
+          title: Worker Type
+          description: Type of worker that serves the model. Can either be 'luminous' or 'vllm'. If 'luminous' is set, the model supports advanced completion parameters. If called with these parameters and it is not supported, it will raise an error. This is being deprecated because the Inference API does not expose what worker the model is running on anymore.
+          deprecated: true
+          examples:
+          - vllm
+          - luminous
+          - ''
+        multimodal:
+          type: boolean
+          title: Multimodal
+          description: Whether the model can process multiple types of input data (e.g., text, images)
+        chat:
+          type: boolean
+          title: Chat
+          description: Whether the model is supported by the chat endpoint
+        completion_type:
+          type: string
+          enum:
+          - full
+          - none
+          title: Completion Type
+          description: The completion type supported by the model. It states if the model has not been trained to support completions.
+          examples:
+          - full
+          - none
+        prompt_template:
+          type: string
+          title: Prompt Template
+          description: The prompt template that should be used to prompt the model
+          examples:
+          - "{{instruction}} \n #Output: "
+        category:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Category
+          description: The category of the model
+          examples:
+          - TextGeneration
+        link:
+          type: string
+          title: Link
+          description: The link to the model card
+          examples:
+          - https://api.aleph-alpha.com
+        maximum_completion_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Maximum Completion Tokens
+          description: The maximum number of tokens the model will provide for the output.
+          examples:
+          - 2048
+          - 8192
+      type: object
+      required:
+      - name
+      - status
+      - description
+      - max_context_size
+      - aligned
+      - semantic_embedding
+      - worker_type
+      - multimodal
+      - chat
+      - completion_type
+      - prompt_template
+      - link
+      title: ModelCardResponse
+      description: Response model for model cards.
+    ChatCompletionRequest:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/Message'
+          type: array
+          title: Messages
+        model:
+          type: string
+          title: Model
+        stream:
+          type: boolean
+          title: Stream
+          default: true
+      additionalProperties: true
+      type: object
+      required:
+      - messages
+      - model
+      title: ChatCompletionRequest
+      description: Request model for chat completion.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ModelCompleteRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        prompt:
+          type: string
+          title: Prompt
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - prompt
+      title: ModelCompleteRequest
+      description: Request model for model completion.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    HTTPBearer:
+      type: http
+      scheme: bearer
+x-refined-from:
+- aleph-alpha-pharia-inference-openapi.json
+- aleph-alpha-pharia-studio-openapi.json
+- aleph-alpha-responses-openapi.json
+x-tagGroups:
+- name: PhariaData API
+  tags:
+  - Repositories
+  - Datasets
+  - Stages
+  - Downloads
+  - Transformations
+  - Connectors
+- name: Pharia Search API
+  tags:
+  - Search Store
+  - Document

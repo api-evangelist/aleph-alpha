@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Downloads API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List download records for a specific dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID/downloads",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the repository containing the dataset."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the dataset for which downloads are being listed."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Filters downloads created after the specified date (in ISO 8601 format)."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Filters downloads created before the specified date (in ISO 8601 format)."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of downloads for the specified dataset within a repository. This endpoint supports filtering by date range."
+        },
+        {
+          "info": {
+            "name": "Create a download request for a specific dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID/downloads",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the repository containing the dataset to be downloaded."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the dataset for which the download is being created."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new download request for the specified dataset within a repository. The request can include parameters to define the scope and details of the download."
+        },
+        {
+          "info": {
+            "name": "Retrieve download details by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID/downloads/:downloadID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the repository containing the dataset for the download request."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the dataset for which the download was requested."
+              },
+              {
+                "name": "downloadID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the download request."
+              }
+            ]
+          },
+          "docs": "Fetches details of a specific download request using the unique repository, dataset, and download identifiers. This endpoint provides information about the version, file location, and metadata of the download."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

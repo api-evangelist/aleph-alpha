@@ -1,0 +1,992 @@
+{
+  "item": [
+    {
+      "id": "9eecb33b-5075-4ece-abb4-e3d0cbbba964",
+      "name": "cluster",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "690cd547-d2c2-4b19-bae0-ac43ab9e5e35",
+          "name": "Get available GPU resources",
+          "request": {
+            "name": "Get available GPU resources",
+            "description": {
+              "content": "Retrieve the available GPU resources for the cluster",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cluster",
+                "gpus"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort GPUs ascending (asc) or descending (desc). Ascending is the default."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupBy",
+                  "value": "<string>",
+                  "description": "Group GPUs by profileName or product"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3d7fddcf-4785-4175-8cd7-88b98b75fab9",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "gpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "groupBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"allocatable\": 1344.118955819904,\n    \"capacity\": 5587.401052948131,\n    \"manufacturer\": \"NVIDIA\",\n    \"memory\": \"81920\",\n    \"metadata\": {\n      \"cudaDriverVersion\": \"550.90.07\",\n      \"family\": \"ampere\",\n      \"machine\": \"OpenStack-Nova\"\n    },\n    \"product\": \"NVIDIA-A100-80GB-PCIe\",\n    \"unit\": \"string\",\n    \"profileName\": \"nvidia.com/gpu\"\n  },\n  {\n    \"allocatable\": 9883.693623121542,\n    \"capacity\": 2464.854312782272,\n    \"manufacturer\": \"NVIDIA\",\n    \"memory\": \"81920\",\n    \"metadata\": {\n      \"cudaDriverVersion\": \"550.90.07\",\n      \"family\": \"ampere\",\n      \"machine\": \"OpenStack-Nova\"\n    },\n    \"product\": \"NVIDIA-A100-80GB-PCIe\",\n    \"unit\": \"string\",\n    \"profileName\": \"nvidia.com/gpu\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07a12b14-8cf5-4135-a68e-aae0c7501a4d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "gpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "groupBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c4143c3-b3c9-4948-bf51-c60c7c0f832b",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "gpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "groupBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c796cde-e907-492c-aa2e-929558023ef2",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "gpus"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "groupBy",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8b66743d-a036-4e16-bb47-93be56af1154",
+          "name": "List all cluster nodes",
+          "request": {
+            "name": "List all cluster nodes",
+            "description": {
+              "content": "Retrieve all cluster nodes information",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cluster",
+                "nodes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0b369166-69c7-4ebb-baad-c0ca5034c243",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"arch\": \"arm64\",\n      \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n      \"name\": \"phariaai-worker\",\n      \"os\": \"Debian GNU/Linux 11 (bullseye)\",\n      \"resources\": {\n        \"cpu\": {\n          \"allocatable\": 7405.688902958049,\n          \"capacity\": 2669.8774124807014,\n          \"unit\": \"string\"\n        },\n        \"gpus\": [\n          {\n            \"allocatable\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"capacity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"manufacturer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"memory\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"product\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"profileName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"allocatable\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"capacity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"manufacturer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"memory\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"product\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"profileName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"memory\": {\n          \"allocatable\": 4101.579519672633,\n          \"capacity\": 1740.7996746061194,\n          \"unit\": \"string\"\n        }\n      },\n      \"status\": {\n        \"diskHealthy\": true,\n        \"memoryHealthy\": true,\n        \"ready\": false\n      }\n    },\n    {\n      \"arch\": \"arm64\",\n      \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n      \"name\": \"phariaai-worker\",\n      \"os\": \"Debian GNU/Linux 11 (bullseye)\",\n      \"resources\": {\n        \"cpu\": {\n          \"allocatable\": 543.9610608902434,\n          \"capacity\": 7877.408602006827,\n          \"unit\": \"string\"\n        },\n        \"gpus\": [\n          {\n            \"allocatable\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"capacity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"manufacturer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"memory\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"product\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"profileName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"allocatable\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"capacity\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"manufacturer\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"memory\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"metadata\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"product\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"unit\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"profileName\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"memory\": {\n          \"allocatable\": 8190.852736664853,\n          \"capacity\": 6905.334021681138,\n          \"unit\": \"string\"\n        }\n      },\n      \"status\": {\n        \"diskHealthy\": false,\n        \"memoryHealthy\": false,\n        \"ready\": true\n      }\n    }\n  ],\n  \"limit\": 2379,\n  \"page\": 1006,\n  \"total\": 937\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5b48f5e-f7d9-4074-951c-598f7d29a807",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a35cffdd-3edc-4496-b0fd-739b1fe0f330",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3188671e-a34e-4442-a75b-0dd259204829",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "786b5a61-2143-445a-a209-ab5d615724fd",
+          "name": "Get node taints",
+          "request": {
+            "name": "Get node taints",
+            "description": {
+              "content": "Retrieve the taints of a cluster node",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cluster",
+                "nodes",
+                "taints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "gpu",
+                  "value": "<boolean>",
+                  "description": "Filter nodes with GPU"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort taints ascending (asc) or descending (desc). Ascending is the default."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1f708770-7579-48cc-b8d5-dcc8120e4c61",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    "taints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "gpu",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"effect\": \"NoSchedule\",\n    \"key\": \"nvidia.com/gpu\",\n    \"nodes\": [\n      \"gpu-node-1\",\n      \" gpu-node-2\"\n    ],\n    \"value\": \"present\",\n    \"warning\": \"Deselecting this taint may prevent scheduling on nodes: gpu-node-1, gpu-node-2.\"\n  },\n  {\n    \"effect\": \"NoSchedule\",\n    \"key\": \"nvidia.com/gpu\",\n    \"nodes\": [\n      \"gpu-node-1\",\n      \" gpu-node-2\"\n    ],\n    \"value\": \"present\",\n    \"warning\": \"Deselecting this taint may prevent scheduling on nodes: gpu-node-1, gpu-node-2.\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c54a318-774e-441c-be01-3ca5eb552f61",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    "taints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "gpu",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ecf5ed8-8be5-48c0-80ed-105569e251f8",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    "taints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "gpu",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e857058a-c797-40b8-8083-011c1a0e5a0d",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    "taints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "gpu",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e4c83adc-19e8-4a28-b0dd-a80eb7c5272b",
+          "name": "Get node by name",
+          "request": {
+            "name": "Get node by name",
+            "description": {
+              "content": "Retrieve a cluster node by its name",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cluster",
+                "nodes",
+                ":nodeName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "nodeName",
+                  "description": "(Required) Node name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "931fe89f-1f29-4e37-8fde-c64525d895ed",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    ":nodeName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "nodeName",
+                      "description": "(Required) Node name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"arch\": \"arm64\",\n  \"createdAt\": \"2024-08-19T14:27:00+00:00\",\n  \"name\": \"phariaai-worker\",\n  \"os\": \"Debian GNU/Linux 11 (bullseye)\",\n  \"resources\": {\n    \"cpu\": {\n      \"allocatable\": 5715.067921107318,\n      \"capacity\": 2549.8833799163313,\n      \"unit\": \"string\"\n    },\n    \"gpus\": [\n      {\n        \"allocatable\": 1734.6082959759367,\n        \"capacity\": 6519.585730222466,\n        \"manufacturer\": \"NVIDIA\",\n        \"memory\": \"81920\",\n        \"metadata\": {\n          \"cudaDriverVersion\": \"550.90.07\",\n          \"family\": \"ampere\",\n          \"machine\": \"OpenStack-Nova\"\n        },\n        \"product\": \"NVIDIA-A100-80GB-PCIe\",\n        \"unit\": \"string\",\n        \"profileName\": \"nvidia.com/gpu\"\n      },\n      {\n        \"allocatable\": 6678.868428192951,\n        \"capacity\": 5775.456192402641,\n        \"manufacturer\": \"NVIDIA\",\n        \"memory\": \"81920\",\n        \"metadata\": {\n          \"cudaDriverVersion\": \"550.90.07\",\n          \"family\": \"ampere\",\n          \"machine\": \"OpenStack-Nova\"\n        },\n        \"product\": \"NVIDIA-A100-80GB-PCIe\",\n        \"unit\": \"string\",\n        \"profileName\": \"nvidia.com/gpu\"\n      }\n    ],\n    \"memory\": {\n      \"allocatable\": 304.88988677181084,\n      \"capacity\": 5286.734554191681,\n      \"unit\": \"string\"\n    }\n  },\n  \"status\": {\n    \"diskHealthy\": true,\n    \"memoryHealthy\": false,\n    \"ready\": false\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf4a7648-8423-4d73-858e-8b92c50773a5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    ":nodeName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "nodeName",
+                      "description": "(Required) Node name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3d64652-b288-4bf5-b01e-f76942fc7545",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    ":nodeName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "nodeName",
+                      "description": "(Required) Node name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fdde35f-6710-4248-b63f-914f14fdf93a",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    ":nodeName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "nodeName",
+                      "description": "(Required) Node name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8805bdbe-0f5c-44e2-b0f6-341931de3f7e",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cluster",
+                    "nodes",
+                    ":nodeName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "nodeName",
+                      "description": "(Required) Node name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.pharia.example.com/v1/os",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1c733271-b933-4123-90e5-32464274e420",
+    "name": "PhariaOS Manager Cluster API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.\n\nContact Support:\n Name: Aleph Alpha",
+      "type": "text/plain"
+    }
+  }
+}

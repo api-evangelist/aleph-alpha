@@ -1,0 +1,3502 @@
+{
+  "item": [
+    {
+      "id": "a015c3f0-99f0-41cf-a6d1-3d67313473c7",
+      "name": "Datasets",
+      "description": {
+        "content": "Represents the primary data abstraction within the data platform, serving as a structured collection of data points. Datasets can be either manually uploaded or generated through data transformations, providing a versatile means for organizing, storing, and retrieving data across various use cases.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "53fd9520-461b-4170-bf60-ad1251af5d06",
+          "name": "Retrieve a list of datasets",
+          "request": {
+            "name": "Retrieve a list of datasets",
+            "description": {
+              "content": "Lists all datasets within a specified repository, with options to filter by creation date and labels. Use this endpoint to browse datasets and locate relevant data collections by repository. Returns 404 if the repository does not exist.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<string>",
+                  "description": "Filters datasets created after the specified date (in ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<string>",
+                  "description": "Filters datasets created before the specified date (in ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "label",
+                  "value": "<string>,<string>",
+                  "description": "Filters datasets by one or more labels. Use this to narrow down results to datasets tagged with specific labels."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "The page number to retrieve, used for paginated responses."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "The number of items to include per page in the response."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) The unique identifier of the repository containing the datasets."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8df656bb-504b-4862-9dad-f679c791aac7",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    },
+                    {
+                      "key": "label",
+                      "value": "pharia-finetuning"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the datasets."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasets\": [\n    {\n      \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"name\": \"dataset_name\",\n      \"labels\": [\n        \"label\"\n      ],\n      \"metadata\": \"string\",\n      \"license\": \"string\",\n      \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"totalDatapoints\": 0,\n      \"updatedAt\": \"2024-07-04\",\n      \"createdAt\": \"2024-07-04\"\n    },\n    {\n      \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"name\": \"dataset_name\",\n      \"labels\": [\n        \"label\"\n      ],\n      \"metadata\": \"string\",\n      \"license\": \"string\",\n      \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"totalDatapoints\": 0,\n      \"updatedAt\": \"2024-07-04\",\n      \"createdAt\": \"2024-07-04\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efa26dea-4938-4780-b498-af48a24435ad",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    },
+                    {
+                      "key": "label",
+                      "value": "pharia-finetuning"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the datasets."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ce3428c-cc6b-4bae-b91c-cd632474a27f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    },
+                    {
+                      "key": "label",
+                      "value": "pharia-finetuning"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the datasets."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5daea07-a482-43cf-a30b-0f0941f7b0ef",
+              "name": "Repository not found - The specified repository does not exist",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    },
+                    {
+                      "key": "label",
+                      "value": "pharia-finetuning"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the datasets."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "439a3499-d0e4-45df-9178-42bca25f138a",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-12-31"
+                    },
+                    {
+                      "key": "label",
+                      "value": "pharia-finetuning"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) The unique identifier of the repository containing the datasets."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "227ebea5-aa2e-4ba7-975c-3e70eae0480e",
+          "name": "Create a dataset",
+          "request": {
+            "name": "Create a dataset",
+            "description": {
+              "content": "Adds a new dataset to the specified repository. This endpoint accepts a file containing dataset content in JSON Lines format, along with optional license, metadata, and labels to better classify and describe the dataset.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "sourceData",
+                  "type": "file",
+                  "description": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format."
+                },
+                {
+                  "key": "totalDatapoints",
+                  "value": "<integer>",
+                  "type": "text",
+                  "description": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size."
+                },
+                {
+                  "key": "name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Name assigned to the dataset for identification."
+                },
+                {
+                  "key": "metadata",
+                  "value": "<object>",
+                  "type": "text",
+                  "description": "Additional key-value metadata related to the dataset, used to provide descriptive information and context."
+                },
+                {
+                  "key": "license",
+                  "value": "<object>",
+                  "type": "text",
+                  "description": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL."
+                },
+                {
+                  "key": "labels",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "A comma-separated list of labels associated with the dataset to enhance searchability and classification."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cc8b041e-cc8d-40cd-92f6-16c218bc0b85",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"name\": \"dataset_name\",\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"string\",\n  \"license\": \"string\",\n  \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"totalDatapoints\": 0,\n  \"updatedAt\": \"2024-07-04\",\n  \"createdAt\": \"2024-07-04\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63ed6510-3231-4c40-96e4-ff3be6c3b25b",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffbc1203-6ff1-49cb-a038-8b202d775f6d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6111e66f-c7a6-4ede-aad9-bf152421d943",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9048be0-3ad0-4614-8813-5a3bfeca2835",
+              "name": "UnprocessableEntity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92528d99-48fc-4afa-a804-00f1b491787e",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository in which the dataset will be created."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) File containing dataset content, serialized in JSON Lines format. Each line represents a distinct data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) Total number of data points contained in the dataset, useful for tracking dataset size.",
+                        "type": "text/plain"
+                      },
+                      "key": "totalDatapoints",
+                      "value": "1000",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Name assigned to the dataset for identification.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "pharia-llm-dataset-evaluation",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Additional key-value metadata related to the dataset, used to provide descriptive information and context.",
+                        "type": "text/plain"
+                      },
+                      "key": "metadata",
+                      "value": "{\"source\":\"studio\",\"task\":\"evaluation-pharia-llm-1\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "License information for the dataset, ensuring transparency and regulatory compliance. Recommended licenses include the Open Aleph License (OAL-1.0), Creative Commons CC0, and Open Data Commons PDDL. If included, please provide the license ID and URL.",
+                        "type": "text/plain"
+                      },
+                      "key": "license",
+                      "value": "{\"url\":\"https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "A comma-separated list of labels associated with the dataset to enhance searchability and classification.",
+                        "type": "text/plain"
+                      },
+                      "key": "labels",
+                      "value": "finetuning, pharia, aleph-alpha",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9b562df8-5844-46c5-8cb6-6236d885b67d",
+          "name": "Retrieve a dataset by ID",
+          "request": {
+            "name": "Retrieve a dataset by ID",
+            "description": {
+              "content": "Fetches details of a specific dataset within a repository by its unique identifier. This endpoint provides information about the dataset's metadata, labels, and other properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository containing the dataset."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) Unique identifier of the dataset to be retrieved."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "571e702a-9905-4e10-bc12-c2b979bb5dd4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to be retrieved."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"name\": \"dataset_name\",\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"string\",\n  \"license\": \"string\",\n  \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"totalDatapoints\": 0,\n  \"updatedAt\": \"2024-07-04\",\n  \"createdAt\": \"2024-07-04\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "147c2f83-1cf6-4f0a-b89a-653de996e2fb",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to be retrieved."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b317ddd9-4e18-4d60-a953-272520256ad7",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to be retrieved."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de223331-73f1-45b1-a85d-af06ca0b827e",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to be retrieved."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1af98aa-0fac-4ad5-a52a-010f336be877",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to be retrieved."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ba627ca5-f00c-4f50-8d45-d7cd3095d1fd",
+          "name": "Delete a dataset by ID",
+          "request": {
+            "name": "Delete a dataset by ID",
+            "description": {
+              "content": "Permanently removes a dataset from the specified repository. This operation is irreversible and will delete all associated data points within the dataset.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository containing the dataset to be deleted."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) Unique identifier of the dataset to delete."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9b19575d-779f-42ab-9053-618cab03b36b",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to delete."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73dd3f37-de95-4f23-bbe6-10a856ddfdbc",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to delete."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a9c0b09-90f9-4e5f-a716-f699d2ded32e",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to delete."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f734e72b-ac09-4467-ae39-3af317292749",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be deleted."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to delete."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4278f174-b1c6-4345-aebb-1b67d3fbf183",
+          "name": "Update dataset metadata",
+          "request": {
+            "name": "Update dataset metadata",
+            "description": {
+              "content": "Update the metadata fields of the latest version of a specified dataset within a repository.  This operation allows partial updates to the dataset's metadata, including fields such as name,  labels, totalDatapoints, version, and additional metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) Unique identifier of the dataset to update."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"<string>\",\n  \"totalDatapoints\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fc70a4ba-52ac-4174-98f1-848c26975a31",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"name\": \"dataset_name\",\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"string\",\n  \"license\": \"string\",\n  \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"totalDatapoints\": 0,\n  \"updatedAt\": \"2024-07-04\",\n  \"createdAt\": \"2024-07-04\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e555658f-d39a-40ed-844f-cf22049db8da",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90d02584-cb7a-451b-936e-28b9133c247a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3081efdb-cf23-499e-9607-6ceb3ff472b9",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a671d105-4da4-44e2-83b1-bdb1fd44af6d",
+              "name": "UnprocessableEntity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea9596c4-0efe-437d-a488-feaf8296e459",
+              "name": "Service Unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to update."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset to update."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"<string>\",\n  \"license\": \"<string>\",\n  \"name\": \"dataset_name\",\n  \"totalDatapoints\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "db055fbe-5bc7-4932-8f54-7880de90de59",
+          "name": "Stream dataset data points",
+          "request": {
+            "name": "Stream dataset data points",
+            "description": {
+              "content": "Streams data points of the specified dataset, providing real-time access to its content. This operation allows continuous retrieval of data points in a JSON format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID",
+                "datapoints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<string>",
+                  "description": "Specific version of the dataset to stream. If omitted, the latest version will be streamed by default."
+                },
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<integer>",
+                  "description": "Starting index for streaming data points, used to control where the stream begins."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "<integer>",
+                  "description": "Number of data points to retrieve in the stream, allowing control over the stream length."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository containing the dataset to stream."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c41d17ac-f240-405d-94ed-e7997bc31c56",
+              "name": "Successful data point stream",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "3fa85f64-5717-40f3-8e13-77d862f722b5"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to stream."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Indicates chunked transfer encoding for streaming response.",
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"{\\\"id\\\": \\\"0\\\", \\\"key\\\": \\\"value\\\"}\\n{\\\"id\\\": \\\"1\\\", \\\"key\\\": \\\"another_value\\\"}\\n{\\\"id\\\": \\\"2\\\", \\\"key\\\": \\\"more_data\\\"}\\n\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72c89e4e-c98a-4287-9f09-ac6d879f9791",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "3fa85f64-5717-40f3-8e13-77d862f722b5"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to stream."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6cb4e64a-057e-489d-b88e-7cf79834edd9",
+              "name": "Dataset or repository not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "3fa85f64-5717-40f3-8e13-77d862f722b5"
+                    },
+                    {
+                      "key": "start",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to stream."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8b2000c-6c58-4e2e-8df7-113e22a70763",
+          "name": "Update dataset data points",
+          "request": {
+            "name": "Update dataset data points",
+            "description": {
+              "content": "Uploads new data points to update an existing dataset within the specified repository. This operation replaces the current data points with the new content provided in the request and generate a new version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "repositories",
+                ":repositoryID",
+                "datasets",
+                ":datasetID",
+                "datapoints"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "repositoryID",
+                  "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "datasetID",
+                  "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "sourceData",
+                  "type": "file",
+                  "description": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "145290ef-94bd-489d-95cf-0f18cb545859",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "my_data.jsonl",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasetId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"repositoryId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n  \"name\": \"dataset_name\",\n  \"labels\": [\n    \"label\"\n  ],\n  \"metadata\": \"string\",\n  \"license\": \"string\",\n  \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n  \"totalDatapoints\": 0,\n  \"updatedAt\": \"2024-07-04\",\n  \"createdAt\": \"2024-07-04\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1500c5a8-268c-469c-a9ac-722e01d477c6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "my_data.jsonl",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a70c3ce-ba46-40c8-91c6-a8824208de44",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "my_data.jsonl",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac21fbce-b8cd-4ad3-b21e-dd1b4d9e1882",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "my_data.jsonl",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c24fec0-8017-4b01-ad35-7e1a5421c0bc",
+              "name": "INTERNAL SERVER ERROR",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "repositories",
+                    ":repositoryID",
+                    "datasets",
+                    ":datasetID",
+                    "datapoints"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "repositoryID",
+                      "description": "(Required) Unique identifier of the repository containing the dataset to be updated."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "datasetID",
+                      "description": "(Required) Unique identifier of the dataset from which data points will be streamed."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) A file containing the new dataset content, serialized in JSON Lines format. Each line represents a data point in JSON format.",
+                        "type": "text/plain"
+                      },
+                      "key": "sourceData",
+                      "value": "my_data.jsonl",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "2eb8f013-7463-4fc6-8312-3de7b5b46202",
+    "name": "PhariaData Datasets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.\n\nContact Support:\n Name: PhariaData API Support\n Email: pharia-data@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

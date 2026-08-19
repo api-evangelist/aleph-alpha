@@ -1,0 +1,1393 @@
+openapi: 3.2.0
+info:
+  title: Stateful Responses API
+  version: 0.4.23
+  description: Create, retrieve, and delete responses. Supports streaming and multi-turn conversations via response chaining.
+servers:
+- url: '{host}'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Responses
+  description: Create, retrieve, and delete responses. Supports streaming and multi-turn conversations via response chaining.
+paths:
+  /v1/responses:
+    post:
+      tags:
+      - Responses
+      summary: Post Responses Endpoint
+      description: 'Handle POST /v1/responses - with history reconstruction and storage.
+
+
+        If previous_response_id is provided, reconstructs the conversation history
+
+        and includes it in the request to the backend. Stores the request-response
+
+        pair for future history reconstruction.
+
+
+        Instructions resolution priority:
+
+        1. prompt.id (render template with variables)
+
+        2. explicit instructions field
+
+        3. inherited from previous_response_id
+
+        4. default_system_prompt from config
+
+
+        Supports both streaming (stream=true) and non-streaming modes.
+
+        Supports background mode (background=true) returning 202.'
+      operationId: post_responses_endpoint_v1_responses_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseRequest'
+        required: true
+      responses:
+        '200':
+          description: When `stream=false` (default), returns a JSON response. When `stream=true`, returns Server-Sent Events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: 'Server-Sent Events stream following the OpenAI Responses API format.
+
+
+                  Each event is sent as `data: {json}\n\n` with the following event types:
+
+
+                  - `response.created` — initial response object (status: in_progress)
+
+                  - `response.in_progress` — status update
+
+                  - `response.output_item.added` — new output item added
+
+                  - `response.content_part.added` — new content part added
+
+                  - `response.output_text.delta` — incremental text delta
+
+                  - `response.completed` — final event with complete response object
+
+
+                  The stream ends with `data: [DONE]\n\n`.'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it automatically.
+        '425':
+          description: Too Early
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '501':
+          description: Not Implemented
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - HTTPBearer: []
+  /v1/responses/{response_id}:
+    get:
+      tags:
+      - Responses
+      summary: Get Responses Endpoint
+      description: 'Handle GET /v1/responses/{response_id} - retrieve stored response.
+
+
+        Supports both streaming and non-streaming retrieval.
+
+        For req_* IDs (background requests), checks pending status first.'
+      operationId: get_responses_endpoint_v1_responses__response_id__get
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: response_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Response Id
+      - name: stream
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Stream
+      - name: include_deleted
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Include soft-deleted responses. Admin-only; returns 403 for non-admin callers.
+          default: false
+          title: Include Deleted
+        description: Include soft-deleted responses. Admin-only; returns 403 for non-admin callers.
+      responses:
+        '200':
+          description: When `stream=false` (default), returns a JSON response. When `stream=true`, returns Server-Sent Events.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResponse'
+            text/event-stream:
+              schema:
+                type: string
+                description: 'Server-Sent Events stream following the OpenAI Responses API format.
+
+
+                  Each event is sent as `data: {json}\n\n` with the following event types:
+
+
+                  - `response.created` — initial response object (status: in_progress)
+
+                  - `response.in_progress` — status update
+
+                  - `response.output_item.added` — new output item added
+
+                  - `response.content_part.added` — new content part added
+
+                  - `response.output_text.delta` — incremental text delta
+
+                  - `response.completed` — final event with complete response object
+
+
+                  The stream ends with `data: [DONE]\n\n`.'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          description: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it automatically.
+        '425':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Early
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Implemented
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Gateway
+    delete:
+      tags:
+      - Responses
+      summary: Delete Response Endpoint
+      description: 'Handle DELETE /v1/responses/{response_id} - delete stored response.
+
+
+        If the answer is not found, return 200 anyways.'
+      operationId: delete_response_endpoint_v1_responses__response_id__delete
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: response_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Response Id
+      - name: hard_delete
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Hard Delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          description: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it automatically.
+        '425':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Early
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Implemented
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Gateway
+    patch:
+      tags:
+      - Responses
+      summary: Update Response Endpoint
+      description: Handle PATCH /v1/responses/{response_id} - update a stored response.
+      operationId: update_response_endpoint_v1_responses__response_id__patch
+      security:
+      - HTTPBearer: []
+      parameters:
+      - name: response_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Response Id
+      - name: recovery_from_delete
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Recovery From Delete
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResponse'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '422':
+          description: Validation errors are returned as 400, not 422. This entry exists because FastAPI generates it automatically.
+        '425':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Too Early
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal Server Error
+        '501':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Implemented
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Gateway
+components:
+  schemas:
+    ReasoningSummaryItem:
+      properties:
+        type:
+          type: string
+          const: summary_text
+          title: Type
+        text:
+          type: string
+          title: Text
+      type: object
+      required:
+      - type
+      - text
+      title: ReasoningSummaryItem
+      description: Summary item for reasoning output messages.
+    ErrorDetail:
+      properties:
+        message:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Type
+        param:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+      type: object
+      required:
+      - message
+      - type
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
+    InputItemMcpApprovalRequest:
+      properties:
+        type:
+          type: string
+          const: mcp_approval_request
+          title: Type
+        id:
+          type: string
+          pattern: ^mcpr_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the approval request
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      - id
+      title: InputItemMcpApprovalRequest
+    MCPTool:
+      properties:
+        type:
+          type: string
+          const: mcp
+          title: Type
+          description: Tool type, must be 'mcp'
+        require_approval:
+          type: string
+          enum:
+          - always
+          - never
+          title: Require Approval
+          description: Whether the server requires approval before calling the tool. 'always' means approval is required, 'never' means no approval needed.
+          default: always
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+          description: Optional label for the tool to be used by the server
+        allowed_tools:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Tools
+          description: Optional dict or array of allowed tools that the server can call, keyed by tool name. This can be used to specify which tools the server is allowed to call, and can include additional configuration for each tool.
+        authorization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+          description: Optional authorization information for the server to use when calling the tool. This can include API keys, tokens, or other credentials needed to access the tool.
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional headers to include when the server calls the tool. This can be used to provide additional context or information needed for the tool execution.
+        server_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Description
+          description: Optional description for the server to understand the tool's purpose
+        server_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Url
+          description: Optional URL for the server to call when executing the tool
+      type: object
+      required:
+      - type
+      title: MCPTool
+      description: MCP hosted tool definition (server-executed).
+    ConversationRef:
+      properties:
+        id:
+          type: string
+          title: Id
+      type: object
+      required:
+      - id
+      title: ConversationRef
+      description: Minimal conversation reference embedded in response objects.
+    InputItemMessage:
+      properties:
+        type:
+          type: string
+          const: message
+          title: Type
+        id:
+          anyOf:
+          - type: string
+            pattern: ^msg_[a-zA-Z0-9_-]+$
+          - type: 'null'
+          title: Id
+          description: Unique identifier for messages
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ContentItem'
+            type: array
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Content
+      type: object
+      required:
+      - type
+      title: InputItemMessage
+      description: 'Input item for structured input.
+
+
+        Per Open Responses spec, supports:
+
+        - message type: role + content
+
+        - function_call type: call_id + name + arguments (for history)
+
+        - function_call_output type: call_id + output (tool results)
+
+
+        Fields:
+
+        - id: unique identifier (optional on input, populated on output)
+
+        - status: in_progress, completed, incomplete (optional on input)'
+    ResponseRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+          description: The model to use for this request.
+        input:
+          anyOf:
+          - type: string
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/InputItemMessage'
+              - $ref: '#/components/schemas/InputItemReasoning'
+              - $ref: '#/components/schemas/InputItemFunctionCall'
+              - $ref: '#/components/schemas/InputItemFunctionCallOutput'
+              - $ref: '#/components/schemas/InputItemMcpApprovalRequest'
+              - $ref: '#/components/schemas/InputItemMcpApprovalResponses'
+              - $ref: '#/components/schemas/InputItemMcpListTools'
+              - $ref: '#/components/schemas/InputItemMcpCall'
+              description: Input item type, used to determine the input item schema
+              discriminator:
+                propertyName: type
+                mapping:
+                  function_call: '#/components/schemas/InputItemFunctionCall'
+                  function_call_output: '#/components/schemas/InputItemFunctionCallOutput'
+                  mcp_approval_request: '#/components/schemas/InputItemMcpApprovalRequest'
+                  mcp_approval_response: '#/components/schemas/InputItemMcpApprovalResponses'
+                  mcp_call: '#/components/schemas/InputItemMcpCall'
+                  mcp_list_tools: '#/components/schemas/InputItemMcpListTools'
+                  message: '#/components/schemas/InputItemMessage'
+                  reasoning: '#/components/schemas/InputItemReasoning'
+            type: array
+          title: Input
+          description: Context for the model. May be a string or an array of input items.
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+          description: Additional instructions to guide the model for this request.
+        previous_response_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Previous Response Id
+          description: The ID of the response to use as the prior turn.
+        prompt:
+          anyOf:
+          - $ref: '#/components/schemas/PromptConfig'
+          - type: 'null'
+        temperature:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: 0.0
+          - type: 'null'
+          title: Temperature
+          description: Sampling temperature between 0 and 2.
+        top_p:
+          anyOf:
+          - type: number
+            maximum: 1.0
+            minimum: 0.0
+          - type: 'null'
+          title: Top P
+          description: Nucleus sampling parameter, between 0 and 1.
+        max_output_tokens:
+          anyOf:
+          - type: integer
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Max Output Tokens
+          description: The maximum number of tokens the model may generate.
+        stream:
+          type: boolean
+          title: Stream
+          description: Whether to stream response events as server-sent events.
+          default: false
+        stop:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Stop
+        modify_request:
+          type: boolean
+          title: Modify Request
+          default: true
+        conversation:
+          anyOf:
+          - $ref: '#/components/schemas/ConversationRef'
+          - type: 'null'
+        tools:
+          anyOf:
+          - items:
+              oneOf:
+              - $ref: '#/components/schemas/Function'
+              - $ref: '#/components/schemas/MCPTool'
+              description: Tool type, used to determine the tool schema
+              discriminator:
+                propertyName: type
+                mapping:
+                  function: '#/components/schemas/Function'
+                  mcp: '#/components/schemas/MCPTool'
+            type: array
+          - type: 'null'
+          title: Tools
+          description: A list of tools that the model may call while generating the response.
+        tool_choice:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - required
+            - none
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Tool Choice
+          description: Controls which tool the model should use, if any.
+        parallel_tool_calls:
+          type: boolean
+          title: Parallel Tool Calls
+          description: Whether the model may call multiple tools in parallel.
+          default: true
+        include:
+          anyOf:
+          - items:
+              type: string
+              enum:
+              - message.output_text.logprobs
+              - reasoning.encrypted_content
+            type: array
+          - type: 'null'
+          title: Include
+        store:
+          type: boolean
+          title: Store
+          description: Whether to store the response so it can be retrieved later.
+          default: true
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Key-value pairs for storing additional information about the object.
+        truncation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Truncation
+          description: Controls how the service truncates input exceeding the context window.
+        text:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Text
+          description: Configuration options for text output.
+        presence_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Presence Penalty
+          description: Penalizes new tokens based on whether they appear in the text so far.
+        frequency_penalty:
+          anyOf:
+          - type: number
+            maximum: 2.0
+            minimum: -2.0
+          - type: 'null'
+          title: Frequency Penalty
+          description: Penalizes new tokens based on their frequency in the text so far.
+        top_logprobs:
+          anyOf:
+          - type: integer
+            maximum: 20.0
+            minimum: 0.0
+          - type: 'null'
+          title: Top Logprobs
+          description: Number of most likely tokens to return at each position.
+        max_tool_calls:
+          anyOf:
+          - type: integer
+            exclusiveMinimum: 0.0
+          - type: 'null'
+          title: Max Tool Calls
+          description: The maximum number of tool calls the model may make.
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+          description: The service tier to use for this request.
+        background:
+          type: boolean
+          title: Background
+          description: Whether to run the request in the background and return immediately.
+          default: false
+        reasoning:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Reasoning
+          description: Configuration options for reasoning behavior.
+      type: object
+      required:
+      - model
+      - input
+      title: ResponseRequest
+      description: 'Request for Open Responses API.
+
+
+        Supports MCP hosted tools (server-executed).'
+    InputItemFunctionCall:
+      properties:
+        type:
+          type: string
+          const: function_call
+          title: Type
+        call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Call Id
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      title: InputItemFunctionCall
+      description: Input item for function call (history reconstruction).
+    UsageInfo:
+      properties:
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+      type: object
+      required:
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      title: UsageInfo
+      description: Token usage information.
+    Function:
+      properties:
+        type:
+          type: string
+          const: function
+          title: Type
+          description: Tool type, must be 'function'
+        name:
+          type: string
+          title: Name
+          description: Name of the function tool
+        parameters:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Parameters
+        strict:
+          type: boolean
+          title: Strict
+          default: true
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - type
+      - name
+      title: Function
+      description: Function tool definition (client-executed).
+    InputItemMcpListTools:
+      properties:
+        type:
+          type: string
+          const: mcp_list_tools
+          title: Type
+        id:
+          type: string
+          pattern: ^mcpl_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the MCP list tools
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        tools:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Tools
+      type: object
+      required:
+      - type
+      - id
+      title: InputItemMcpListTools
+    InputItemFunctionCallOutput:
+      properties:
+        type:
+          type: string
+          const: function_call_output
+          title: Type
+        call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Call Id
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+      type: object
+      required:
+      - type
+      title: InputItemFunctionCallOutput
+      description: Input item for function call (history reconstruction).
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
+    InputItemMcpCall:
+      properties:
+        type:
+          type: string
+          const: mcp_call
+          title: Type
+        id:
+          type: string
+          pattern: ^mcp_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the MCP call
+        name:
+          type: string
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+      type: object
+      required:
+      - type
+      - id
+      - name
+      title: InputItemMcpCall
+    ContentItem:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: output_text
+        text:
+          type: string
+          title: Text
+        annotations:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Annotations
+      type: object
+      required:
+      - text
+      title: ContentItem
+      description: 'Content item in response output.
+
+
+        Per Open Responses spec:
+
+        - type: output_text, refusal, etc.
+
+        - text: the actual content
+
+        - annotations: optional metadata'
+    ResponseResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique ID of the response.
+        object:
+          type: string
+          title: Object
+          description: The object type.
+          default: response
+        created_at:
+          type: integer
+          title: Created At
+          description: The Unix timestamp (in seconds) for when the response was created.
+        completed_at:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Completed At
+          description: The Unix timestamp (in seconds) for when the response was completed.
+        status:
+          type: string
+          title: Status
+          description: The status of the response.
+          default: completed
+        incomplete_details:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Incomplete Details
+          description: Details about why the response was incomplete, if applicable.
+        model:
+          type: string
+          title: Model
+          description: The model that generated this response.
+        previous_response_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Previous Response Id
+          description: The ID of the previous response in the conversation chain, if any.
+        instructions:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Instructions
+          description: Additional instructions used to guide the model for this response.
+        output:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/InputItemMessage'
+            - $ref: '#/components/schemas/InputItemReasoning'
+            - $ref: '#/components/schemas/InputItemFunctionCall'
+            - $ref: '#/components/schemas/InputItemFunctionCallOutput'
+            - $ref: '#/components/schemas/InputItemMcpApprovalRequest'
+            - $ref: '#/components/schemas/InputItemMcpApprovalResponses'
+            - $ref: '#/components/schemas/InputItemMcpListTools'
+            - $ref: '#/components/schemas/InputItemMcpCall'
+            description: Input item type, used to determine the input item schema
+            discriminator:
+              propertyName: type
+              mapping:
+                function_call: '#/components/schemas/InputItemFunctionCall'
+                function_call_output: '#/components/schemas/InputItemFunctionCallOutput'
+                mcp_approval_request: '#/components/schemas/InputItemMcpApprovalRequest'
+                mcp_approval_response: '#/components/schemas/InputItemMcpApprovalResponses'
+                mcp_call: '#/components/schemas/InputItemMcpCall'
+                mcp_list_tools: '#/components/schemas/InputItemMcpListTools'
+                message: '#/components/schemas/InputItemMessage'
+                reasoning: '#/components/schemas/InputItemReasoning'
+          type: array
+          title: Output
+          description: The output items generated by the model.
+        error:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Error
+          description: The error that occurred, if the response failed.
+        tools:
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Function'
+            - $ref: '#/components/schemas/MCPTool'
+            description: Tool type, used to determine the tool schema
+            discriminator:
+              propertyName: type
+              mapping:
+                function: '#/components/schemas/Function'
+                mcp: '#/components/schemas/MCPTool'
+          type: array
+          title: Tools
+          description: The tools available to the model during response generation.
+        tool_choice:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - required
+            - none
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Tool Choice
+          description: Controls which tool the model should use, if any.
+        truncation:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Truncation
+          description: How the input was truncated when it exceeded the model context window.
+        parallel_tool_calls:
+          type: boolean
+          title: Parallel Tool Calls
+          description: Whether the model was allowed to call multiple tools in parallel.
+          default: true
+        text:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Text
+          description: Configuration options for text output.
+        top_p:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Top P
+          description: The nucleus sampling parameter used for this response.
+        temperature:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Temperature
+          description: The sampling temperature used for this response.
+        presence_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Presence Penalty
+          description: Penalizes new tokens based on whether they appear in the text so far.
+        frequency_penalty:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Frequency Penalty
+          description: Penalizes new tokens based on their frequency in the text so far.
+        top_logprobs:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Top Logprobs
+          description: Number of most likely tokens returned at each position.
+        reasoning:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Reasoning
+          description: Reasoning configuration and outputs produced for this response.
+        usage:
+          $ref: '#/components/schemas/UsageInfo'
+          description: Token usage statistics for the response.
+        max_output_tokens:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Output Tokens
+          description: The maximum number of tokens the model was allowed to generate.
+        max_tool_calls:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Tool Calls
+          description: The maximum number of tool calls the model was allowed to make.
+        store:
+          type: boolean
+          title: Store
+          description: Whether this response was stored for later retrieval.
+          default: true
+        background:
+          type: boolean
+          title: Background
+          description: Whether this request was run in the background.
+          default: false
+        service_tier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service Tier
+          description: The service tier used for this response.
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Key-value pairs for storing additional information about the response.
+        prompt_cache_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Prompt Cache Key
+          description: A key used to read from or write to the prompt cache.
+        conversation:
+          anyOf:
+          - $ref: '#/components/schemas/ConversationRef'
+          - type: 'null'
+          description: The conversation this response belongs to, if any.
+        safety_identifier:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Safety Identifier
+          description: A stable identifier used for safety monitoring and abuse detection.
+      type: object
+      required:
+      - id
+      - created_at
+      - model
+      - output
+      - usage
+      title: ResponseResponse
+      description: 'Response from Open Responses API.
+
+
+        All fields marked as required in the OpenResponses spec are present here.
+
+        Nullable fields default to None and are serialized as null (not omitted).'
+    InputItemMcpApprovalResponses:
+      properties:
+        type:
+          type: string
+          const: mcp_approval_response
+          title: Type
+        id:
+          type: string
+          pattern: ^mcpa_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the approval response
+        approval_request_id:
+          type: string
+          title: Approval Request Id
+        approve:
+          type: boolean
+          title: Approve
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      - id
+      - approval_request_id
+      - approve
+      title: InputItemMcpApprovalResponses
+    PromptConfig:
+      properties:
+        id:
+          type: string
+          title: Id
+        variables:
+          additionalProperties:
+            type: string
+          type: object
+          title: Variables
+      type: object
+      required:
+      - id
+      title: PromptConfig
+      description: Prompt template configuration.
+    InputItemReasoning:
+      properties:
+        type:
+          type: string
+          const: reasoning
+          title: Type
+        id:
+          type: string
+          pattern: ^rs_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for reasoning messages
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+        content:
+          anyOf:
+          - type: string
+          - items:
+              $ref: '#/components/schemas/ContentItem'
+            type: array
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Content
+        summary:
+          items:
+            $ref: '#/components/schemas/ReasoningSummaryItem'
+          type: array
+          title: Summary
+          description: Reasoning summary items returned by the downstream service.
+      type: object
+      required:
+      - type
+      - id
+      title: InputItemReasoning
+      description: Input item for reasoning type messages.
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

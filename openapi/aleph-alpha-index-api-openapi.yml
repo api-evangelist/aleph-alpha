@@ -1,0 +1,770 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Document Index API
+  version: 0.0.0
+  description: 'The Document Index is a service that provides semantic search over your knowledge base. It
+
+    takes care of the chunking and embedding of your documents, and it keeps these embeddings in
+
+    sync when your documents change.
+
+    '
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1/studio/search'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Index
+  description: Management of search indexes
+paths:
+  /indexes/{namespace}:
+    get:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: List of index configurations in namespace.
+      description: List all index configurations that exist in the given namespace.
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          description: A list of index config names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - index-config-1
+                - index-config-2
+  /indexes/{namespace}/{index}:
+    get:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Get a namespace-wide index configuration.
+      description: Gets the parameters for the given index configuration.
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: An index config
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/indexConfig'
+              example:
+                chunk_size: '384'
+                chunk_overlap: '5'
+                hybrid_index: bm25
+                embedding:
+                  strategy: semantic_embed
+                  model_name: luminous-base
+                  representation: asymmetric
+    put:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Define a namespace-wide index configuration.
+      description: 'Defines a namespace-wide index configuration. Once a configuration is defined it can be assigned
+
+        to the collections of the namespace.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/index'
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/indexConfig'
+            example:
+              chunk_size: '384'
+              chunk_overlap: '5'
+              hybrid_index: bm25
+              embedding:
+                strategy: semantic_embed
+                model_name: luminous-base
+                representation: asymmetric
+      responses:
+        '200':
+          description: No content
+    delete:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Delete a namespace-wide index configuration.
+      description: 'Deletes the index configuration for the given namespace. This is not possible if the index configuration
+
+        is assigned to any collection.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: Index configuration successfully deleted.
+        '409':
+          description: The index configuration cannot be deleted because it is used.
+  /collections/{namespace}/{collection}/indexes:
+    get:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Get path of indexes assigned to the given collection.
+      description: 'Gets a list of paths of indexes that are assigned to the given collections. Details of the index
+
+        (i.e. its parameters) can be retrieved via the /indexes/namespace/index endpoint.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      responses:
+        '200':
+          description: A list of index names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - index_1
+                - index_2
+  /collections/{namespace}/{collection}/indexes/{index}:
+    put:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Assign an existing index config to an existing collection.
+      description: 'Assigns an index config that exists in the same namespace as the collection to the collection.
+
+        All current and future documents of the collection will asynchronously be added to the index and
+
+        will eventually be available for search through the index specific search endpoint
+
+        /collections/{namespace}/{collection}/indexes/{index}/search.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: Index successfully assigned.
+    delete:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Removes an index from collection.
+      description: 'Removes the assigned index from a collection. This makes the search endpoint for this index
+
+        immediately unavailable and deletes asynchronously all data associated to the index.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: Index successfully removed from collection.
+  /collections/{namespace}/{collection}/indexes/{index}/search:
+    post:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Index based search.
+      description: 'Find documents by a query that is much shorter than the actual document.
+
+
+        Note that the embeddings of documents required to find documents through this
+
+        are computed asynchronously, i.e. after a document was successfully
+
+        inserted into a collection it might not immediately be found through this request.
+
+
+        You can filter search results by modality and metadata.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/index'
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/searchQueryParameters'
+            example:
+              query:
+              - modality: text
+                text: Who likes pizza?
+              - modality: image
+                image: <base64_encoded_image>
+              max_results: '5'
+              filters:
+              - with:
+                - modality: text
+              - without:
+                - metadata:
+                    field: colour
+                    equal_to: red
+                - metadata:
+                    field: weight_in_kg
+                    greater_than_or_equal_to: '10'
+                - metadata:
+                    field: weight_in_kg
+                    less_than: '60'
+                - metadata:
+                    field: expiry_date
+                    before: '2024-07-18T14:01:31Z'
+      responses:
+        '200':
+          description: The most similar documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/queryResult'
+  /collections/{namespace}/{collection}/indexes/{index}/export/embedding_projector:
+    get:
+      tags:
+      - Index
+      security:
+      - token: []
+      summary: Exports embeddings in Embedding Projector format.
+      description: 'Exports embeddings from the indexed collection identified by the path. The exported
+
+        file is a ZIP containing two tab-separated value (TSV) files, one with the raw
+
+        embeddings and the other with identifying metadata for each embedding. You can import
+
+        these files into the Embedding Projector to visualise them in a lower dimension.
+
+
+        Exports contain no more than 100,000 embeddings; larger collections will be
+
+        randomly downsampled to meet this contraint. This is the maximum embedding count that
+
+        the Embedding Projector supports.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: The exported ZIP file to download
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+components:
+  schemas:
+    image:
+      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+      required:
+      - modality
+      - bytes
+    imageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    documentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/documentPath'
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/text'
+            - $ref: '#/components/schemas/image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
+    queryResult:
+      description: 'The result for semantic document search.
+
+        An array of document names and content of the found documents in the given collection.
+
+        '
+      type: array
+      items:
+        allOf:
+        - $ref: '#/components/schemas/documentSection'
+        - type: object
+          properties:
+            score:
+              type: number
+              format: float
+              description: 'Search score of the found section, where a higher score indicates a closer match.
+
+                Will be between -1 and 1. A score closer to -1 indicates the section opposes the
+
+                query. A score close 0 suggests the section is unrelated to the query. A score
+
+                close to 1 suggests the section is related to the query. The score depends on
+
+                the index configuration, e.g. the score of a section differs for hybrid and
+
+                non-hybrid indexes. For searches on hybrid indexes, the score can exceed the
+
+                min_score of the query as the min_score only applies to the semantic similarity
+
+                sub-query.
+
+                '
+    documentPath:
+      description: The path to a document. A path uniquely identifies a document among all managed documents.
+      type: object
+      properties:
+        name:
+          description: Name of the document. The name is unique within a collection.
+          type: string
+          maxLength: '512'
+        collection:
+          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
+
+            '
+          type: string
+          maxLength: '100'
+        namespace:
+          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+            for collections. A namespace typically corresponds to an organisation.
+
+            '
+          type: string
+          maxLength: '100'
+    indexConfig:
+      description: 'Represents the configuration of an index. You can assign indexes to collections and use them
+
+        for efficient content-based searching.
+
+        '
+      type: object
+      required:
+      - chunk_size
+      properties:
+        chunk_size:
+          type: integer
+          minimum: '1'
+          maximum: '2046'
+          description: 'The Document Index chunks documents before embedding them. This field specifies
+
+            the maximum number of tokens in a chunk. Chunking adheres to semantic boundaries where
+
+            possible.
+
+            '
+        chunk_overlap:
+          type: integer
+          minimum: '0'
+          maximum: '2045'
+          default: '0'
+          description: 'The Document Index chunks documents before embedding them. This field specifies the
+
+            maximum number of tokens of overlap between consecutive chunks. Chunking adheres to
+
+            semantic boundaries where possible.
+
+            '
+        embedding_type:
+          type: string
+          enum:
+          - symmetric
+          - asymmetric
+          deprecated: 'true'
+          description: 'The embedding representation to embed with. This field is deprecated and will be
+
+            removed in a future version. Use the `embedding` field with the `semantic_embed`
+
+            strategy instead. Note: for backwards compatibility, the Document Index will always
+
+            return this field. For cases where a value for it is not applicable (e.g., with the
+
+            `instructable_embed` embedding strategy, it will return `asymmetric`.
+
+            '
+        hybrid_index:
+          type: string
+          enum:
+          - bm25
+          description: 'If set, the Document Index will maintain a hybrid (i.e. semantic and keyword) index.
+
+            Searches on this index will query both semantic and keyword indexes, combining results
+
+            with Reciprocal Rank Fusion (RRF).
+
+            '
+        embedding:
+          type: object
+          description: 'The embedding configuration, i.e., how to embed chunks of documents in the index. You
+
+            must specify this field (recommended), or the `embedding_type` field (deprecated).
+
+            '
+          oneOf:
+          - type: object
+            description: 'Semantic embed. This is the standard way to embed documents.
+
+              '
+            required:
+            - strategy
+            - model_name
+            - representation
+            properties:
+              strategy:
+                type: string
+                enum:
+                - semantic_embed
+              model_name:
+                type: string
+                description: The name of the model to use for embedding.
+              representation:
+                type: string
+                enum:
+                - symmetric
+                - asymmetric
+                description: 'The representation to use for embedding.
+
+                  Use "symmetric" when the queries and documents are the same, e.g., for classification tasks.
+
+                  Use "asymmetric" when the queries and documents are different, e.g., for search tasks.
+
+                  For more details about the difference between symmetric and asymmetric semantic embeddings,
+
+                  see our blog post: https://www.aleph-alpha.com/luminous-explore-a-model-for-world-class-semantic-representation
+
+                  '
+          - type: object
+            description: 'Instructable embed. This lets you prompt embedding models with custom instructions
+
+              for queries and documents. Steering the model like this can help the model
+
+              understand nuances of your specific data and ultimately lead to embeddings that are
+
+              more useful for your use-case.
+
+              '
+            required:
+            - strategy
+            - model_name
+            properties:
+              strategy:
+                type: string
+                enum:
+                - instructable_embed
+              model_name:
+                type: string
+                description: The name of the model to use for embedding.
+              query_instruction:
+                type: string
+                description: The instruction to use for embedding queries.
+              document_instruction:
+                type: string
+                description: The instruction to use for embedding document chunks.
+    filter:
+      description: 'A logical combination of filter conditions.
+
+        '
+      type: object
+      oneOf:
+      - type: object
+        description: Logical conjunction, i.e. forms the predicate "filterCondition1 AND filterCondition2 AND ..."
+        properties:
+          with:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical conjunction of negations, i.e. forms the predicate "(NOT filterCondition1) AND (NOT filterCondition2) AND ..."
+        properties:
+          without:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical disjunction, i.e. forms the predicate "filterCondition1 OR filterCondition2 OR ..."
+        properties:
+          withOneOf:
+            $ref: '#/components/schemas/filterConditions'
+    text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+      required:
+      - modality
+      - text
+    searchQueryParameters:
+      description: 'The parameters for finding document sections within a collection based on a semantic search.
+
+        '
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/query'
+        max_results:
+          type: integer
+          description: Maximum number of found documents to return. Default 1.
+        min_score:
+          type: number
+          format: float
+          description: 'Filter out results with a cosine similarity score below this value. Scores range from -1 to 1.
+
+            For searches on hybrid indexes, the Document Index applies the min_score to the semantic results
+
+            before fusion of result sets. As fusion re-scores results, returned scores may exceed this value.
+
+            '
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/filter'
+          description: 'A filter for search results that restricts the results to those document sections that match the filter criteria.
+
+            The individual conditions of this array are AND-combined (i.e. all conditions must match). This can for example be
+
+            used to restrict the returned sections based on their modality (i.e. image or text), or on their metadata.
+
+            '
+      required:
+      - query
+    filterConditions:
+      type: array
+      description: 'A collection of filter conditions that are combined according to the parent filter combinator.
+
+        '
+      items:
+        oneOf:
+        - type: object
+          description: 'Matches sections that have at least one item with the given modality.
+
+            '
+          properties:
+            modality:
+              type: string
+              enum:
+              - text
+              - image
+        - type: object
+          description: 'Matches sections whose metadata fields match the given condition. You must specify the field, and can only specify
+
+            a single condition.
+
+            '
+          properties:
+            metadata:
+              type: object
+              required:
+              - field
+              properties:
+                field:
+                  $ref: '#/components/schemas/metadataFilterField'
+                greater_than:
+                  type: number
+                  format: double
+                greater_than_or_equal_to:
+                  type: number
+                  format: double
+                less_than:
+                  type: number
+                  format: double
+                less_than_or_equal_to:
+                  type: number
+                  format: double
+                after:
+                  type: string
+                  format: date-time
+                at_or_after:
+                  type: string
+                  format: date-time
+                before:
+                  type: string
+                  format: date-time
+                at_or_before:
+                  type: string
+                  format: date-time
+                equal_to:
+                  type:
+                  - string
+                  - integer
+                  - boolean
+                is_null:
+                  type: boolean
+                  description: 'This condition matches all metadata fields with a value of null.
+
+                    The only allowed value for this condition is true.
+
+                    '
+              oneOf:
+              - required:
+                - greater_than
+              - required:
+                - greater_than_or_equal_to
+              - required:
+                - less_than
+              - required:
+                - less_than_or_equal_to
+              - required:
+                - after
+              - required:
+                - at_or_after
+              - required:
+                - before
+              - required:
+                - at_or_before
+              - required:
+                - equal_to
+              - required:
+                - is_null
+    metadataFilterField:
+      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
+
+        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+        The maximum length of the field name is 1000 characters.
+
+        '
+      type: string
+      maxLength: '1000'
+      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
+    query:
+      description: 'Represents a query as is an array of text and image elements.
+
+        '
+      type: array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/text'
+        - $ref: '#/components/schemas/image'
+    textCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+  parameters:
+    collection:
+      description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
+
+        only a single collection can be searched with a single search/lookup request. The name of the collection
+
+        must be unique within a namespace.
+
+        Collections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        then 100 characters.
+
+        '
+      name: collection
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: wikipedia-de
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

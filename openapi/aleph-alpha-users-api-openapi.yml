@@ -1,0 +1,108 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Users API
+  version: 4.7.0
+  description: Access and interact with Aleph Alpha models and functionality over HTTP endpoints.
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: users
+paths:
+  /users/login:
+    post:
+      summary: Login with email and password
+      description: 'This should not be used by most API consumers, who should generate API tokens using the login page and use bearer authentication.
+
+        This endpoint allows bootstrapping the API via login to generate more API tokens.
+
+        '
+      tags:
+      - users
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: the email address
+                password:
+                  type: string
+                  description: the password
+              required:
+              - email
+              - password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+  /users/me:
+    get:
+      tags:
+      - users
+      summary: Get settings for own user
+      description: 'Returns details of this user. Can be called by a user which has access to this user id or by an admin for any user.
+
+        '
+      security:
+      - token: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+components:
+  schemas:
+    UserDetail:
+      type: object
+      required:
+      - id
+      - email
+      - role
+      - credits_remaining
+      - invoice_allowed
+      - out_of_credits_threshold
+      - terms_of_service_version
+      properties:
+        id:
+          type: number
+          description: User ID
+        email:
+          type: string
+          description: Email address of the user
+        role:
+          type: string
+          description: Role of the user
+        credits_remaining:
+          type: number
+          description: Unused and always 0. Maintained for backwards compatibility. In the past a positive number indicated the credits a pre-paid user had still available and a negative number the amount of credits the user would be billed for.
+        invoice_allowed:
+          type: boolean
+          description: Unused and always true. Maintained for backwards compatibility. In the past this attribute indicated whether the user would be billed for using the API or be using pre-paid credits.
+        out_of_credits_threshold:
+          type: integer
+          description: Unused and always 0 for reasons of backwards compatibility. In the past this attribute controlled then a user was notified about buying more credits for the SaaS offering.
+        terms_of_service_version:
+          type: string
+          description: Version string of the terms of service that the user has accepted
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

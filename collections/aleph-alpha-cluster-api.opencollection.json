@@ -1,0 +1,110 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaOS Manager Cluster API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "cluster",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get available GPU resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/cluster/gpus",
+            "params": [
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort GPUs ascending (asc) or descending (desc). Ascending is the default."
+              },
+              {
+                "name": "groupBy",
+                "value": "",
+                "type": "query",
+                "description": "Group GPUs by profileName or product"
+              }
+            ]
+          },
+          "docs": "Retrieve the available GPU resources for the cluster"
+        },
+        {
+          "info": {
+            "name": "List all cluster nodes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/cluster/nodes",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve all cluster nodes information"
+        },
+        {
+          "info": {
+            "name": "Get node taints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/cluster/nodes/taints",
+            "params": [
+              {
+                "name": "gpu",
+                "value": "",
+                "type": "query",
+                "description": "Filter nodes with GPU"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort taints ascending (asc) or descending (desc). Ascending is the default."
+              }
+            ]
+          },
+          "docs": "Retrieve the taints of a cluster node"
+        },
+        {
+          "info": {
+            "name": "Get node by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/cluster/nodes/:nodeName",
+            "params": [
+              {
+                "name": "nodeName",
+                "value": "",
+                "type": "path",
+                "description": "Node name"
+              }
+            ]
+          },
+          "docs": "Retrieve a cluster node by its name"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

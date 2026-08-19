@@ -1,0 +1,168 @@
+{
+  "item": [
+    {
+      "id": "103c8e2b-8b53-41b4-89ab-d41fd8abc761",
+      "name": "steering",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "36f88385-519e-416f-a766-d721c99334dd",
+          "name": "Create a steering concept (BETA)",
+          "request": {
+            "name": "Create a steering concept (BETA)",
+            "description": {
+              "content": "Upload a description of a new steering concept, i.e. a list of negative\nand positive examples. This steering concept can then be used in\ncompletion and chat requests to steer the model's answers.\n\nThis request is idempotent. Sending the same steering concept twice will\nreturn the same ID.\n\nNote: This is a BETA feature and might not be available in your\ninstallation of PhariaAI.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "steering_concepts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"examples\": [\n    {\n      \"negative\": \"<string>\",\n      \"positive\": \"<string>\"\n    },\n    {\n      \"negative\": \"<string>\",\n      \"positive\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "84a22bdd-7ba5-48ef-a2a7-25320402c2aa",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "steering_concepts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"examples\": [\n    {\n      \"negative\": \"I appreciate your valuable feedback on this matter.\",\n      \"positive\": \"Thanks for the real talk, fam.\"\n    },\n    {\n      \"negative\": \"Please ensure all documentation is submitted by the deadline.\",\n      \"positive\": \"Get those papers in ASAP or it's gonna be big yikes.\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "926efcc0-f3ae-41b2-a479-074525b1a586",
+    "name": "Aleph Alpha Steering API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Access and interact with Aleph Alpha models and functionality over HTTP endpoints.\n\nContact Support:\n Email: support@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

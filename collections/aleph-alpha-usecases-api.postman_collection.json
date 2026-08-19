@@ -1,0 +1,3580 @@
+{
+  "item": [
+    {
+      "id": "632a9f13-53f6-48fb-85f7-9ad40cdbc7c3",
+      "name": "usecases",
+      "description": {
+        "content": "**Usecases (Applications)**\n\nUsecases are full-stack end to end AI applications. The application exposes the necessary REST endpoints so\nAI usecases can be consumed and, optionally, a front-end (UI) to interact with the implemented workflows.\n\nOnce you have finished the usecase implementation and have published a Docker image to a registry, it is time to deploy the usecase!\n\nThe endpoints below enable you to create a usecase by providing a name and a description, list all created usecases, retrieve a single usecase by id, and update them.\n\nAlso, most importantly, the API enables you to deploy a created usecase. The deployment of usecases requires some more technical information.\n\n**Deployment**\n\nWe rely on [Kubernetes (K8s)](https://kubernetes.io/docs/home/) to deploy the usecases, which means that they are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/) running in a K8s cluster.\n\nTo deploy usecases you must provide: the registry where the usecase image is located, the image tag (version), the environment variables you wish to inject into the usecase and other K8s configurations parameters, such as `imagePullSecrets`, `autoscaling`, `ingress`, and resource `requests` and `limits` for CPU and memory required to run the usecase. A complete specification is provided further below.\n\nBy default, a usecase is created with the below resources configuration:\n\n```yaml\nresources:\n    requests:\n        cpu: 250m\n        memory: 500Mi\n    limits:\n        cpu: 500m\n        memory: 1Gi\n```\n\nThe API also provides endpoints to track the deployment status to assist in any troubleshooting if required. To retrieve the deployment status, use the endpoints to get a usecase by its ID.\n\n**Consuming usecases**\n\nOnce the deployment is up and running, now it's time to actually consume it! \n\n_1. (Optional) Usecase Ingress_\n\nIf the usecase was deployed with the ingress enabled, the service can be accessed at the URL provided in the deployment status. _Note: this requires that ingress creation is enabled in the PhariaOS API configuration; otherwise, the deployment request will be rejected._\n\n_2. Applications Proxy Server_\n\nThe PhariaOS Applications Proxy Server is available to fulfill the usecases consumption. The applications proxy can be accessed at https://pharia-os-applications.product.pharia.com.\n\nRequests to the proxy are redirected to the usecases by providing the usecase (application) UUID as a URL path parameter, which is **required**.\n\n> The incoming request endpoint to the proxy server is the redirected endpoint to the usecase: \n> `https://pharia-os-applications.product.pharia.com/{applicationId}/summarization -> $internal_use_case_URL/summarization`\n\n**Expected Responses**\n\nA valid request and resource path will return the expected resource in the response.\n\nIf the request path does not include the usecase (application) UUID, one of two responses is expected:\n* If the request path contains only a single part, the response is `BadRequest (400)`.\n* If the request path contains multiple parts, the response is `BadGateway (502)`, as the proxy is unable to validate our route the request to any usecase (application).\n\n**Examples**\n\n1. Sending a `POST` request to the proxy server. The request is targeted to the usecase `execute` endpoint.\n\n```sh\ncurl --request POST \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/execute \\\n  --header 'Content-Type: application/json' \\\n  --data '{\n\t\"question\": \"hello\"\n         }'\n```\n\n2. Sending a `GET` request to the proxy server. The request is targeted to the usecase `health` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/health\n```\n\n3. Sending a `GET` request for the user interface. The request is targeted to the usecase `ui` endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/ui/assets/usecase.js\n```\n\n**Undeployment**\n\nOnce the usecase has fullfilled the purposes and no longer needs to run and consume resources in your K8s cluster, the API provides an endpoint to undeploy the usecase.\n\n**Deleting usecases**\n\nA usecase may be deleted on request only if it is not currently **active** (that is: deployed, deploying, or undeploying). Deletion cleans the usecase and all associated records from the database.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b4af4bf6-58df-4410-8816-897afc751896",
+          "name": "List all usecases",
+          "request": {
+            "name": "List all usecases",
+            "description": {
+              "content": "List all usecases",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "Filter is a JSON string containing filter criteria.\n\nExample: {\"name\":\"test\", \"projectId\":\"project-id\", \"labels\":[\"assistant\",\"ui\"]}\n\nLabels filtering uses OR logic: returns usecases with ANY of the specified labels"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4ba8ebcc-dd16-439a-8022-0f5f33f6e08c",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"createdAt\": \"string\",\n      \"deployment\": {\n        \"createdAt\": \"string\",\n        \"id\": \"string\",\n        \"message\": \"string\",\n        \"status\": \"superseded\",\n        \"url\": \"string\"\n      },\n      \"description\": \"string\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"isPublic\": false,\n      \"labels\": [\n        \"string\",\n        \"string\"\n      ],\n      \"projectId\": \"string\"\n    },\n    {\n      \"createdAt\": \"string\",\n      \"deployment\": {\n        \"createdAt\": \"string\",\n        \"id\": \"string\",\n        \"message\": \"string\",\n        \"status\": \"superseded\",\n        \"url\": \"string\"\n      },\n      \"description\": \"string\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"isPublic\": false,\n      \"labels\": [\n        \"string\",\n        \"string\"\n      ],\n      \"projectId\": \"string\"\n    }\n  ],\n  \"limit\": 81,\n  \"page\": 8774,\n  \"total\": 6107\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3dd9cac6-7c2e-45b9-aa84-55fdb1a0b63b",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5c445e0-d0be-4bef-b8c2-2bfc809f1ab9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0904a3d-50aa-4724-a72e-581f19d40553",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be614de7-6c15-49e5-ab2e-39f8fbb88359",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "15a23c83-fa06-43aa-922b-9cfaebe4ea6f",
+          "name": "Create a new usecase",
+          "request": {
+            "name": "Create a new usecase",
+            "description": {
+              "content": "Create a new usecase",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isPublic\": \"<boolean>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"projectId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da9ac5a6-fb21-4bc4-9629-b28d378a0770",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"string\",\n  \"deployment\": {\n    \"createdAt\": \"string\",\n    \"id\": \"string\",\n    \"message\": \"string\",\n    \"status\": \"undeployed\",\n    \"url\": \"string\"\n  },\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"isPublic\": false,\n  \"labels\": [\n    \"string\",\n    \"string\"\n  ],\n  \"projectId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e4213b6-3762-408b-9536-af1d236a1588",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "75a33654-c069-4222-982a-83691c0f671f",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc55ba05-4283-475f-b2ff-55809b18b255",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "065a5bc1-bed3-4a0b-b7ea-8a1f1bb2b3cc",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e314307c-1aef-43bb-8168-620b2ab0acdf",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c05df4fd-d157-46f6-9814-8a6c4de750a1",
+          "name": "Get usecase by ID",
+          "request": {
+            "name": "Get usecase by ID",
+            "description": {
+              "content": "Retrieve a usecase by its ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3150ea6d-d3f6-44bc-8447-12346b415d91",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"string\",\n  \"deployment\": {\n    \"createdAt\": \"string\",\n    \"id\": \"string\",\n    \"message\": \"string\",\n    \"status\": \"undeployed\",\n    \"url\": \"string\"\n  },\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"isPublic\": false,\n  \"labels\": [\n    \"string\",\n    \"string\"\n  ],\n  \"projectId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0211b251-5f3c-4f78-9cf1-3627450f7e09",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "846788bf-a37e-4616-835c-7f85edcddbfa",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bad13c75-5e1f-4a1a-bfaf-0c007a350dbf",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b75fec76-f017-4009-97ee-9dabcec10c47",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "25e6668d-db41-421f-bff0-8177c07b9a9b",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd3b08df-4c08-440c-a48f-e3889cb9fb30",
+          "name": "Update a usecase",
+          "request": {
+            "name": "Update a usecase",
+            "description": {
+              "content": "Update a usecase",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"isPublic\": \"<boolean>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"projectId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "646dcae7-62c4-4f9f-bdfb-4514b99f675a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"string\",\n  \"deployment\": {\n    \"createdAt\": \"string\",\n    \"id\": \"string\",\n    \"message\": \"string\",\n    \"status\": \"undeployed\",\n    \"url\": \"string\"\n  },\n  \"description\": \"string\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"isPublic\": false,\n  \"labels\": [\n    \"string\",\n    \"string\"\n  ],\n  \"projectId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5595532a-8ec9-4f2b-865a-0b0a915a8d0f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b90f0baa-e4b2-434d-9f12-b5023348238c",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b689b6e9-e113-401a-8e27-af45c17101fe",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9977c95c-98ba-402a-866b-1e417caaa9c1",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a2b3d92-311d-4872-bb1b-4a1da58e4087",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"name\": \"usecase-name\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1c06d2c-2f2a-481a-a7db-bee9b78ec37b",
+          "name": "Delete a usecase",
+          "request": {
+            "name": "Delete a usecase",
+            "description": {
+              "content": "Delete a usecase if it is not active or pending (deployment status: undeployed, error)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "eb3b121f-cfe1-448e-90b9-81e843d9d6e7",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9dd39967-3625-4a37-bdcd-264e57b78225",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "808c1381-f0b3-4495-9a4f-eaef9da7fa67",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30deed49-ed55-4124-8237-e7ed3d47f0e4",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa8b9af7-aa13-4860-a884-53ee1588bce1",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd39cda6-c827-4717-b5c1-acf653e3799a",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"detail\": \"Unprocessable Entity\",\n  \"instance\": \"https://api.example.com/docs/errors/422\",\n  \"status\": 422,\n  \"title\": \"Unprocessable Entity\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e12914a-e16f-4db4-95c6-c244d5bd40bc",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c0d67c16-f150-4075-97b4-57a7062825ba",
+          "name": "Patch a usecase",
+          "request": {
+            "name": "Patch a usecase",
+            "description": {
+              "content": "Patch a usecase",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"<string>\",\n  \"isPublic\": \"<boolean>\",\n  \"labels\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"name\": \"<string>\",\n  \"projectId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "80baf28d-359e-44f9-ad35-044286dcfa0b",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e0be235f-1a85-4697-ba3f-6cfa22f949b1",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9ec63b5-f243-4fab-baac-0c44e9bef980",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f6b3d16-221a-4538-8195-f2e67f71091b",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72e569b2-f689-43f9-ba32-f1379c20cf0b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3b6bc27-6d4d-46b4-bae4-c7a4fb5fe470",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"description\": \"usecase-description\",\n  \"isPublic\": true,\n  \"labels\": [\n    \"assistant\",\n    \"ui\"\n  ],\n  \"name\": \"usecase-name\",\n  \"projectId\": \"project-id\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "755f32f0-38bb-4a42-97ed-044095415e0e",
+          "name": "List all deployments of a usecase",
+          "request": {
+            "name": "List all deployments of a usecase",
+            "description": {
+              "content": "List all deployments of a usecase",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID",
+                "deployments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter",
+                  "value": "<string>",
+                  "description": "DeploymentFilter is a struct that contains the filter fields for the deployment\nexample: {\"status\":\"deployed\"}"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) ID of the usecase"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b590e951-511f-4890-898e-27aa058632bf",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"createdAt\": \"string\",\n      \"id\": \"string\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"url\": \"string\"\n    },\n    {\n      \"createdAt\": \"string\",\n      \"id\": \"string\",\n      \"message\": \"string\",\n      \"status\": \"deployed\",\n      \"url\": \"string\"\n    }\n  ],\n  \"limit\": 6075,\n  \"page\": 7895,\n  \"total\": 3556\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3c942e16-0549-4702-8416-7b060280a1dd",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b55a24ad-9cfa-429e-94fe-30adeb7486bd",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc6a6457-a1be-4a4e-9406-6a0f4b696117",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44fb1e8a-8600-41e7-ae1c-1da4baf41b95",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d98070bf-4e00-40d1-9ed8-721709ca6115",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) ID of the usecase"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a00514ec-8e3e-4140-b155-0c2e7751c80f",
+          "name": "Deploy a usecase",
+          "request": {
+            "name": "Deploy a usecase",
+            "description": {
+              "content": "Triggers a usecase deployment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID",
+                "deployments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"<string>\",\n      \"repository\": \"<string>\",\n      \"tag\": \"<string>\"\n    },\n    \"autoscaling\": {\n      \"enabled\": \"<boolean>\",\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": \"<integer>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"targetUtilization\": \"<integer>\",\n          \"type\": \"<string>\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"20s\"\n      }\n    },\n    \"envVars\": {\n      \"key_0\": \"<string>\"\n    },\n    \"ingress\": {\n      \"enabled\": \"<boolean>\"\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"<string>\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"<string>\"\n      },\n      \"requests\": {\n        \"cpu\": \"<string>\",\n        \"memory\": \"<string>\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"<string>\",\n        \"secret\": {\n          \"key\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      },\n      {\n        \"name\": \"<string>\",\n        \"secret\": {\n          \"key\": \"<string>\",\n          \"name\": \"<string>\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": \"<boolean>\",\n      \"path\": \"<string>\",\n      \"scrapingInterval\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ba759a44-ac58-4ead-ac33-03b7e261c333",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "126136b4-d8c3-432b-970c-c5760b94bea3",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb5f4a97-561b-45af-95d5-1f1e18f81cbf",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7708d9f8-dce6-4132-abd9-a3d7bcfb5ce8",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bb2445c-23e8-4074-8102-b009514c79c3",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04e2ec8d-922c-452d-b7bc-ac7b4e297313",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"detail\": \"Unprocessable Entity\",\n  \"instance\": \"https://api.example.com/docs/errors/422\",\n  \"status\": 422,\n  \"title\": \"Unprocessable Entity\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a779dc90-d15f-4156-9c11-67eebdec5c44",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"image\": {\n      \"registry\": \"docker.io\",\n      \"repository\": \"alephalpha/phariaos-usecase\",\n      \"tag\": \"0.0.1\"\n    },\n    \"autoscaling\": {\n      \"enabled\": true,\n      \"maxReplicas\": 5,\n      \"metrics\": [\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        },\n        {\n          \"targetUtilization\": 70,\n          \"type\": \"cpu\"\n        }\n      ],\n      \"minReplicas\": 1\n    },\n    \"availability\": {\n      \"startup\": {\n        \"initialDelay\": \"30s\"\n      }\n    },\n    \"envVars\": {\n      \"key\": \"value\",\n      \"key2\": \"value2\"\n    },\n    \"ingress\": {\n      \"enabled\": true\n    },\n    \"resources\": {\n      \"limits\": {\n        \"cpu\": \"1000m\",\n        \"gpu\": {\n          \"description\": \"The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)\",\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"memory\": \"512Mi\"\n      },\n      \"requests\": {\n        \"cpu\": \"500m\",\n        \"memory\": \"256Mi\"\n      }\n    },\n    \"secretEnvVars\": [\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      },\n      {\n        \"name\": \"DATABASE_PASSWORD\",\n        \"secret\": {\n          \"key\": \"password\",\n          \"name\": \"usecase-abc123-db-credentials\"\n        }\n      }\n    ],\n    \"serviceMonitor\": {\n      \"enabled\": true,\n      \"path\": \"/custom-metrics\",\n      \"scrapingInterval\": \"60s\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3d11b523-a902-4620-a93e-5e17e4f2e819",
+          "name": "Undeploy a usecase",
+          "request": {
+            "name": "Undeploy a usecase",
+            "description": {
+              "content": "Triggers a usecase undeployment",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID",
+                "deployments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "76b48b3e-f003-4260-82fb-0974030654fc",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3133c94b-eb4b-439a-af7c-78869f9cd617",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6481d808-cb76-4841-9a90-4d351dcb1732",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aac8a3cd-9144-4798-ac82-b98a1622a2bc",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "649f628d-30f4-438f-b999-1b6899b5ed8c",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8347958d-526b-4a95-bbbf-1b84b7b65437",
+              "name": "Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"detail\": \"Unprocessable Entity\",\n  \"instance\": \"https://api.example.com/docs/errors/422\",\n  \"status\": 422,\n  \"title\": \"Unprocessable Entity\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2e6a3e8-3d89-43c1-9bc3-a150266c752e",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "231cbf25-3aaa-449f-b1a1-e65699aa0aae",
+          "name": "Get a usecase deployment by ID",
+          "request": {
+            "name": "Get a usecase deployment by ID",
+            "description": {
+              "content": "Get a usecase deployment by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "usecases",
+                ":usecaseID",
+                "deployments",
+                ":deploymentID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "usecaseID",
+                  "description": "(Required) Usecase ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "deploymentID",
+                  "description": "(Required) Deployment ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "638b27f3-b69f-469f-adf5-29dcfa6a3a0a",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"createdAt\": \"string\",\n  \"id\": \"string\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"url\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20e4ec68-25a3-44f8-b3b6-b1a34822c03b",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 3000,\n  \"detail\": \"Bad Request\",\n  \"instance\": \"https://api.example.com/docs/errors/400\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2396b1e4-0b1d-4f31-a61b-ef9b63b30bba",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1100,\n  \"detail\": \"Unauthorized\",\n  \"instance\": \"https://api.example.com/docs/errors/401\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c6931b6-ee3c-4bba-8ace-a11e4860585e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"detail\": \"Forbidden\",\n  \"instance\": \"https://api.example.com/docs/errors/403\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea828c98-c111-41e3-a115-6c6fc1dab36f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2,\n  \"detail\": \"Not Found\",\n  \"instance\": \"https://api.example.com/docs/errors/404\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b92c4789-ea57-42f7-a9d1-e77cb4de1bd2",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "usecases",
+                    ":usecaseID",
+                    "deployments",
+                    ":deploymentID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "usecaseID",
+                      "description": "(Required) Usecase ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "deploymentID",
+                      "description": "(Required) Deployment ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1,\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"https://api.example.com/docs/errors/500\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.pharia.example.com/v1/os",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "879d251f-b4e1-49b1-a15a-439baf5f2bb6",
+    "name": "PhariaOS Manager Usecases API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.\n\nContact Support:\n Name: Aleph Alpha",
+      "type": "text/plain"
+    }
+  }
+}

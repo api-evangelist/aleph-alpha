@@ -1,0 +1,440 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Stages API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of stages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve in the paginated response (starting from 0)."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of stages to include in each page of results."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to retrieve stages that match the specified name."
+              },
+              {
+                "name": "withSearchStore",
+                "value": "",
+                "type": "query",
+                "description": "Filter stages that have or don't have a search store configured."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of stages in the data platform. Optionally, filters can be applied based on stage name."
+        },
+        {
+          "info": {
+            "name": "Create a new stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/stages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new stage in the data platform with the specified name. This stage can be used to store source files for further data processing.\n\n**Access Policy:** By default, stages are created as private (owner-only access). Admin users can optionally create public stages by setting `accessPolicy: \"public\"`. Public stages grant read-only access to all authenticated users, while write access remains with the owner. Non-admin users attempting to create public stages will receive a 403 Forbidden erro"
+        },
+        {
+          "info": {
+            "name": "Retrieve stage details by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage to be deleted."
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific stage identified by the provided stage ID, including its name, creation date, and last updated date."
+        },
+        {
+          "info": {
+            "name": "Update Stage Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/data/stages/:stageID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the stage to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a stage's configuration including triggers, access policy, and retention policy. This is a partial update operation where only the provided fields will be updated. If triggers are provided, they will completely replace the existing triggers configuration. for updating access policy users must be either admin or owner of the stage."
+        },
+        {
+          "info": {
+            "name": "Delete a specific stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/stages/:stageID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage to be deleted."
+              }
+            ]
+          },
+          "docs": "Permanently deletes the stage identified by the specified stage ID. This action cannot be undone and will remove all associated data with the stage."
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of runs for a stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID/runs",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage to retrieve runs for."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve in the paginated response (starting from 0)."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of runs to include in each page of results."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the runs to filter by."
+              },
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the transformation to filter by."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves a paginated list of runs associated with the specified stage."
+        },
+        {
+          "info": {
+            "name": "Stream real-time run updates for a stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID/runs/events",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage to stream runs for."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve in the paginated response (starting from 0)."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of runs to include in each page of results."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The status of the runs to filter by."
+              },
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the transformation to filter by."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Opens a Server-Sent Events (SSE) connection that streams live run updates for a specific stage.\n\n**SSE Events:**\n- `connected`: Connection established\n- `runs:new`: New runs appeared on the current page\n- `runs:updated`: Existing runs changed status\n- `runs:removed`: Runs fell off the current page window (e.g. pushed out by newer runs)\n- `done`: All currently visible runs reached a terminal state\n- `error`: Stream error occurred\n\nThe stream closes automatically when all runs reach a terminal sta"
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of files in a stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID/files",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve in the paginated response (starting from 0)."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of files to include in each page of results."
+              },
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage from which to list the files."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to retrieve files that match the specified name."
+              },
+              {
+                "name": "createdAfter",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to retrieve files created after the specified date (in ISO 8601 format)."
+              },
+              {
+                "name": "createdBefore",
+                "value": "",
+                "type": "query",
+                "description": "An optional filter to retrieve files created before the specified date (in ISO 8601 format)."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of files stored in the specified stage. Filters can be applied based on file name and creation dates to refine the results."
+        },
+        {
+          "info": {
+            "name": "Create a new file in a stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/stages/:stageID/files",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage where the file will be uploaded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "sourceData",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "ingestionContext",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads a new file to the specified stage. The file's content and optional metadata (such as the file name) can be provided in the request body. When uploading a text or Markdown file to a stage with triggers, keep in mind that the file must be in UTF-8 encoding, with a LF line feed character."
+        },
+        {
+          "info": {
+            "name": "Retrieve the content of a specific file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID/files/:fileID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage where the file is stored."
+              },
+              {
+                "name": "fileID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the file whose content is being retrieved."
+              }
+            ]
+          },
+          "docs": "Fetches the content of a file identified by its unique file ID within the specified stage. This operation returns the raw data of the file."
+        },
+        {
+          "info": {
+            "name": "Update an existing file in a stage",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/data/stages/:stageID/files/:fileID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage containing the file to be updated."
+              },
+              {
+                "name": "fileID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the file to be updated."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "sourceData",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads a new version of the specified file identified by its unique file ID in the given stage. You can provide updated content and an optional new name for the file. Will be generated a new version of a file."
+        },
+        {
+          "info": {
+            "name": "Permanently delete a specific file",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/stages/:stageID/files/:fileID",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the stage from which the file will be deleted."
+              },
+              {
+                "name": "fileID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the file to be deleted."
+              }
+            ]
+          },
+          "docs": "Deletes the file identified by its unique file ID from the specified stage. This action cannot be undone, and all associated data with the file will be permanently removed."
+        },
+        {
+          "info": {
+            "name": "Get a presigned URL for a file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/stages/:stageID/files/:fileID/presigned-url",
+            "params": [
+              {
+                "name": "stageID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the stage containing the file."
+              },
+              {
+                "name": "fileID",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the file to get the presigned URL for."
+              },
+              {
+                "name": "ttl",
+                "value": "",
+                "type": "query",
+                "description": "The time to live of the presigned URL in seconds. Default is 1800 seconds (30 minutes), maximum is 3600 seconds (1 hour)."
+              }
+            ]
+          },
+          "docs": "Generate a presigned URL for secure, time-limited access to a file. The URL can be used to download the file directly from the storage provider without requiring authentication."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

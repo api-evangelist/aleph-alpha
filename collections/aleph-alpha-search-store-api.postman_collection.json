@@ -1,0 +1,1651 @@
+{
+  "item": [
+    {
+      "id": "9d3af9b0-5b4f-40d3-ae3e-de50410a1027",
+      "name": "Search Store",
+      "description": {
+        "content": "A Search Store is a structured data repository optimized for indexing and retrieving searchable entities. It supports full-text search, metadata-based filtering, and relevance ranking. Each Search Store can manage multiple indexed documents, making it ideal for fast, scalable information retrieval across different modalities.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "66df40cd-ee6b-41a8-95f1-a4a8709eeb70",
+          "name": "Create a new Search Store instance for indexing and retrieval.",
+          "request": {
+            "name": "Create a new Search Store instance for indexing and retrieval.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chunkingStrategy\": {\n    \"maxChunkSizeTokens\": \"<integer>\",\n    \"chunkOverlapTokens\": \"<integer>\"\n  },\n  \"embeddingStrategy\": {\n    \"type\": \"<string>\",\n    \"config\": {\n      \"model\": \"<string>\",\n      \"instruction\": {\n        \"document\": \"<string>\",\n        \"query\": \"<string>\"\n      },\n      \"encodingFormat\": \"<string>\",\n      \"dimensions\": \"<integer>\"\n    }\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"metadataSchema\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3da4db88-0b34-40df-889c-b763ce28b1ff",
+              "name": "Successfully created a new search store. Returns the unique ID of\nthe created search store.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"chunkingStrategy\": {\n    \"maxChunkSizeTokens\": \"<integer>\",\n    \"chunkOverlapTokens\": \"<integer>\"\n  },\n  \"embeddingStrategy\": {\n    \"type\": \"<string>\",\n    \"config\": {\n      \"model\": \"qwen3-embedding-8b\",\n      \"instruction\": {\n        \"query\": \"query: {{text}}\",\n        \"document\": \"passage: {{text}}\"\n      },\n      \"encodingFormat\": \"float\",\n      \"dimensions\": 1024\n    }\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"metadataSchema\": {\n    \"approved\": \"boolean\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chunkingStrategy\": {\n    \"maxChunkSizeTokens\": \"<integer>\",\n    \"chunkOverlapTokens\": \"<integer>\"\n  },\n  \"embeddingStrategy\": {\n    \"type\": \"<string>\",\n    \"config\": {\n      \"model\": \"qwen3-embedding-8b\",\n      \"instruction\": {\n        \"query\": \"query: {{text}}\",\n        \"document\": \"passage: {{text}}\"\n      },\n      \"encodingFormat\": \"float\",\n      \"dimensions\": 1024\n    }\n  },\n  \"id\": \"568cf1c0-5251-4210-8b61-d1eff43011b2\",\n  \"createdAt\": \"2025-12-31\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"metadataSchema\": {\n    \"approved\": \"boolean\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5c3f36e-7cb0-402c-8fe7-6a1ba12055be",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"chunkingStrategy\": {\n    \"maxChunkSizeTokens\": \"<integer>\",\n    \"chunkOverlapTokens\": \"<integer>\"\n  },\n  \"embeddingStrategy\": {\n    \"type\": \"<string>\",\n    \"config\": {\n      \"model\": \"qwen3-embedding-8b\",\n      \"instruction\": {\n        \"query\": \"query: {{text}}\",\n        \"document\": \"passage: {{text}}\"\n      },\n      \"encodingFormat\": \"float\",\n      \"dimensions\": 1024\n    }\n  },\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"metadataSchema\": {\n    \"approved\": \"boolean\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46c51634-451c-4560-b37f-b44f3ab2277a",
+          "name": "Lists all search store.",
+          "request": {
+            "name": "Lists all search store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "50",
+                  "description": "The number of items to include per page. A value between 1 and 100."
+                }
+              ],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "131f280a-6883-4b7a-bdac-cdc9d5bba910",
+              "name": "A list of search stores.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"page\": 1,\n  \"size\": 1,\n  \"total\": 10,\n  \"results\": [\n    {\n      \"chunkingStrategy\": {\n        \"maxChunkSizeTokens\": \"<integer>\",\n        \"chunkOverlapTokens\": \"<integer>\"\n      },\n      \"embeddingStrategy\": {\n        \"type\": \"<string>\",\n        \"config\": {\n          \"model\": \"qwen3-embedding-8b\",\n          \"instruction\": {\n            \"query\": \"query: {{text}}\",\n            \"document\": \"passage: {{text}}\"\n          },\n          \"encodingFormat\": \"float\",\n          \"dimensions\": 1024\n        }\n      },\n      \"id\": \"568cf1c0-5251-4210-8b61-d1eff43011b2\",\n      \"createdAt\": \"2025-12-31\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\",\n        \"key_3\": \"<string>\"\n      },\n      \"metadataSchema\": {\n        \"approved\": \"boolean\"\n      }\n    },\n    {\n      \"chunkingStrategy\": {\n        \"maxChunkSizeTokens\": \"<integer>\",\n        \"chunkOverlapTokens\": \"<integer>\"\n      },\n      \"embeddingStrategy\": {\n        \"type\": \"<string>\",\n        \"config\": {\n          \"model\": \"qwen3-embedding-8b\",\n          \"instruction\": {\n            \"query\": \"query: {{text}}\",\n            \"document\": \"passage: {{text}}\"\n          },\n          \"encodingFormat\": \"float\",\n          \"dimensions\": 1024\n        }\n      },\n      \"id\": \"568cf1c0-5251-4210-8b61-d1eff43011b2\",\n      \"createdAt\": \"2025-12-31\",\n      \"metadata\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\",\n        \"key_2\": \"<string>\"\n      },\n      \"metadataSchema\": {\n        \"approved\": \"boolean\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7cbfd0ac-130f-4ba0-ab18-15e22644fe97",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "92582d7a-1b97-4fe0-ba83-ee4c33f5e44e",
+          "name": "Fetch details of a specific Search Store by its ID.",
+          "request": {
+            "name": "Fetch details of a specific Search Store by its ID.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1bcbcb49-5579-4abb-8e3a-b3744a4266dc",
+              "name": "A search store.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chunkingStrategy\": {\n    \"maxChunkSizeTokens\": \"<integer>\",\n    \"chunkOverlapTokens\": \"<integer>\"\n  },\n  \"embeddingStrategy\": {\n    \"type\": \"<string>\",\n    \"config\": {\n      \"model\": \"qwen3-embedding-8b\",\n      \"instruction\": {\n        \"query\": \"query: {{text}}\",\n        \"document\": \"passage: {{text}}\"\n      },\n      \"encodingFormat\": \"float\",\n      \"dimensions\": 1024\n    }\n  },\n  \"id\": \"568cf1c0-5251-4210-8b61-d1eff43011b2\",\n  \"createdAt\": \"2025-12-31\",\n  \"metadata\": {\n    \"key_0\": \"<string>\"\n  },\n  \"metadataSchema\": {\n    \"approved\": \"boolean\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db15d4d7-35f3-420e-acf4-9651b0ad0ef1",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ea10ebf5-dcd1-4063-92e2-1dd88b92af6d",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7fa0c708-5cbf-42fe-ae06-d17c0fc8742c",
+          "name": "Update metadata of an existing Search Store.",
+          "request": {
+            "name": "Update metadata of an existing Search Store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d945a0f2-049a-4f96-b29a-97d39e37d809",
+              "name": "The search store has been updated successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6460591e-1645-4c3c-8722-fbdcfb64aa03",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0d016688-bada-40a5-8166-edd853f153a8",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"metadata\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08726948-5bda-47b3-89f9-751330772ade",
+          "name": "Delete a Search Store and all its associated documents.",
+          "request": {
+            "name": "Delete a Search Store and all its associated documents.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cef61c1a-a605-4584-86ea-39c10a850651",
+              "name": "The search store and all its documents will be deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c3beb2b5-ab71-46ad-ac7e-da469f79c73d",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8de8ab77-3851-46b5-a5a3-ebe2379716db",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f029384a-2ae4-4164-bda0-728f5e7b6016",
+          "name": "Get count of all documents in a Search Store that are currently being embedded or archived.",
+          "request": {
+            "name": "Get count of all documents in a Search Store that are currently being embedded or archived.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "transitioning"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c974bc13-d505-47bc-9b5a-17b87cff65d0",
+              "name": "Number of documents currently being embedded or archived.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "transitioning"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currently_embedding\": 4599,\n  \"currently_archiving\": 1000\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69191646-ba6e-4ef7-b4f6-d9e1929ecbb8",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "transitioning"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4f59c225-ea55-4d64-be0f-7572bf2bbfe4",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "transitioning"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3fe74b3-14c2-45b7-b9c9-e5b8835693b6",
+          "name": "Perform a semantic search within the specified Search Store.",
+          "request": {
+            "name": "Perform a semantic search within the specified Search Store.",
+            "description": {},
+            "url": {
+              "path": [
+                "search_stores",
+                ":searchStoreID",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "searchStoreID",
+                  "description": "(Required) The ID of the search store"
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"filters\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"minScore\": \"<integer>\",\n  \"maxResults\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "86610c87-c1df-4e63-969b-2f548dbea25c",
+              "name": "A list of ranked search results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"filters\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"minScore\": \"<integer>\",\n  \"maxResults\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"documentName\": \"document-123\",\n    \"section\": [\n      {\n        \"modality\": \"text\",\n        \"text\": \"string\"\n      },\n      {\n        \"modality\": \"text\",\n        \"text\": \"string\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 6932,\n      \"position\": 6577\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 7475,\n      \"position\": 1415\n    },\n    \"score\": 2495.359495995544\n  },\n  {\n    \"documentName\": \"document-123\",\n    \"section\": [\n      {\n        \"modality\": \"text\",\n        \"text\": \"string\"\n      },\n      {\n        \"modality\": \"text\",\n        \"text\": \"string\"\n      }\n    ],\n    \"start\": {\n      \"modality\": \"text\",\n      \"item\": 581,\n      \"position\": 1483\n    },\n    \"end\": {\n      \"modality\": \"text\",\n      \"item\": 8888,\n      \"position\": 3750\n    },\n    \"score\": 3927.2740536404904\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3207bc2e-13f8-4e3b-bdc1-fe57c49a8525",
+              "name": "The request was malformed and couldn't be processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"filters\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"minScore\": \"<integer>\",\n  \"maxResults\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "860bf0a6-4e7a-4320-8fb2-c196d4632b53",
+              "name": "A search store with the specified ID was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search_stores",
+                    ":searchStoreID",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "searchStoreID",
+                      "description": "(Required) The ID of the search store"
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": [\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    },\n    {\n      \"modality\": \"<string>\",\n      \"text\": \"<string>\"\n    }\n  ],\n  \"filters\": [\n    \"<object>\",\n    \"<object>\"\n  ],\n  \"minScore\": \"<integer>\",\n  \"maxResults\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ca275897-0c8b-4d3f-ad4b-796e27e5d7fe",
+    "name": "PhariaData Search Store API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.\n\nContact Support:\n Name: PhariaData API Support\n Email: pharia-data@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}

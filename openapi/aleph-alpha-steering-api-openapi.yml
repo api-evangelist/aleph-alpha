@@ -1,0 +1,87 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Steering API
+  version: 4.7.0
+  description: Access and interact with Aleph Alpha models and functionality over HTTP endpoints.
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: steering
+paths:
+  /steering_concepts:
+    post:
+      summary: Create a steering concept (BETA)
+      description: 'Upload a description of a new steering concept, i.e. a list of negative
+
+        and positive examples. This steering concept can then be used in
+
+        completion and chat requests to steer the model''s answers.
+
+
+        This request is idempotent. Sending the same steering concept twice will
+
+        return the same ID.
+
+
+        Note: This is a BETA feature and might not be available in your
+
+        installation of PhariaAI.
+
+        '
+      operationId: create_steering_concept
+      tags:
+      - steering
+      security:
+      - token: []
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSteeringConceptRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSteeringConceptResponse'
+components:
+  schemas:
+    CreateSteeringConceptResponse:
+      type: object
+      example:
+        id: c925b346425c37c380920df3c5f542000d4b54ed3f183313e274328c921879e0
+      properties:
+        id:
+          type: string
+    CreateSteeringConceptRequest:
+      type: object
+      example:
+        examples:
+        - negative: I appreciate your valuable feedback on this matter.
+          positive: Thanks for the real talk, fam.
+        - negative: Please ensure all documentation is submitted by the deadline.
+          positive: Get those papers in ASAP or it's gonna be big yikes.
+      properties:
+        examples:
+          type: array
+          items:
+            type: object
+            properties:
+              negative:
+                type: string
+              positive:
+                type: string
+      required:
+      - examples
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

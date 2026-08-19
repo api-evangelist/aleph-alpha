@@ -1,0 +1,916 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Document API
+  version: '1.0'
+  description: 'Operations tagged Document across 2 of this provider''s published API definitions: aleph-alpha-pharia-data-openapi.json, aleph-alpha-pharia-search-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: '{host}/v1/studio/data'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+- url: '{host}/v1/studio/search'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Document
+  description: A Document represents an individual item stored within a Search Store. Documents can contain content from various modalities, such as text, images, or pre-chunked data.
+paths:
+  /search_stores/{searchStoreID}/documents:
+    servers:
+    - url: '{host}/v1/studio/data'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      summary: Lists the information of documents in a search store.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      - in: path
+        name: startsWith
+        description: Only return documents whose name start with the given prefix.
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: A list of documents.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentInformationPage'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/documents/{documentName}:
+    parameters:
+    - $ref: '#/components/parameters/SearchStoreID'
+    - $ref: '#/components/parameters/DocumentName'
+    servers:
+    - url: '{host}/v1/studio/data'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    put:
+      tags:
+      - Document
+      summary: Upload or update a document in the specified Search Store.
+      parameters:
+      - $ref: '#/components/parameters/SearchStoreID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/DocumentContent'
+              - $ref: '#/components/schemas/DocumentMetadata'
+      responses:
+        '200':
+          description: The document has been added.
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/DocumentInformation'
+                - $ref: '#/components/schemas/DocumentMetadata'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A search store with the specified ID was not found.
+      security:
+      - Bearer: []
+    get:
+      tags:
+      - Document
+      summary: Retrieve a document by name.
+      responses:
+        '200':
+          description: The document's metadata, or `null` if no metadata is available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentInformation'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A resource with the specified name was not found.
+      security:
+      - Bearer: []
+    delete:
+      tags:
+      - Document
+      summary: Remove a document from the search store.
+      responses:
+        '202':
+          description: The document will be deleted asynchronously.
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A resource with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/documents/{documentName}/content:
+    parameters:
+    - $ref: '#/components/parameters/SearchStoreID'
+    - $ref: '#/components/parameters/DocumentName'
+    servers:
+    - url: '{host}/v1/studio/data'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      summary: Get the content of a document by name.
+      responses:
+        '200':
+          description: The content of the document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A resource with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/documents/{documentName}/metadata:
+    parameters:
+    - $ref: '#/components/parameters/SearchStoreID'
+    - $ref: '#/components/parameters/DocumentName'
+    servers:
+    - url: '{host}/v1/studio/data'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    put:
+      tags:
+      - Document
+      summary: Replaces a document's metadata.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedMetadata'
+      responses:
+        '200':
+          description: The metadata of the document has been replaced.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedMetadata'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A resource with the specified ID was not found.
+      security:
+      - Bearer: []
+  /search_stores/{searchStoreID}/documents/{documentName}/chunks:
+    parameters:
+    - $ref: '#/components/parameters/SearchStoreID'
+    - $ref: '#/components/parameters/DocumentName'
+    servers:
+    - url: '{host}/v1/studio/data'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      summary: Get the chunks of a document.
+      responses:
+        '200':
+          description: The list of chunks of the document.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentSection'
+        '400':
+          description: The request was malformed and couldn't be processed.
+        '404':
+          description: A resource with the specified ID was not found.
+      security:
+      - Bearer: []
+  /collections/{namespace}/{collection}/docs:
+    servers:
+    - url: '{host}/v1/studio/search'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: List document information.
+      description: 'Lists the information of documents in a collection. This includes the document name,
+
+        creation timestamp and version number.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - in: query
+        name: max_documents
+        description: Maximum number of documents to fetch
+        schema:
+          type: integer
+          minimum: '0'
+          maximum: '10000'
+          default: '100'
+        required: 'false'
+      - in: query
+        name: starts_with
+        description: Only return documents whose name start with the given prefix.
+        schema:
+          type: string
+        required: 'false'
+      responses:
+        '200':
+          description: A list of document information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/documentInformation'
+  /collections/{namespace}/{collection}/docs/{name}:
+    servers:
+    - url: '{host}/v1/studio/search'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Get a document.
+      description: Get all details of document from namespace and collection by name
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      responses:
+        '200':
+          description: A document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/document'
+              example:
+                schema_version: V1
+                contents:
+                - modality: text
+                  text: Hello, World!
+                metadata:
+                - url: https://example.com/external-uri
+    put:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Insert or update a document.
+      description: 'Inserts a document under the given document path given as namespace/collection/name.
+
+        Note that embeddings required for semantic searches will be computed asynchronously,
+
+        i.e. after a document was successfully
+
+        inserted into a collection it might not immediately be found through a search/lookup request.
+
+        Collections need to be created explicitly before documents can be put into a collection.
+
+        When PUT''ing a document that is already embedded, the original version will disappear
+
+        immediately. The new embeddings of the document will appear asynchronously as if the
+
+        document had never been uploaded.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      requestBody:
+        required: 'true'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/document'
+            example:
+              schema_version: V1
+              contents:
+              - modality: text
+                text: Hello, World!
+              metadata:
+              - url: https://example.com/external-uri
+      responses:
+        '200':
+          description: No content
+    delete:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Delete a document.
+      description: 'Deletes a document identified by the document path given as namespace/collection/name.
+
+        If the delete request returns successfully, the document is deleted, i.e. it cannot be found
+
+        any more neither by document-path nor through search/lookup. However if the delete request
+
+        fails, the document might be deleted eventually.
+
+        '
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      responses:
+        '200':
+          description: No content
+  /collections/{namespace}/{collection}/docs/{name}/versions:
+    servers:
+    - url: '{host}/v1/studio/search'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Get all document versions.
+      description: Get all current and previous document versions in the Document Index together with their creation timestamp
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      responses:
+        '200':
+          description: A list of version numbers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/documentVersion'
+  /collections/{namespace}/{collection}/docs/{name}/versions/{version}:
+    servers:
+    - url: '{host}/v1/studio/search'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Get a specific version of a document.
+      description: Get a specific version of a document
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      - $ref: '#/components/parameters/version'
+      responses:
+        '200':
+          description: A document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/document'
+              example:
+                schema_version: V1
+                contents:
+                - modality: text
+                  text: Hello, World!
+  /collections/{namespace}/{collection}/docs/{name}/indexes/{index}/chunks:
+    servers:
+    - url: '{host}/v1/studio/search'
+      variables:
+        host:
+          default: https://api.pharia.example.com
+    get:
+      tags:
+      - Document
+      security:
+      - token: []
+      summary: Get document chunks for a given index.
+      description: Get all chunks associated with a document in a given index
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      - $ref: '#/components/parameters/collection'
+      - $ref: '#/components/parameters/name'
+      - $ref: '#/components/parameters/index'
+      responses:
+        '200':
+          description: A list of document chunks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/documentSection'
+              example:
+                path:
+                  name: Cope América
+                  collection: Sports
+                  namespace: Sample-Organization
+                section:
+                - modality: text
+                  text: Copa América 2021
+                start:
+                  modality: text
+                  item: '0'
+                  position: '0'
+                end:
+                  modality: text
+                  item: '0'
+                  position: '17'
+components:
+  parameters:
+    PageSize:
+      in: query
+      name: size
+      description: The number of items to include per page. A value between 1 and 100.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+        example: 10
+    collection:
+      description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
+
+        only a single collection can be searched with a single search/lookup request. The name of the collection
+
+        must be unique within a namespace.
+
+        Collections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        then 100 characters.
+
+        '
+      name: collection
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: wikipedia-de
+    DocumentName:
+      in: path
+      name: documentName
+      description: The name of the document
+      required: true
+      schema:
+        type: string
+    name:
+      description: 'Name of the document. The name must be unique within a collection and should not exceed 512 characters.
+
+        '
+      name: name
+      in: path
+      schema:
+        type: string
+        maxLength: '512'
+      required: 'true'
+      example: Climate_change
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+    PageNumber:
+      in: query
+      name: page
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
+    SearchStoreID:
+      in: path
+      name: searchStoreID
+      description: The ID of the search store
+      required: true
+      schema:
+        type: string
+      example: 7d78f98d-1c47-4c0b-8101-41b43b45e2cb
+    version:
+      description: Which version of the document to retrieve.
+      name: version
+      in: path
+      schema:
+        type: integer
+      required: 'true'
+      example: '1'
+  schemas:
+    documentInformation:
+      description: Information about a document
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/documentPath'
+        created:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          minimum: '1'
+    documentVersion:
+      description: 'The version of a document with the creation timestamp.
+
+        '
+      type: object
+      properties:
+        version:
+          type: integer
+        created_timestamp:
+          type: string
+          format: date-time
+        archived_timestamp:
+          type: string
+          format: date-time
+    DocumentInformationPage:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentInformation'
+    ImageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    Text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    NestedMetadata:
+      type: object
+      description: 'Metadata attached to a search store file. This can be useful for storing
+
+        additional structured information.
+
+
+        Keys are strings with a maximum length of 64 characters.
+
+        '
+      additionalProperties:
+        anyOf:
+        - type: string
+        - type: number
+        - type: boolean
+        - type: array
+          items: {}
+        - type: object
+      example:
+        category: research-paper
+        wordCount: 6000
+        peerReviewed: true
+    image:
+      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+      required:
+      - modality
+      - bytes
+    ModalityImage:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        image:
+          type: string
+          example: <base64-encoded-string>
+    documentPath:
+      description: The path to a document. A path uniquely identifies a document among all managed documents.
+      type: object
+      properties:
+        name:
+          description: Name of the document. The name is unique within a collection.
+          type: string
+          maxLength: '512'
+        collection:
+          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
+
+            '
+          type: string
+          maxLength: '100'
+        namespace:
+          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+            for collections. A namespace typically corresponds to an organisation.
+
+            '
+          type: string
+          maxLength: '100'
+    DocumentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        documentName:
+          type: string
+          description: The name of the document this chunk belongs to.
+          example: document-123
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Text'
+            - $ref: '#/components/schemas/Image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+    text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+      required:
+      - modality
+      - text
+    DocumentContent:
+      description: 'Represents a document. The actual content of the document is an array of text and image elements.
+
+        The version field allow to evolve the schema. The documentation here describes only the most recent version.
+
+        '
+      type: object
+      properties:
+        schemaVersion:
+          type: string
+          description: The schema version of the document
+          example: V1
+          enum:
+          - V1
+        contents:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Text'
+            - $ref: '#/components/schemas/Image'
+        metadata:
+          description: 'Store any metadata about the document. Accepts any valid JSON. You can filter search
+
+            results based on these metadata fields using filter indexes.
+
+            '
+    ModalityText:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    imageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    DocumentMetadata:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/NestedMetadata'
+    TextCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+    documentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/documentPath'
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/text'
+            - $ref: '#/components/schemas/image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
+    document:
+      description: 'Represents a document. The actual content of the document is an array of text and image elements.
+
+        The version field allow to evolve the schema. The documentation here describes only the most recent version.
+
+        '
+      type: object
+      properties:
+        schema_version:
+          type: string
+          enum:
+          - V1
+        contents:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/text'
+            - $ref: '#/components/schemas/image'
+        metadata:
+          description: 'Store any metadata about the document. Accepts any valid JSON. You can filter search
+
+            results based on these metadata fields using filter indexes.
+
+            '
+      required:
+      - schema_version
+      - content
+    DocumentInformation:
+      description: Information about a document
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the document
+          example: document-123
+        createdAt:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          minimum: 1
+        metadata:
+          $ref: '#/components/schemas/NestedMetadata'
+    Image:
+      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+    textCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+    Content:
+      type: array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/ModalityText'
+        - $ref: '#/components/schemas/ModalityImage'
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)
+x-refined-from:
+- aleph-alpha-pharia-data-openapi.json
+- aleph-alpha-pharia-search-openapi.json
+x-tagGroups:
+- name: PhariaData API
+  tags:
+  - Repositories
+  - Datasets
+  - Stages
+  - Downloads
+  - Transformations
+  - Connectors
+- name: Pharia Search API
+  tags:
+  - Search Store
+  - Document

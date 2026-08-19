@@ -1,0 +1,305 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Aleph Alpha Document Index API",
+    "version": "0.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Index",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List of index configurations in namespace.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/indexes/:namespace",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "List all index configurations that exist in the given namespace."
+        },
+        {
+          "info": {
+            "name": "Get a namespace-wide index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/indexes/:namespace/:index",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets the parameters for the given index configuration."
+        },
+        {
+          "info": {
+            "name": "Define a namespace-wide index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/indexes/:namespace/:index",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Defines a namespace-wide index configuration. Once a configuration is defined it can be assigned\nto the collections of the namespace.\n"
+        },
+        {
+          "info": {
+            "name": "Delete a namespace-wide index configuration.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/indexes/:namespace/:index",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the index configuration for the given namespace. This is not possible if the index configuration\nis assigned to any collection.\n"
+        },
+        {
+          "info": {
+            "name": "Get path of indexes assigned to the given collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Gets a list of paths of indexes that are assigned to the given collections. Details of the index\n(i.e. its parameters) can be retrieved via the /indexes/namespace/index endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "Assign an existing index config to an existing collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Assigns an index config that exists in the same namespace as the collection to the collection.\nAll current and future documents of the collection will asynchronously be added to the index and\nwill eventually be available for search through the index specific search endpoint\n/collections/{namespace}/{collection}/indexes/{index}/search.\n"
+        },
+        {
+          "info": {
+            "name": "Removes an index from collection.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Removes the assigned index from a collection. This makes the search endpoint for this index\nimmediately unavailable and deletes asynchronously all data associated to the index.\n"
+        },
+        {
+          "info": {
+            "name": "Index based search.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index/search",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Find documents by a query that is much shorter than the actual document.\n\nNote that the embeddings of documents required to find documents through this\nare computed asynchronously, i.e. after a document was successfully\ninserted into a collection it might not immediately be found through this request.\n\nYou can filter search results by modality and metadata.\n"
+        },
+        {
+          "info": {
+            "name": "Exports embeddings in Embedding Projector format.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/search/collections/:namespace/:collection/indexes/:index/export/embedding_projector",
+            "params": [
+              {
+                "name": "namespace",
+                "value": "aleph-alpha",
+                "type": "path",
+                "description": "Namespace for collections of documents. Namespaces support preventing naming conflicts\nfor collections. A namespace typically corresponds to an organisation.\nNamespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and\ncannot be longer than 100 characters.\n"
+              },
+              {
+                "name": "collection",
+                "value": "wikipedia-de",
+                "type": "path",
+                "description": "Collection containing documents. A search/lookup request always refers to a single collection, i.e.\nonly a single collection can be searched with a single search/lookup request. The name of the collection\nmust be unique within a namespace.\nCollections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer\nthen 100 characters.\n"
+              },
+              {
+                "name": "index",
+                "value": "asymmetric",
+                "type": "path",
+                "description": "Index for a collection. Indexes are used for search operations on documents in collections.\nAn index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot\nbe longer than 50 characters.\n"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Exports embeddings from the indexed collection identified by the path. The exported\nfile is a ZIP containing two tab-separated value (TSV) files, one with the raw\nembeddings and the other with identifying metadata for each embedding. You can import\nthese files into the Embedding Projector to visualise them in a lower dimension.\n\nExports contain no more than 100,000 embeddings; larger collections will be\nrandomly downsampled to meet this contraint. This is the maximum embedding count that\nthe Emb"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

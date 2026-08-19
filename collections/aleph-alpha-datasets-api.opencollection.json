@@ -1,0 +1,284 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Datasets API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Datasets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the repository containing the datasets."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "Filters datasets created after the specified date (in ISO 8601 format)."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "Filters datasets created before the specified date (in ISO 8601 format)."
+              },
+              {
+                "name": "label",
+                "value": "",
+                "type": "query",
+                "description": "Filters datasets by one or more labels. Use this to narrow down results to datasets tagged with specific labels."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve, used for paginated responses."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page in the response."
+              }
+            ]
+          },
+          "docs": "Lists all datasets within a specified repository, with options to filter by creation date and labels. Use this endpoint to browse datasets and locate relevant data collections by repository. Returns 404 if the repository does not exist."
+        },
+        {
+          "info": {
+            "name": "Create a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository in which the dataset will be created."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "sourceData",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "metadata",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "license",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "labels",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "totalDatapoints",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Adds a new dataset to the specified repository. This endpoint accepts a file containing dataset content in JSON Lines format, along with optional license, metadata, and labels to better classify and describe the dataset."
+        },
+        {
+          "info": {
+            "name": "Retrieve a dataset by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository containing the dataset."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the dataset to be retrieved."
+              }
+            ]
+          },
+          "docs": "Fetches details of a specific dataset within a repository by its unique identifier. This endpoint provides information about the dataset's metadata, labels, and other properties."
+        },
+        {
+          "info": {
+            "name": "Update dataset metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository containing the dataset to update."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the dataset to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the metadata fields of the latest version of a specified dataset within a repository.  This operation allows partial updates to the dataset's metadata, including fields such as name,  labels, totalDatapoints, version, and additional metadata."
+        },
+        {
+          "info": {
+            "name": "Delete a dataset by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository containing the dataset to be deleted."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the dataset to delete."
+              }
+            ]
+          },
+          "docs": "Permanently removes a dataset from the specified repository. This operation is irreversible and will delete all associated data points within the dataset."
+        },
+        {
+          "info": {
+            "name": "Stream dataset data points",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID/datapoints",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository containing the dataset to stream."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the dataset from which data points will be streamed."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Specific version of the dataset to stream. If omitted, the latest version will be streamed by default."
+              },
+              {
+                "name": "start",
+                "value": "",
+                "type": "query",
+                "description": "Starting index for streaming data points, used to control where the stream begins."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "Number of data points to retrieve in the stream, allowing control over the stream length."
+              }
+            ]
+          },
+          "docs": "Streams data points of the specified dataset, providing real-time access to its content. This operation allows continuous retrieval of data points in a JSON format."
+        },
+        {
+          "info": {
+            "name": "Update dataset data points",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{host}/v1/studio/data/repositories/:repositoryID/datasets/:datasetID/datapoints",
+            "params": [
+              {
+                "name": "repositoryID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the repository containing the dataset to be updated."
+              },
+              {
+                "name": "datasetID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the dataset from which data points will be streamed."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "sourceData",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Uploads new data points to update an existing dataset within the specified repository. This operation replaces the current data points with the new content provided in the request and generate a new version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

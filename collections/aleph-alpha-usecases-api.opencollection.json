@@ -1,0 +1,248 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaOS Manager Usecases API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "usecases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all usecases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/usecases",
+            "params": [
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter is a JSON string containing filter criteria.\n\nExample: {\"name\":\"test\", \"projectId\":\"project-id\", \"labels\":[\"assistant\",\"ui\"]}\n\nLabels filtering uses OR logic: returns usecases with ANY of the specified labels"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all usecases"
+        },
+        {
+          "info": {
+            "name": "Create a new usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pharia.example.com/v1/os/usecases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new usecase"
+        },
+        {
+          "info": {
+            "name": "Get usecase by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ]
+          },
+          "docs": "Retrieve a usecase by its ID"
+        },
+        {
+          "info": {
+            "name": "Update a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a usecase"
+        },
+        {
+          "info": {
+            "name": "Patch a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a usecase"
+        },
+        {
+          "info": {
+            "name": "Delete a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ]
+          },
+          "docs": "Delete a usecase if it is not active or pending (deployment status: undeployed, error)"
+        },
+        {
+          "info": {
+            "name": "List all deployments of a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID/deployments",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "ID of the usecase"
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "DeploymentFilter is a struct that contains the filter fields for the deployment\nexample: {\"status\":\"deployed\"}"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all deployments of a usecase"
+        },
+        {
+          "info": {
+            "name": "Deploy a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID/deployments",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers a usecase deployment"
+        },
+        {
+          "info": {
+            "name": "Undeploy a usecase",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID/deployments",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              }
+            ]
+          },
+          "docs": "Triggers a usecase undeployment"
+        },
+        {
+          "info": {
+            "name": "Get a usecase deployment by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.pharia.example.com/v1/os/usecases/:usecaseID/deployments/:deploymentID",
+            "params": [
+              {
+                "name": "usecaseID",
+                "value": "",
+                "type": "path",
+                "description": "Usecase ID"
+              },
+              {
+                "name": "deploymentID",
+                "value": "",
+                "type": "path",
+                "description": "Deployment ID"
+              }
+            ]
+          },
+          "docs": "Get a usecase deployment by ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

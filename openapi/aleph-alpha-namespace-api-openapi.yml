@@ -1,0 +1,92 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha Document Index Namespace API
+  version: 0.0.0
+  description: 'The Document Index is a service that provides semantic search over your knowledge base. It
+
+    takes care of the chunking and embedding of your documents, and it keeps these embeddings in
+
+    sync when your documents change.
+
+    '
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1/studio/search'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: Namespace
+  description: Management of namespaces
+paths:
+  /namespaces:
+    get:
+      tags:
+      - Namespace
+      security:
+      - token: []
+      summary: List namespaces.
+      description: List all namespaces
+      responses:
+        '200':
+          description: A list of namespace names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                - namespace_1
+                - namespace_2
+  /namespaces/{namespace}:
+    put:
+      tags:
+      - Namespace
+      security:
+      - token: []
+      summary: Create namespace.
+      description: Create namespace
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          description: Namespace successfully created
+    delete:
+      tags:
+      - Namespace
+      security:
+      - token: []
+      summary: Delete namespace.
+      description: Delete namespace. Only possible if there are no collections in the namespace.
+      parameters:
+      - $ref: '#/components/parameters/namespace'
+      responses:
+        '200':
+          description: Namespace successfully deleted
+components:
+  parameters:
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

@@ -5,17 +5,21 @@ source: https://docs.aleph-alpha.com/phariaai-install-config-guide/latest/config
 docs:
 - https://docs.aleph-alpha.com/phariaai-install-config-guide/latest/configuration/mcp-servers.html
 - https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/tool-calling.html
-summary: 'Aleph Alpha ships Model Context Protocol support on both sides of the protocol.
-  PhariaAssistant Chat has native MCP client support and BUNDLES several first-party MCP
-  servers with the PhariaAI distribution; the Stateful Responses API executes MCP tools
-  server-side in an agentic loop on the caller''s behalf. Because PhariaAI is deployed
-  on-premise (or as a per-customer hosted installation), these servers are reached at the
-  customer''s own Pharia domain — Aleph Alpha publishes no single public/remote MCP endpoint
-  URL, so no anonymous tools/list introspection is possible.'
-deployment: bundled-with-product
+summary: Aleph Alpha ships Model Context Protocol support on both sides of the protocol. PhariaAssistant
+  Chat has native MCP client support and BUNDLES several first-party MCP servers with the PhariaAI distribution;
+  the Stateful Responses API executes MCP tools server-side in an agentic loop on the caller's behalf.
+  Because PhariaAI is deployed on-premise (or as a per-customer hosted installation), these servers are
+  reached at the customer's own Pharia domain — Aleph Alpha publishes no single public/remote MCP endpoint
+  URL, so no anonymous tools/list introspection is possible.
+deployment:
+  mode: unclear
+  verified: searched
+  tools: 1
+  checked: '2026-08-12'
+  source: catalog MCP census
 remote_endpoint: null
-remote_endpoint_note: 'No public hosted MCP endpoint is published. MCP servers run inside the
-  customer PhariaAI installation and are enabled through Helm values (pharia-chat.jobInitMcpRegistry.mcpServers).'
+remote_endpoint_note: No public hosted MCP endpoint is published. MCP servers run inside the customer
+  PhariaAI installation and are enabled through Helm values (pharia-chat.jobInitMcpRegistry.mcpServers).
 servers:
 - name: PhariaConductor
   bundled: true
@@ -39,19 +43,20 @@ servers:
   source: https://docs.aleph-alpha.com/phariaai-install-config-guide/latest/configuration/mcp-servers.html
 client_side:
   responses_api:
-    description: 'The Responses API supports server-executed MCP tools — Stateful Responses
-      connects to an MCP endpoint, executes the tool, and feeds the result back to the model
-      in an agentic loop. The LLM backend never sees the tool calls directly.'
+    description: The Responses API supports server-executed MCP tools — Stateful Responses connects to
+      an MCP endpoint, executes the tool, and feeds the result back to the model in an agentic loop. The
+      LLM backend never sees the tool calls directly.
     operation: post_responses_endpoint_v1_responses_post
     source_operation: openapi/aleph-alpha-responses-openapi.json#post_responses_endpoint_v1_responses_post
     docs: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/tool-calling.html
-  configurable_timeouts: 'Configurable timeouts for MCP tool calls were added in PhariaAI v1.260300.0.'
+  configurable_timeouts: Configurable timeouts for MCP tool calls were added in PhariaAI v1.260300.0.
 tools:
-- note: 'Tool names and inputSchemas are not published anonymously. tools/list introspection
-    requires an authenticated PhariaAI installation, so no tool manifest is recorded here
-    rather than a guessed one.'
+- note: Tool names and inputSchemas are not published anonymously. tools/list introspection requires an
+    authenticated PhariaAI installation, so no tool manifest is recorded here rather than a guessed one.
 x-evidence:
   fetched: '2026-08-02'
   probes:
-  - {url: 'https://api.aleph-alpha.com/.well-known/oauth-protected-resource', http_status: 401}
-  - {url: 'https://api.aleph-alpha.com/.well-known/oauth-authorization-server', http_status: 401}
+  - url: https://api.aleph-alpha.com/.well-known/oauth-protected-resource
+    http_status: 401
+  - url: https://api.aleph-alpha.com/.well-known/oauth-authorization-server
+    http_status: 401

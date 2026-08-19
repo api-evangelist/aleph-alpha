@@ -1,0 +1,807 @@
+openapi: 3.2.0
+info:
+  description: A powerful resource management system that oversees the entire lifecycle of resources, from inception to maintenance, while efficiently integrating them with the appropriate PhariaOS. Additionally, this program takes charge of seamless application deployments, ensuring smooth operations throughout.
+  title: PhariaOS Manager V1/models API
+  contact:
+    name: Aleph Alpha
+    url: https://www.aleph-alpha.com
+  version: '1.0'
+servers:
+- url: https://api.pharia.example.com/v1/os
+tags:
+- name: v1/models
+paths:
+  /v1/foundation-models:
+    get:
+      description: List all available foundation models
+      tags:
+      - v1/models
+      summary: List all foundation models
+      parameters:
+      - description: Sort models ascending (asc) or descending (desc). Ascending is the default.
+        name: sort
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/v1.FoundationModelOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /v1/inference-runtimes:
+    get:
+      description: List all available inference runtimes supported to deploy models. Currently the supported inference runtimes are Aleph Alpha authorial Luminous and vLLM
+      tags:
+      - v1/models
+      summary: List all inference runtimes
+      parameters:
+      - description: 'Filter is a struct that contains the filter fields for the Inference Runtimes.
+
+          example: {"supportedModel":"Llama-3.1-8B-Instruct"}'
+        name: filter
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1.InferenceRuntimes'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+  /v1/models:
+    get:
+      description: List all models
+      tags:
+      - v1/models
+      summary: List all models
+      parameters:
+      - description: 'ModelFilter is a struct that contains the filter fields for the model.
+
+          example: {"name":"model-name", "type":"base-model", "inferenceRuntime":"vllm"}'
+        name: filter
+        in: query
+        schema:
+          type: string
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 10
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int
+          default: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1.ModelPaginatedResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    post:
+      description: Create a new model
+      tags:
+      - v1/models
+      summary: Create a new model
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1.ModelOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1.CreateModelRequest'
+        description: Model object that needs to be created
+        required: true
+  /v1/models/{modelID}:
+    get:
+      description: Retrieve a model by its ID
+      tags:
+      - v1/models
+      summary: Get model by ID
+      parameters:
+      - description: Model ID
+        name: modelID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1.ModelOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+    put:
+      description: Update a model
+      tags:
+      - v1/models
+      summary: Update a model
+      parameters:
+      - description: Model ID
+        name: modelID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1.ModelOutput'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1.UpdateModelRequest'
+        description: Model object that needs to be updated
+        required: true
+    delete:
+      description: Delete a model
+      tags:
+      - v1/models
+      summary: Delete a model
+      parameters:
+      - description: Model ID
+        name: modelID
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail401'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail403'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail404'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dtos.ProblemDetail500'
+components:
+  schemas:
+    v1.ModelOutput:
+      type: object
+      required:
+      - createdAt
+      - deployment
+      - id
+      - inferenceRuntime
+      - name
+      - storageURI
+      - type
+      - updatedAt
+      properties:
+        createdAt:
+          type: string
+          example: '2024-08-19T14:27:00+00:00'
+        deployment:
+          $ref: '#/components/schemas/v1.ModelDeploymentOutput'
+        id:
+          type: string
+        inferenceRuntime:
+          description: Model inference runtime. PhariaAI only supports custom (luminous) or vllm.
+          type: string
+          example: vllm
+        metadata:
+          description: Finetuning parameters. Only used for fully-finetuned models.
+          allOf:
+          - $ref: '#/components/schemas/v1.Metadata'
+        name:
+          description: Model unique name.
+          type: string
+          example: pharia-1-llm-7b-control
+        storageURI:
+          description: Where the model weights are stored.
+          type: string
+          example: https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar
+        type:
+          description: Model type.
+          type: string
+          enum:
+          - base-model
+          - fully-finetuned-model
+          example: base-model
+        updatedAt:
+          type: string
+          example: '2024-08-19T14:27:00+00:00'
+    dtos.ProblemDetail400:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 3000
+        detail:
+          type: string
+          example: Bad Request
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/400
+        status:
+          type: integer
+          example: 400
+        title:
+          type: string
+          example: Bad Request
+        type:
+          type: string
+    dtos.ResourceRequest:
+      type: object
+      properties:
+        cpu:
+          description: 'The amount of CPU requested for the deployment. (Example: "500m" for 500 milliCPU)'
+          type: string
+          example: 500m
+        memory:
+          description: 'The amount of memory requested for the deployment. (Example: "256Mi" for 256 MiB of memory)'
+          type: string
+          example: 256Mi
+    deployment.Status:
+      type: string
+      enum:
+      - undeploying
+      - undeployed
+      - deploying
+      - deployed
+      - error
+      - superseded
+      x-enum-varnames:
+      - StatusUndeploying
+      - StatusUndeployed
+      - StatusDeploying
+      - StatusDeployed
+      - StatusError
+      - StatusSuperseded
+    v1.InferenceRuntimes:
+      type: object
+      properties:
+        runtimes:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1.InferenceRuntime'
+    v1.Template:
+      type: object
+      properties:
+        chat:
+          description: Template for chat models.
+          allOf:
+          - $ref: '#/components/schemas/v1.Chat'
+        prompt:
+          description: Template for prompt models
+          type: string
+          maxLength: 2048
+          example: '{% promptrange instruction %}{{instruction}}{% endpromptrange %}
+
+            {% if input %}
+
+            {% promptrange input %}{{input}}{% endpromptrange %}
+
+            {% endif %}'
+    v1.GeneratorConfig:
+      type: object
+      required:
+      - maxContextSize
+      properties:
+        maxContextSize:
+          description: Maximum number of tokens to be processed in a single batch. Changing this value will affect the performance of the model.
+          type: integer
+          minimum: 0
+          example: 2048
+    dtos.ResourceLimit:
+      type: object
+      properties:
+        cpu:
+          description: 'The maximum amount of CPU allowed for the deployment. (Example: "1000m" for 1 CPU)'
+          type: string
+          example: 1000m
+        gpu:
+          description: The number of GPUs requested for the deployment. It is only considered for model deployment. Only necessary to be specified in limits, not requests. (See https://kubernetes.io/docs/tasks/manage-gpus/scheduling-gpus/)
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceGpu'
+        memory:
+          description: 'The maximum amount of memory allowed for the deployment. (Example: "512Mi" for 512 MiB of memory)'
+          type: string
+          example: 512Mi
+    v1.Metadata:
+      type: object
+      required:
+      - baseModel
+      - referenceID
+      properties:
+        baseModel:
+          description: The base model that was used for finetuning.
+          type: string
+          example: pharia-1-llm-7b-control
+        referenceID:
+          description: The ID for the job that created the finetuned model in PhariaFinetuning API.
+          type: string
+          example: Pharia-1-LLM-7B-control-hf_20250415_094007-mex
+    v1.ModelDeploymentConfig:
+      type: object
+      required:
+      - replicas
+      - resources
+      properties:
+        generatorConfig:
+          description: General configuration for how the model should produce outputs.
+          allOf:
+          - $ref: '#/components/schemas/v1.GeneratorConfig'
+        replicas:
+          type: integer
+          minimum: 0
+        resources:
+          $ref: '#/components/schemas/dtos.Resources'
+        templates:
+          description: 'Customisation of templates for chat and prompt models. If prompt template is not provided, the
+
+            default prompt template `{% promptrange instruction %}{{instruction}}{% endpromptrange %}\n{% if input %}\n{% promptrange input %}{{input}}{% endpromptrange %}\n{% endif %}`
+
+            will be used for models different than the foundation models.
+
+            If the model requires chat template, and is not provided, the model won''t be able to be used for chat.'
+          allOf:
+          - $ref: '#/components/schemas/v1.Template'
+        tolerations:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.Toleration'
+    v1.ModelPaginatedResult:
+      type: object
+      required:
+      - data
+      - limit
+      - page
+      - total
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/v1.ModelOutput'
+        limit:
+          type: integer
+        page:
+          type: integer
+        total:
+          type: integer
+    dtos.Toleration:
+      type: object
+      properties:
+        effect:
+          description: Effect if taint is not tolerated.
+          type: string
+          example: NoSchedule
+        key:
+          description: Toleration key name.
+          type: string
+          example: nvidia.com/gpu.present
+        value:
+          description: Toleration value.
+          type: string
+          example: 'true'
+    v1.InferenceRuntime:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          example: vllm
+    dtos.ResourceGpu:
+      type: object
+      properties:
+        name:
+          type: string
+          example: nvidia.com/gpu
+        value:
+          type: integer
+          example: 1
+    dtos.ProblemDetail404:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 2
+        detail:
+          type: string
+          example: Not Found
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/404
+        status:
+          type: integer
+          example: 404
+        title:
+          type: string
+          example: Not Found
+        type:
+          type: string
+    v1.CreateModelRequest:
+      type: object
+      required:
+      - config
+      - inferenceRuntime
+      - name
+      - storageURI
+      - type
+      properties:
+        config:
+          description: Deployment configuration
+          allOf:
+          - $ref: '#/components/schemas/v1.ModelDeploymentConfig'
+        inferenceRuntime:
+          description: Model inference runtime. PhariaAI only supports custom (luminous) or vllm.
+          type: string
+          example: luminous
+        metadata:
+          description: Finetuning parameters. Only used for fully-finetuned models. When type is fully-finetuned-model, this field is required.
+          allOf:
+          - $ref: '#/components/schemas/v1.Metadata'
+        name:
+          description: Model unique name.
+          type: string
+          maxLength: 63
+          example: pharia-1-llm-7b-control
+        storageURI:
+          description: Where the model weights are stored.
+          type: string
+          example: https://alephalpha.jfrog.io/artifactory/model-weights/Pharia-1-LLM-7B-control.tar
+        type:
+          description: Model type.
+          type: string
+          enum:
+          - base-model
+          - fully-finetuned-model
+          example: base-model
+    v1.ModelDeploymentOutput:
+      type: object
+      required:
+      - config
+      - message
+      - status
+      properties:
+        config:
+          description: Deployment resource settings
+          allOf:
+          - $ref: '#/components/schemas/v1.ModelDeploymentConfig'
+        message:
+          description: This field is meant to be populated with any errors that might happen during deployment.
+          type: string
+        status:
+          description: Current deployment status
+          allOf:
+          - $ref: '#/components/schemas/deployment.Status'
+    dtos.Resources:
+      type: object
+      properties:
+        limits:
+          description: Resource limits imposed on the deployment. Must be greater than or equal to requests.
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceLimit'
+        requests:
+          description: Resource requests required for the deployment.
+          allOf:
+          - $ref: '#/components/schemas/dtos.ResourceRequest'
+    dtos.ProblemDetail500:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1
+        detail:
+          type: string
+          example: Internal Server Error
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/500
+        status:
+          type: integer
+          example: 500
+        title:
+          type: string
+          example: Internal Server Error
+        type:
+          type: string
+    v1.UpdateModelRequest:
+      type: object
+      properties:
+        config:
+          description: Deployment configuration
+          allOf:
+          - $ref: '#/components/schemas/v1.ModelDeploymentConfig'
+        inferenceRuntime:
+          description: Model inference runtime
+          type: string
+    v1.Chat:
+      type: object
+      properties:
+        bosToken:
+          description: Beginning of sequence token
+          type: string
+          maxLength: 2048
+          example: <|begin_of_text|>
+        eosToken:
+          description: End of sequence token
+          type: string
+          maxLength: 2048
+          example: <|end_of_text|>
+        prompt:
+          description: Prompt template for chat models
+          type: string
+          maxLength: 2048
+          example: '{% set loop_messages = messages %}{% for message in loop_messages %}{% set content = ''<|start_header_id|>'' + message[''role''] + ''<|end_header_id|>'' + message[''content''] | trim + ''<|eot_id|>'' %}{% if loop.index0 == 0 %}{% set content = bos_token + content %}{% endif %}{{ content }}{% endfor %}{{ ''<|start_header_id|>assistant<|end_header_id|>'' }}'
+    dtos.ProblemDetail403:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1002
+        detail:
+          type: string
+          example: Forbidden
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/403
+        status:
+          type: integer
+          example: 403
+        title:
+          type: string
+          example: Forbidden
+        type:
+          type: string
+    v1.FoundationModelOutput:
+      type: object
+      required:
+      - defaultConfig
+      - displayName
+      - inferenceRuntime
+      - name
+      - storageURI
+      - type
+      properties:
+        defaultConfig:
+          description: Default recommended model settings.
+          allOf:
+          - $ref: '#/components/schemas/v1.ModelDeploymentConfig'
+        displayName:
+          description: Model display name.
+          type: string
+          example: luminous-base
+        inferenceRuntime:
+          description: Model inference runtime.
+          type: string
+          example: luminous
+        name:
+          description: Model name.
+          type: string
+          example: luminous-base
+        storageURI:
+          description: Where the model weights are stored.
+          type: string
+          example: https://alephalpha.jfrog.io/artifactory/model-weights/luminous-base.tar.gz
+        type:
+          description: Model type.
+          type: string
+          enum:
+          - base-model
+          - fully-finetuned-model
+          example: base-model
+    dtos.ProblemDetail401:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 1100
+        detail:
+          type: string
+          example: Unauthorized
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/401
+        status:
+          type: integer
+          example: 401
+        title:
+          type: string
+          example: Unauthorized
+        type:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: Authorization
+      in: header

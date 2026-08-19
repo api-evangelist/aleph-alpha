@@ -1,0 +1,1692 @@
+openapi: 3.2.0
+info:
+  title: PhariaData Stages API
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  contact:
+    name: PhariaData API Support
+    url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
+    email: pharia-data@aleph-alpha.com
+  license:
+    name: Open Aleph License
+  version: 1.0.0
+servers:
+- url: '{host}/v1/studio/data'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- Bearer: []
+tags:
+- name: Stages
+  description: Stages serve as the data platform's entry point for data collection, where source files are securely stored, enabling subsequent transformations and dataset generation. Files can be uploaded directly into stages via the HTTP API or through connectors, which support automated and continuous synchronization with your source systems. Stages provide secure, persistent storage and act as an interface for importing and exporting data files within the platform. To improve data discoverability, comprehension, and quality for end users, the data platform offers datasets as the recommended abstraction for organizing and sharing data.
+paths:
+  /stages:
+    get:
+      tags:
+      - Stages
+      summary: Retrieve a list of stages
+      description: Retrieves a paginated list of stages in the data platform. Optionally, filters can be applied based on stage name.
+      parameters:
+      - name: page
+        in: query
+        description: The page number to retrieve in the paginated response (starting from 0).
+        schema:
+          type: integer
+          example: 0
+      - name: size
+        in: query
+        description: The number of stages to include in each page of results.
+        schema:
+          type: integer
+          example: 10
+      - name: name
+        in: query
+        description: An optional filter to retrieve stages that match the specified name.
+        schema:
+          type: string
+          example: My Stage
+      - name: withSearchStore
+        in: query
+        description: Filter stages that have or don't have a search store configured.
+        schema:
+          type: boolean
+          example: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StageListWithPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+    post:
+      tags:
+      - Stages
+      summary: Create a new stage
+      description: 'Creates a new stage in the data platform with the specified name. This stage can be used to store source files for further data processing.
+
+
+        **Access Policy:** By default, stages are created as private (owner-only access). Admin users can optionally create public stages by setting `accessPolicy: "public"`. Public stages grant read-only access to all authenticated users, while write access remains with the owner. Non-admin users attempting to create public stages will receive a 403 Forbidden error.'
+      requestBody:
+        description: The details required to create a new stage, including the name of the stage. This field is mandatory.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StageCreate'
+            example:
+              name: MyPublicCollection
+              triggers:
+              - transformationName: DocumentToText
+                destinationType: DataPlatform:Repository:CREATE
+                connectorType: DataPlatform:SearchStore:CREATE
+                name: PDFTriggerMyStage
+              retentionPolicy:
+                retentionPeriod: 30
+              accessPolicy: public
+              searchStore:
+                chunkingStrategy:
+                  maxChunkSizeTokens: 500
+                  chunkOverlapTokens: 250
+                embeddingStrategy:
+                  type: vllm
+                  config:
+                    model: qwen3-embedding-8b
+                metadata:
+                  topic: movies
+                metadataSchema:
+                  topic: string
+                  approved: boolean
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StageCreatedResponse'
+              example:
+                stageId: fd8b3886-c8c0-4728-8b66-7922703b1ef5
+                name: MyPublicCollection
+                createdAt: '2026-02-16T13:03:48Z'
+                updatedAt: '2026-02-16T13:03:48Z'
+                triggers:
+                - transformationName: DocumentToText
+                  destinationType: DataPlatform:Repository
+                  connectorType: DataPlatform:SearchStore
+                  name: PDFTriggerMyStage
+                  repositoryId: 815f77f9-6a68-4c42-86a4-9bd603395a49
+                retentionPolicy:
+                  retentionPeriod: 30
+                searchStore:
+                  id: 41804fe6-34b2-4db6-a4b1-dcd50fa7cf6a
+                  chunkingStrategy:
+                    maxChunkSizeTokens: 500
+                    chunkOverlapTokens: 250
+                  embeddingStrategy:
+                    type: vllm
+                    config:
+                      model: qwen3-embedding-8b
+                  metadata:
+                    topic: movies
+                  metadataSchema:
+                    topic: string
+                    approved: boolean
+                accessPolicy: public
+                filesCount: 0
+                ownerId: '316056799180494087'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '403':
+          description: Forbidden - Non-admin user attempted to create a public stage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+  /stages/{stageID}:
+    get:
+      tags:
+      - Stages
+      summary: Retrieve stage details by ID
+      description: Retrieves detailed information about a specific stage identified by the provided stage ID, including its name, creation date, and last updated date.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage to be deleted.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stage'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+    delete:
+      tags:
+      - Stages
+      summary: Delete a specific stage
+      description: Permanently deletes the stage identified by the specified stage ID. This action cannot be undone and will remove all associated data with the stage.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage to be deleted.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+    patch:
+      tags:
+      - Stages
+      summary: Update Stage Configuration
+      description: Updates a stage's configuration including triggers, access policy, and retention policy. This is a partial update operation where only the provided fields will be updated. If triggers are provided, they will completely replace the existing triggers configuration. for updating access policy users must be either admin or owner of the stage.
+      parameters:
+      - name: stageID
+        in: path
+        description: Unique identifier of the stage to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      requestBody:
+        description: Stage update configuration. All fields are optional - only provided fields will be updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StageUpdate'
+            examples:
+              setRetention30Days:
+                summary: Set retention to 30 days
+                value:
+                  retentionPolicy:
+                    retentionPeriod: 30
+              clearRetentionWithNull:
+                summary: Clear retention (unrestricted) using null
+                value:
+                  retentionPolicy: null
+              clearRetentionWithEmptyObject:
+                summary: Clear retention (unrestricted) using empty object
+                value:
+                  retentionPolicy: {}
+              clearRetentionWithZero:
+                summary: Clear retention (unrestricted) using retentionPeriod = 0
+                value:
+                  retentionPolicy:
+                    retentionPeriod: 0
+              noChangeOmittedField:
+                summary: No change (omit retentionPolicy)
+                value:
+                  accessPolicy: private
+      responses:
+        '200':
+          description: Stage updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stage'
+        '400':
+          description: Bad Request - Invalid stage ID format or malformed request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized - Authentication required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '403':
+          description: Forbidden - Insufficient permissions to update this stage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found - Stage with the specified ID does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '422':
+          description: Unprocessable Entity - Invalid transformation names or unsupported destination types
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: Internal Server Error - An unexpected error occurred while updating the stage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+  /stages/{stageID}/runs:
+    get:
+      tags:
+      - Stages
+      summary: Retrieve a list of runs for a stage
+      description: Retrieves a paginated list of runs associated with the specified stage.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage to retrieve runs for.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: page
+        in: query
+        description: The page number to retrieve in the paginated response (starting from 0).
+        schema:
+          type: integer
+          example: 0
+      - name: size
+        in: query
+        description: The number of runs to include in each page of results.
+        schema:
+          type: integer
+          example: 10
+      - name: status
+        in: query
+        description: The status of the runs to filter by.
+        schema:
+          type: string
+          example: completed
+      - name: transformationID
+        in: query
+        description: The ID of the transformation to filter by.
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunListWithPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+  /stages/{stageID}/runs/events:
+    get:
+      tags:
+      - Stages
+      summary: Stream real-time run updates for a stage
+      description: 'Opens a Server-Sent Events (SSE) connection that streams live run updates for a specific stage.
+
+
+        **SSE Events:**
+
+        - `connected`: Connection established
+
+        - `runs:new`: New runs appeared on the current page
+
+        - `runs:updated`: Existing runs changed status
+
+        - `runs:removed`: Runs fell off the current page window (e.g. pushed out by newer runs)
+
+        - `done`: All currently visible runs reached a terminal state
+
+        - `error`: Stream error occurred
+
+
+        The stream closes automatically when all runs reach a terminal state or when the client disconnects.'
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage to stream runs for.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: page
+        in: query
+        description: The page number to retrieve in the paginated response (starting from 0).
+        schema:
+          type: integer
+          example: 0
+      - name: size
+        in: query
+        description: The number of runs to include in each page of results.
+        schema:
+          type: integer
+          example: 10
+      - name: status
+        in: query
+        description: The status of the runs to filter by.
+        schema:
+          type: string
+          example: completed
+      - name: transformationID
+        in: query
+        description: The ID of the transformation to filter by.
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '200':
+          description: OK
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-Sent Events stream with real-time run updates
+                example: 'event: connected
+
+                  data: {"message":"Connected to runs stream","stageId":"..."}
+
+
+                  event: runs:new
+
+                  data: {"runs":[...],"count":1,"total":5}
+
+
+                  event: runs:updated
+
+                  data: {"runs":[...],"count":1,"total":5}
+
+
+                  event: runs:removed
+
+                  data: {"runIds":["..."],"count":1,"total":4}
+
+
+                  : keepalive at 2026-01-01T00:00:00Z
+
+
+                  event: done
+
+                  data: {"message":"All runs have reached a terminal state"}
+
+                  '
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+  /stages/{stageID}/files:
+    get:
+      tags:
+      - Stages
+      summary: Retrieve a list of files in a stage
+      description: Retrieves a paginated list of files stored in the specified stage. Filters can be applied based on file name and creation dates to refine the results.
+      parameters:
+      - name: page
+        in: query
+        description: The page number to retrieve in the paginated response (starting from 0).
+        schema:
+          type: integer
+          example: 0
+      - name: size
+        in: query
+        description: The number of files to include in each page of results.
+        schema:
+          type: integer
+          example: 10
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage from which to list the files.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: name
+        in: query
+        description: An optional filter to retrieve files that match the specified name.
+        schema:
+          type: string
+          example: my_file.txt
+      - name: createdAfter
+        in: query
+        description: An optional filter to retrieve files created after the specified date (in ISO 8601 format).
+        schema:
+          type: string
+          example: '2024-01-01'
+      - name: createdBefore
+        in: query
+        description: An optional filter to retrieve files created before the specified date (in ISO 8601 format).
+        schema:
+          type: string
+          example: '2024-12-31'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListWithPagination'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+    post:
+      tags:
+      - Stages
+      summary: Create a new file in a stage
+      description: Uploads a new file to the specified stage. The file's content and optional metadata (such as the file name) can be provided in the request body. When uploading a text or Markdown file to a stage with triggers, keep in mind that the file must be in UTF-8 encoding, with a LF line feed character.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage where the file will be uploaded.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - sourceData
+              properties:
+                sourceData:
+                  type: string
+                  description: The binary content of the file being uploaded.
+                  format: binary
+                name:
+                  type: string
+                  description: The name to assign to the uploaded file (optional).
+                  example: my_file.txt
+                ingestionContext:
+                  $ref: '#/components/schemas/IngestionContext'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '413':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+  /stages/{stageID}/files/{fileID}:
+    get:
+      tags:
+      - Stages
+      summary: Retrieve the content of a specific file
+      description: Fetches the content of a file identified by its unique file ID within the specified stage. This operation returns the raw data of the file.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage where the file is stored.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: fileID
+        in: path
+        description: The unique identifier of the file whose content is being retrieved.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+    put:
+      tags:
+      - Stages
+      summary: Update an existing file in a stage
+      description: Uploads a new version of the specified file identified by its unique file ID in the given stage. You can provide updated content and an optional new name for the file. Will be generated a new version of a file.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage containing the file to be updated.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: fileID
+        in: path
+        description: The unique identifier of the file to be updated.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - sourceData
+              properties:
+                sourceData:
+                  type: string
+                  description: The binary content of the file being uploaded as an update.
+                  format: binary
+                name:
+                  type: string
+                  description: An optional new name to assign to the file (if you want to rename it).
+                  example: updated_file.txt
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '500':
+          description: INTERNAL SERVER ERROR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+    delete:
+      tags:
+      - Stages
+      summary: Permanently delete a specific file
+      description: Deletes the file identified by its unique file ID from the specified stage. This action cannot be undone, and all associated data with the file will be permanently removed.
+      parameters:
+      - name: stageID
+        in: path
+        description: The unique identifier of the stage from which the file will be deleted.
+        required: true
+        schema:
+          type: string
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: fileID
+        in: path
+        description: The unique identifier of the file to be deleted.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponseDataset'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+  /stages/{stageID}/files/{fileID}/presigned-url:
+    get:
+      tags:
+      - Stages
+      summary: Get a presigned URL for a file
+      description: Generate a presigned URL for secure, time-limited access to a file. The URL can be used to download the file directly from the storage provider without requiring authentication.
+      parameters:
+      - name: stageID
+        in: path
+        description: The ID of the stage containing the file.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+      - name: fileID
+        in: path
+        description: The ID of the file to get the presigned URL for.
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      - name: ttl
+        in: query
+        description: The time to live of the presigned URL in seconds. Default is 1800 seconds (30 minutes), maximum is 3600 seconds (1 hour).
+        required: false
+        schema:
+          type: integer
+          minimum: 60
+          maximum: 3600
+          default: 1800
+          example: 1800
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresignedURL'
+              examples:
+                success:
+                  summary: Successful presigned URL generation
+                  value:
+                    success: true
+                    presignedUrl: https://storage.example.com/presigned-url?signature=abc123&expires=1640995200
+                    ttlSeconds: 1800
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+              examples:
+                invalid_ttl:
+                  summary: Invalid TTL parameter
+                  value:
+                    error: Bad Request
+                    message: TTL must be between 60 and 3600 seconds
+                    statusCode: 400
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+              examples:
+                file_not_found:
+                  summary: File not found
+                  value:
+                    error: Not Found
+                    message: File with ID 3fa85f64-5717-4562-b3fc-2c963f66afa6 not found in stage cb26237c-3beb-40f3-8e13-77d862f722b5
+                    statusCode: 404
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+              examples:
+                storage_error:
+                  summary: Storage service error
+                  value:
+                    error: Internal Server Error
+                    message: Failed to generate presigned URL
+                    statusCode: 500
+components:
+  schemas:
+    Stage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name assigned to the stage for easy identification.
+          example: My Stage
+        stageId:
+          type: string
+          description: Unique identifier for the stage.
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+        createdAt:
+          type: string
+          description: The timestamp when the stage was created in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the stage in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        triggers:
+          type:
+          - array
+          - 'null'
+          description: List of triggers associated with the stage for automated processing.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the trigger to be applied.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be triggered.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type: string
+                description: The type of connector to be used for the transformation run.
+                example: DocumentIndex:Collection
+              repositoryId:
+                type:
+                - string
+                - 'null'
+                format: uuid
+                description: The ID of the repository created for this trigger's output.
+                example: 815f77f9-6a68-4c42-86a4-9bd603395a49
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: Optional stage-level retention policy. If `null`, the stage retention policy is unrestricted (no automatic expiration).
+          properties:
+            retentionPeriod:
+              type: integer
+              example: 30
+              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
+        filesCount:
+          type: integer
+          description: The number of files currently stored in this stage.
+          example: 42
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: 'The access policy for the stage. This field is only included in the response when the permission service is enabled.
+
+
+            - `private`: Only the owner can read and write (default)
+
+
+            - `public`: All authenticated users can read, only the owner can write. Can only be set by admin users during creation.
+
+
+            - `shared`: The stage has been shared with specific users/groups'
+          enum:
+          - private
+          - public
+          - shared
+          example: private
+        ownerId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the user who owns this stage. This field is only included in the response when the permission service is enabled.
+        searchStore:
+          type:
+          - object
+          - 'null'
+          description: Minimal search store information returned for GET/LIST operations. Only includes the ID.
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Unique identifier for the search store.
+              example: 41804fe6-34b2-4db6-a4b1-dcd50fa7cf6a
+    RunListWithPagination:
+      type: object
+      properties:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationRun'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of runs displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of runs created.
+          example: 1
+    File:
+      type: object
+      properties:
+        fileID:
+          type: string
+          description: Unique identifier for the file.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        stageID:
+          type: string
+          description: Unique identifier of the stage where the file is stored.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        mediaType:
+          type: string
+          description: The media type of the file, indicating its format (e.g., application/octet-stream).
+          example: application/octet-stream
+          enum:
+          - application/octet-stream
+        name:
+          type: string
+          description: The name of the file, used for easy identification.
+          example: dataset_name
+        size:
+          type: integer
+          description: The size of the file in bytes.
+          example: 1024
+        version:
+          type: string
+          description: The current version of the file, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the file in ISO 8601 format.
+          example: '2024-07-04'
+        createdAt:
+          type: string
+          description: The timestamp when the file was initially created in ISO 8601 format.
+          example: '2024-07-04'
+        expireAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
+          example: '2024-07-04'
+    SearchStoreContext:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the search store.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        chunkingStrategy:
+          type:
+          - object
+          - 'null'
+          description: Strategy for chunking documents in the search store.
+          properties:
+            maxChunkSizeTokens:
+              type: integer
+              description: Maximum number of tokens per chunk.
+              example: 100
+            chunkOverlapTokens:
+              type: integer
+              description: Number of tokens to overlap between chunks.
+              example: 10
+        embeddingStrategy:
+          type:
+          - object
+          - 'null'
+          description: Strategy for embedding documents in the search store.
+          properties:
+            type:
+              type: string
+              description: Type of embedding strategy.
+              enum:
+              - instruct
+              - semantic
+              example: instruct
+            config:
+              type: object
+              description: Configuration specific to the embedding strategy type. For 'instruct' type, contains model, instruction, and hybridIndex. For 'semantic' type, contains model, hybridIndex, and representation.
+              oneOf:
+              - type: object
+                description: Configuration for instruct embedding strategy
+                properties:
+                  model:
+                    type: string
+                    example: luminous-base
+                  instruction:
+                    type: object
+                    properties:
+                      document:
+                        type: string
+                        example: Represent this document for retrieval
+                      query:
+                        type: string
+                        example: Represent this query for searching
+                  hybridIndex:
+                    type: string
+                    example: bm25
+              - type: object
+                description: Configuration for semantic embedding strategy
+                properties:
+                  model:
+                    type: string
+                    example: luminous-base
+                  hybridIndex:
+                    type: string
+                    example: bm25
+                  representation:
+                    type: string
+                    example: asymmetric
+        metadata:
+          type:
+          - object
+          - 'null'
+          description: Additional metadata for the search store.
+          additionalProperties: true
+          example:
+            description: My Search Store
+            tags:
+            - personalDocument
+            - tags
+        metadataSchema:
+          type:
+          - object
+          - 'null'
+          description: Schema defining additional custom metadata fields and their types for documents in the search store. A default metadata schema is always applied with standard fields (author, createdAt, fileName, fileSize, etc.). You can add new custom fields or specify default fields with their original types. However, you cannot change the type of default fields - attempting to do so will result in a validation error.
+          additionalProperties:
+            type: string
+            enum:
+            - string
+            - integer
+            - float
+            - boolean
+            - date_time
+          example:
+            customField: string
+            customDate: date_time
+            customCount: integer
+    IngestionContext:
+      type: object
+      properties:
+        triggerName:
+          type: string
+          description: The name of a trigger registered to a Stage.
+        connectorContext:
+          type: object
+          properties:
+            collection:
+              type: string
+              description: The Document Index collection to be used for the transformation run.
+            namespace:
+              type: string
+              description: The Document Index namespace to be used for the transformation run.
+        destinationContext:
+          type: object
+          properties:
+            repositoryId:
+              type: string
+              description: The repository ID to be used as the target destination for the transformation run.
+        transformationContext:
+          type: object
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
+    HandleFailedResponseDataset:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    FileListWithPagination:
+      type: object
+      properties:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
+    TransformationRun:
+      type: object
+      properties:
+        transformationId:
+          type: string
+          description: Unique identifier for the transformation.
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+        runId:
+          type: string
+          description: Unique identifier for the transformation run.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        transformationName:
+          type: string
+          description: The name of the transformation.
+          example: PDFToText
+        status:
+          type: string
+          description: The current status of the transformation run, indicating if it is pending, in progress, or completed.
+          example: completed
+          enum:
+          - created
+          - running
+          - failed
+          - completed
+        createdAt:
+          type: string
+          description: The timestamp when the transformation run was initially created in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the transformation run in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        errors:
+          type: array
+          description: A list of error messages encountered during the transformation run.
+          items:
+            $ref: '#/components/schemas/RunError'
+        parameters:
+          type: object
+          description: A mapping of parameters used for the transformation run, including input and output settings.
+          example:
+            key: value
+        metadata:
+          type: object
+          description: Additional metadata for the transformation run in a key-value format.
+          example:
+            key: value
+        input:
+          type: object
+          description: The input data object for the transformation run, specifying the data source and location.
+          properties:
+            type:
+              type: string
+              description: The type of data object that the transformation will receive as input.
+              example: DataPlatform:Stage:File
+              enum:
+              - DataPlatform:Stage:File
+            fileID:
+              type: string
+              description: The unique identifier of the file to be processed by the transformation.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            stageID:
+              type: string
+              description: The unique identifier of the stage containing the file to be processed.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            version:
+              type:
+              - string
+              - 'null'
+              description: The version of the file to be processed by the transformation.
+              example: null
+        destination:
+          type: object
+          description: The destination for the output generated by the transformation run, specifying the target location and format.
+          properties:
+            type:
+              type: string
+              description: The type of destination where the output will be stored.
+              example: DataPlatform:Repository
+              enum:
+              - DataPlatform:Repository
+            repositoryID:
+              type: string
+              description: The unique identifier of the repository where the output will be stored.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            mapping:
+              type:
+              - object
+              - 'null'
+              description: A mapping of fields to be used when storing the output in the destination.
+              example: null
+        connector:
+          type: object
+          description: The connector to be used for the transformation run, specifying the external service to sync with.
+          properties:
+            type:
+              type: string
+              description: The type of connector to be used for the transformation run.
+              example: DocumentIndex:Collection
+              enum:
+              - DocumentIndex:Collection
+            collection:
+              type: string
+              description: The collection name for the connector.
+              example: my-collection
+            namespace:
+              type: string
+              description: The namespace for the connector.
+              example: my-namespace
+        output:
+          type: object
+          description: The output data object for the transformation run, specifying the data source and location.
+          properties:
+            type:
+              type: string
+              description: The type of data object that the transformation will receive as input.
+              example: DataPlatform:Repository:Dataset
+              enum:
+              - DataPlatform:Repository:Dataset
+            repositoryID:
+              type: string
+              description: The unique identifier of the file to be processed by the transformation.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            datasetID:
+              type: string
+              description: The unique identifier of the stage containing the file to be processed.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            version:
+              type:
+              - string
+              - 'null'
+              description: The version of the file to be processed by the transformation.
+              example: null
+    PresignedURL:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates whether the presigned URL generation was successful.
+          example: true
+        presignedUrl:
+          type: string
+          description: The presigned URL generated for the file.
+          example: https://storage.example.com/presigned-url?signature=abc123&expires=1640995200
+        ttlSeconds:
+          type: integer
+          description: The time to live (TTL) of the presigned URL in seconds.
+          example: 1800
+      required:
+      - success
+      - presignedUrl
+    StageListWithPagination:
+      type: object
+      properties:
+        stages:
+          type: array
+          description: A list of stages retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/Stage'
+        page:
+          type: integer
+          description: The current page number in the paginated list of stages.
+          example: 0
+        size:
+          type: integer
+          description: The number of stages displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of stages available in the data platform.
+          example: 1
+    StageCreatedResponse:
+      type: object
+      description: Response schema for stage creation, includes full search store configuration details.
+      properties:
+        name:
+          type: string
+          description: The name assigned to the stage for easy identification.
+          example: My Stage
+        stageId:
+          type: string
+          description: Unique identifier for the stage.
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+        createdAt:
+          type: string
+          description: The timestamp when the stage was created in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the stage in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        triggers:
+          type:
+          - array
+          - 'null'
+          description: List of triggers associated with the stage for automated processing.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the trigger to be applied.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be triggered.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type: string
+                description: The type of connector to be used for the transformation run.
+                example: DocumentIndex:Collection
+              repositoryId:
+                type:
+                - string
+                - 'null'
+                format: uuid
+                description: The ID of the repository created for this trigger's output.
+                example: 815f77f9-6a68-4c42-86a4-9bd603395a49
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: The retention policy of the stage is an optional field. It cannot be changed after the stage is created and applies to every file uploaded to the stage.
+          properties:
+            retentionPeriod:
+              type: integer
+              example: 30
+              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
+        searchStore:
+          type:
+          - object
+          - 'null'
+          description: Full search store configuration returned on stage creation.
+          $ref: '#/components/schemas/SearchStoreContext'
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: 'The access policy for the stage. This field is only included in the response when the permission service is enabled.\n\n- `private`: Only the owner can read and write (default)\n\n- `public`: All authenticated users can read, only the owner can write. Can only be set by admin users during creation.'
+          enum:
+          - private
+          - public
+          example: private
+        filesCount:
+          type: integer
+          description: The total number of files stored in this stage. Always 0 when first created.
+          example: 0
+        ownerId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the user who owns this stage. This field is only included in the response when the permission service is enabled.
+          example: '316056799180494087'
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    StageUpdate:
+      type: object
+      properties:
+        triggers:
+          type: array
+          description: Optional list of triggers to update for the stage. If provided, replaces all existing triggers.
+          items:
+            type: object
+            required:
+            - name
+            - transformationName
+            - destinationType
+            properties:
+              name:
+                type: string
+                description: Unique name identifier for this trigger within the stage.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be automatically applied.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the transformation output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type:
+                - string
+                - 'null'
+                description: Optional connector type for sending transformation results to external services.
+                example: DocumentIndex:Collection
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: Access policy that controls who can access this stage and its files. Set to 'private' for restricted access or 'public' for open access. When null or omitted, the current access policy is preserved.
+          enum:
+          - private
+          - public
+          - shared
+          example: private
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: 'Optional retention policy update.
+
+
+            Semantics:
+
+            - If omitted: keep the current retention policy (no change).
+
+            - If `null`: clear the retention policy (unrestricted / no automatic expiration).
+
+            - If `{}` or `{ "retentionPeriod": 0 }`: clear the retention policy (unrestricted).
+
+            - If `{ "retentionPeriod": N }` with N > 0: set retention to N days and recalculate expiration dates for existing and future files/runs in the stage.'
+          properties:
+            retentionPeriod:
+              type: integer
+              minimum: 0
+              example: 30
+              description: Number of days in the retention period. Use `0` to clear the retention policy (unrestricted). Values must be >= 0.
+        searchStoreId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'Optional search store ID to link to the stage. When provided, it links the stage to the specified search store. Constraints: The stage must not already be linked to any search store, and the search store must not be linked to any other stage (enforces 1-to-1 relationship).'
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+    StageCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name to assign to the new stage.
+          example: My Stage
+        triggers:
+          type:
+          - array
+          - 'null'
+          description: List of triggers associated with the stage for automated processing.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the trigger to be applied.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be triggered.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type: string
+                description: The type of connector to be used for the transformation run.
+                example: DocumentIndex:Collection
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: Optional retention policy for the stage. Omit this field or set it to `null` to create an unrestricted stage (no automatic expiration). If provided, `retentionPeriod` must be >= 1.
+          properties:
+            retentionPeriod:
+              type: integer
+              minimum: 1
+              example: 30
+              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
+          required:
+          - retentionPeriod
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: 'Access policy that controls who can access this stage and its files. Set to ''private'' for owner-only access (default), or ''public'' for read-only access by all users. Note: Only admin users can create public stages. Non-admin users will receive a 403 Forbidden error if attempting to create a public stage. Public stages grant read-only access to all users while maintaining write access exclusively for the owner.'
+          enum:
+          - private
+          - public
+          example: private
+        searchStore:
+          type:
+          - object
+          - 'null'
+          description: Optional search store configuration for stages that include search functionality.
+          $ref: '#/components/schemas/SearchStoreContext'
+    RunError:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error that occurred during the transformation run.
+          enum:
+          - UnexpectedError
+          - ExtractorError
+          - FileTooLargeError
+          - TooManyPagesError
+          - TransformerError
+          - LoaderError
+          - ConnectorError
+          - ConfigurationError
+          - InternalServiceError
+          - ServiceNotAvailableError
+          - TooManyTokensError
+          example: ExtractorError
+        message:
+          type: string
+          description: A human-readable description of the error that occurred.
+          example: Error message
+        httpCode:
+          type: integer
+          description: The HTTP status code associated with the error.
+          example: 422
+        dataCode:
+          type: string
+          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
+          enum:
+          - DATA0000
+          - DATA0001
+          - DATA0002
+          - DATA0003
+          - DATA0004
+          - DATA0005
+          - DATA0006
+          - DATA0007
+          - DATA0008
+          - DATA0009
+          - DATA0010
+          example: DATA0001
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-tagGroups:
+- name: PhariaData API
+  tags:
+  - Repositories
+  - Datasets
+  - Stages
+  - Downloads
+  - Transformations
+  - Connectors
+- name: Pharia Search API
+  tags:
+  - Search Store
+  - Document

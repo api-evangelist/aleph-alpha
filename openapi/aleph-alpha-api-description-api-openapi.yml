@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: Aleph Alpha API description API
+  version: 4.7.0
+  description: Access and interact with Aleph Alpha models and functionality over HTTP endpoints.
+  contact:
+    email: support@aleph-alpha.com
+servers:
+- url: '{host}/v1'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+tags:
+- name: API description
+paths:
+  /version:
+    get:
+      summary: Current API version
+      description: Will return the version number of the API that is deployed to this environment.
+      operationId: version
+      tags:
+      - API description
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 1.0.0
+  /openapi.yaml:
+    get:
+      summary: OpenAPI specification
+      description: 'Returns the latest OpenAPI specification for this API.
+
+        '
+      tags:
+      - API description
+      responses:
+        '200':
+          description: OK
+          content:
+            text/yaml:
+              schema:
+                type: string
+components:
+  securitySchemes:
+    token:
+      type: http
+      scheme: bearer
+      description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)

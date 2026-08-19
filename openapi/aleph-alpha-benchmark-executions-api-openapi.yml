@@ -1,0 +1,612 @@
+openapi: 3.2.0
+info:
+  title: PhariaStudio Benchmark Executions API
+  version: 0.1.0
+  description: Endpoints for handling execution instances of benchmarks. These provides an overview of all evaluation steps during execution (run, evaluation, aggregation).
+servers:
+- url: '{host}/v1/studio'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- BearerAuth: []
+tags:
+- name: Benchmark Executions
+  description: Endpoints for handling execution instances of benchmarks. These provides an overview of all evaluation steps during execution (run, evaluation, aggregation).
+paths:
+  /projects/{project_id}/evaluation/benchmarks/{benchmark_id}/executions:
+    post:
+      tags:
+      - Benchmark Executions
+      summary: Create Benchmark Execution
+      description: Create a new `BenchmarkExecution`.
+      operationId: create_benchmark_execution_projects__project_id__evaluation_benchmarks__benchmark_id__executions_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostBenchmarkExecutionRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+                title: Response Create Benchmark Execution Projects  Project Id  Evaluation Benchmarks  Benchmark Id  Executions Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Benchmark Executions
+      summary: Get Many Benchmark Executions
+      description: Get multiple `BenchmarkExecution`s. Results are sorted by descending creation date.
+      operationId: get_many_benchmark_executions_projects__project_id__evaluation_benchmarks__benchmark_id__executions_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      - name: search
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          description: Search term to find results containing this text in any searchable field (case insensitive).
+          title: Search
+        description: Search term to find results containing this text in any searchable field (case insensitive).
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/BenchmarkExecutionSortableColumns'
+          - type: string
+          description: The column to sort by. Can be a predefined column or 'statistics.KEY' for JSONB sorting.
+          default: created_at
+          title: Sort By
+        description: The column to sort by. Can be a predefined column or 'statistics.KEY' for JSONB sorting.
+      - name: sort_direction
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+          description: The direction to sort by.
+          default: desc
+        description: The direction to sort by.
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          exclusiveMinimum: 0
+          description: The page number to retrieve. Starts at 1.
+          default: 1
+          title: Page
+        description: The page number to retrieve. Starts at 1.
+      - name: size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          exclusiveMinimum: 0
+          description: The number of items per page.
+          default: 25
+          title: Size
+        description: The number of items per page.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse_BenchmarkExecutionResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/evaluation/benchmarks/{benchmark_id}/executions/{execution_id}:
+    get:
+      tags:
+      - Benchmark Executions
+      summary: Get Benchmark Execution
+      description: Get a `BenchmarkExecution` by ID. Gives an error if the project or benchmark do not exist and `None` if they do but `BenchmarkExecution` was not found.
+      operationId: get_benchmark_execution_projects__project_id__evaluation_benchmarks__benchmark_id__executions__execution_id__get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      - name: execution_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Execution Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/BenchmarkExecutionResponse'
+                - type: 'null'
+                title: Response Get Benchmark Execution Projects  Project Id  Evaluation Benchmarks  Benchmark Id  Executions  Execution Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - Benchmark Executions
+      summary: Delete Benchmark Execution
+      description: Delete a `BenchmarkExecution`.
+      operationId: delete_benchmark_execution_projects__project_id__evaluation_benchmarks__benchmark_id__executions__execution_id__delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: benchmark_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Benchmark Id
+      - name: execution_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Execution Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    BenchmarkExecutionSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - eval_successful_count
+      - run_success_avg_latency
+      - run_success_avg_token_count
+      - created_at
+      - start
+      - end
+      - run_start
+      - run_end
+      - eval_start
+      - eval_end
+      - aggregation_start
+      - aggregation_end
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkExecutionSortableColumns
+    BenchmarkExecutionResponse:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the benchmark execution. This field is searchable.
+          examples:
+          - Benchmark Execution
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark execution. This field is searchable.
+          examples:
+          - This is a benchmark execution.
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        start:
+          type: string
+          format: date-time
+          title: Start
+          description: Start of the benchmark execution in UTC.
+        end:
+          type: string
+          format: date-time
+          title: End
+          description: End of the benchmark execution in UTC. Does not include upload time.
+        run_start:
+          type: string
+          format: date-time
+          title: Run Start
+          description: Start of running the given task on the benchmark dataset in UTC.
+        run_end:
+          type: string
+          format: date-time
+          title: Run End
+          description: End of running the given task on the benchmark dataset in UTC.
+        run_successful_count:
+          type: integer
+          title: Run Successful Count
+          description: Number of examples that the task was successfully executed on.
+        run_failed_count:
+          type: integer
+          title: Run Failed Count
+          description: Number of examples that the task raised an exception on. These will be skipped in the evaluation.
+        run_success_avg_latency:
+          type: number
+          title: Run Success Avg Latency
+          description: Average time it takes the task to generate an output in ns. Does not include failed runs.
+        run_success_avg_token_count:
+          type: number
+          title: Run Success Avg Token Count
+          description: Average amount of tokens it takes the task to generate an output. Includes tokens from intermediate steps. Does not include failed runs.
+        eval_start:
+          type: string
+          format: date-time
+          title: Eval Start
+          description: Start of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_end:
+          type: string
+          format: date-time
+          title: Eval End
+          description: End of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_successful_count:
+          type: integer
+          title: Eval Successful Count
+          description: Number of evaluations of task runs that succeeded. Failed runs are skipped and not included.
+        eval_failed_count:
+          type: integer
+          title: Eval Failed Count
+          description: Number of evaluations of task runs that failed. Failed runs are skipped and not included.
+        aggregation_start:
+          type: string
+          format: date-time
+          title: Aggregation Start
+          description: Start of the aggregation process in UTC.
+        aggregation_end:
+          type: string
+          format: date-time
+          title: Aggregation End
+          description: End of the aggregation process in UTC.
+        statistics:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+          description: Data that is the result of the aggregation process.
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: The timestamp when this resource was last updated in UTC.
+        updated_by:
+          type: string
+          title: Updated By
+          description: The ID of the user that updated the resource.
+          examples:
+          - '12345'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          title: Id
+        benchmark_id:
+          type: string
+          title: Benchmark Id
+      type: object
+      required:
+      - name
+      - start
+      - end
+      - run_start
+      - run_end
+      - run_successful_count
+      - run_failed_count
+      - run_success_avg_latency
+      - run_success_avg_token_count
+      - eval_start
+      - eval_end
+      - eval_successful_count
+      - eval_failed_count
+      - aggregation_start
+      - aggregation_end
+      - statistics
+      - updated_at
+      - updated_by
+      - created_at
+      - created_by
+      - id
+      - benchmark_id
+      title: BenchmarkExecutionResponse
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
+    PagedResponse_BenchmarkExecutionResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/BenchmarkExecutionResponse'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[BenchmarkExecutionResponse]
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    PostBenchmarkExecutionRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the benchmark execution. This field is searchable.
+          examples:
+          - Benchmark Execution
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark execution. This field is searchable.
+          examples:
+          - This is a benchmark execution.
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        start:
+          type: string
+          format: date-time
+          title: Start
+          description: Start of the benchmark execution in UTC.
+        end:
+          type: string
+          format: date-time
+          title: End
+          description: End of the benchmark execution in UTC. Does not include upload time.
+        run_start:
+          type: string
+          format: date-time
+          title: Run Start
+          description: Start of running the given task on the benchmark dataset in UTC.
+        run_end:
+          type: string
+          format: date-time
+          title: Run End
+          description: End of running the given task on the benchmark dataset in UTC.
+        run_successful_count:
+          type: integer
+          title: Run Successful Count
+          description: Number of examples that the task was successfully executed on.
+        run_failed_count:
+          type: integer
+          title: Run Failed Count
+          description: Number of examples that the task raised an exception on. These will be skipped in the evaluation.
+        run_success_avg_latency:
+          type: number
+          title: Run Success Avg Latency
+          description: Average time it takes the task to generate an output in ns. Does not include failed runs.
+        run_success_avg_token_count:
+          type: number
+          title: Run Success Avg Token Count
+          description: Average amount of tokens it takes the task to generate an output. Includes tokens from intermediate steps. Does not include failed runs.
+        eval_start:
+          type: string
+          format: date-time
+          title: Eval Start
+          description: Start of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_end:
+          type: string
+          format: date-time
+          title: Eval End
+          description: End of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_successful_count:
+          type: integer
+          title: Eval Successful Count
+          description: Number of evaluations of task runs that succeeded. Failed runs are skipped and not included.
+        eval_failed_count:
+          type: integer
+          title: Eval Failed Count
+          description: Number of evaluations of task runs that failed. Failed runs are skipped and not included.
+        aggregation_start:
+          type: string
+          format: date-time
+          title: Aggregation Start
+          description: Start of the aggregation process in UTC.
+        aggregation_end:
+          type: string
+          format: date-time
+          title: Aggregation End
+          description: End of the aggregation process in UTC.
+        statistics:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+          description: Data that is the result of the aggregation process.
+      type: object
+      required:
+      - name
+      - start
+      - end
+      - run_start
+      - run_end
+      - run_successful_count
+      - run_failed_count
+      - run_success_avg_latency
+      - run_success_avg_token_count
+      - eval_start
+      - eval_end
+      - eval_successful_count
+      - eval_failed_count
+      - aggregation_start
+      - aggregation_end
+      - statistics
+      title: PostBenchmarkExecutionRequest
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

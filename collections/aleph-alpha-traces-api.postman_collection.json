@@ -1,0 +1,682 @@
+{
+  "item": [
+    {
+      "id": "9c2a0fe0-7409-44ee-9a0d-9e2f30436627",
+      "name": "Traces",
+      "description": {
+        "content": "Trace management endpoints. A Trace provides a mechanism similar to OpenTelemetry for tracking the execution flow of a task. It allows you to monitor and analyze the sequence of operations, their timings, and other related metrics. Tracing is essential for performance monitoring and debugging.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ff93fc5a-1791-4bc2-9650-fbc3258df657",
+          "name": "Create Trace",
+          "request": {
+            "name": "Create Trace",
+            "description": {
+              "content": "Create a new `Trace`. All submitted spans must have the same trace id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "traces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  },\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa2406f1-d5ad-4dea-8c60-3b62810aede5",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  },\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"5067e544-6b10-f9a6-ad3b-a8e5d62ceef2\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c282916-02ac-4dbc-be86-90ec2471b1f6",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  },\n  {\n    \"context\": {\n      \"trace_id\": \"<uuid>\",\n      \"span_id\": \"<uuid>\"\n    },\n    \"name\": \"<string>\",\n    \"parent_id\": \"<uuid>\",\n    \"start_time\": \"<dateTime>\",\n    \"end_time\": \"<dateTime>\",\n    \"attributes\": {\n      \"type\": \"SPAN\"\n    },\n    \"events\": [\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"message\": \"<string>\",\n        \"body\": \"<integer>\",\n        \"timestamp\": \"<dateTime>\"\n      }\n    ],\n    \"status\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a65c73f4-fb3b-4660-b501-e780eeb3d567",
+          "name": "Get Many Traces",
+          "request": {
+            "name": "Get Many Traces",
+            "description": {
+              "content": "List paginated `Traces`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "traces"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number to retrieve. Starts at 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "size",
+                  "value": "25",
+                  "description": "The number of items per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "only_root",
+                  "value": "false",
+                  "description": "Return only the root span instead of all spans"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9cee7f15-ec82-4149-afcb-e2cb9d6797f9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "only_root",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 9949,\n  \"page\": 5326,\n  \"size\": 8328,\n  \"num_pages\": 6521\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4627014e-f115-44d5-9cd7-ce0893ac8557",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "size",
+                      "value": "25"
+                    },
+                    {
+                      "key": "only_root",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2ae60cac-fb43-4eac-a739-26fa8270843f",
+          "name": "Get Trace",
+          "request": {
+            "name": "Get Trace",
+            "description": {
+              "content": "Get a `Trace` by its id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "projects",
+                ":project_id",
+                "traces",
+                ":trace_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "trace_id",
+                  "description": "(Required) "
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "51ff999e-049f-49d2-b52f-39d8fc7fa0e7",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces",
+                    ":trace_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "trace_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"created_at\": \"1957-01-04T21:35:53.447Z\",\n  \"created_by\": \"string\",\n  \"id\": \"777f9f9d-a049-265b-d5af-c402c53bff2a\",\n  \"spans\": [\n    {\n      \"created_at\": \"2000-01-10T02:22:59.636Z\",\n      \"created_by\": \"string\",\n      \"id\": \"b5d11978-7c77-fb09-8e97-892d1cd90943\",\n      \"parent_id\": \"1cdd11a6-b168-7ec2-507f-2eba2e845fa3\",\n      \"name\": \"string\",\n      \"start_time\": \"1949-07-01T07:17:54.525Z\",\n      \"end_time\": \"1972-12-28T06:13:48.358Z\",\n      \"status\": \"<string>\",\n      \"type\": \"SPAN\",\n      \"attributes\": {\n        \"key_0\": 5589\n      }\n    },\n    {\n      \"created_at\": \"2024-08-07T11:01:11.444Z\",\n      \"created_by\": \"string\",\n      \"id\": \"06d50264-6d12-b127-b15c-a773c362207d\",\n      \"parent_id\": \"d347d7df-bf25-b49d-3bce-d66eada82dff\",\n      \"name\": \"string\",\n      \"start_time\": \"1992-04-21T14:01:46.582Z\",\n      \"end_time\": \"1986-09-19T09:25:43.138Z\",\n      \"status\": \"<string>\",\n      \"type\": \"TASK_SPAN\",\n      \"attributes\": {\n        \"key_0\": 2991,\n        \"key_1\": 9891\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31ab68c8-0f00-4d29-9feb-3ceacee796ca",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "projects",
+                    ":project_id",
+                    "traces",
+                    ":trace_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "trace_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "87400ad5-9331-4bfd-a23e-299e408a2e2c",
+    "name": "PhariaStudio Traces API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Trace management endpoints. A Trace provides a mechanism similar to OpenTelemetry for tracking the execution flow of a task. It allows you to monitor and analyze the sequence of operations, their timings, and other related metrics. Tracing is essential for performance monitoring and debugging.",
+      "type": "text/plain"
+    }
+  }
+}

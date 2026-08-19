@@ -1,0 +1,404 @@
+openapi: 3.2.0
+info:
+  title: PhariaStudio Spans API
+  version: 0.1.0
+  description: Endpoints for managing Spans. A Span is a single unit of work within a Trace and represents an individual operation in the execution sequence. Spans help in breaking down the Trace into more manageable parts, providing detailed insights into each operation's performance and behavior.
+servers:
+- url: '{host}/v1/studio'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- BearerAuth: []
+tags:
+- name: Spans
+  description: Endpoints for managing Spans. A Span is a single unit of work within a Trace and represents an individual operation in the execution sequence. Spans help in breaking down the Trace into more manageable parts, providing detailed insights into each operation's performance and behavior.
+paths:
+  /projects/{project_id}/traces/{trace_id}/spans:
+    post:
+      tags:
+      - Spans
+      summary: Create Span
+      description: Create a new `Span`. You can only add a `Span` to an active `Trace`. The client is responsible to create and manage the ID of each span, the server does not accept spans with the same ID.
+      operationId: create_span_projects__project_id__traces__trace_id__spans_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trace Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SpanResponse-Input'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - Spans
+      summary: Get Many Spans
+      description: Get all `Span`.
+      operationId: get_many_spans_projects__project_id__traces__trace_id__spans_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trace Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedResponse_SpanResponse_'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /projects/{project_id}/traces/{trace_id}/spans/{span_id}:
+    get:
+      tags:
+      - Spans
+      summary: Get Span
+      description: Get a `Span` by its id.
+      operationId: get_span_projects__project_id__traces__trace_id__spans__span_id__get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: trace_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Trace Id
+      - name: span_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Span Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpanResponse-Output'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    SpanResponse-Output:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: The unique id of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Id
+          description: The unique id of the parent element of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          title: Name
+          description: The name of the span.
+          examples:
+          - Span
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+          description: The timestamp when this span was started.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+          description: The timestamp when this span was ended.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        status:
+          $ref: '#/components/schemas/SpanStatus'
+          description: The status code of the span.
+          examples:
+          - OK
+        type:
+          $ref: '#/components/schemas/SpanType'
+          description: The type of the span.
+          examples:
+          - TaskSpan
+        attributes:
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSerializable-Output'
+          type: object
+          title: Attributes
+          description: The `Attributes` of the `Span`.
+          examples:
+          - key: value
+      type: object
+      required:
+      - created_at
+      - created_by
+      - id
+      - parent_id
+      - name
+      - start_time
+      - end_time
+      - status
+      - type
+      - attributes
+      title: SpanResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SpanResponse-Input:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: The unique id of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Id
+          description: The unique id of the parent element of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          title: Name
+          description: The name of the span.
+          examples:
+          - Span
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+          description: The timestamp when this span was started.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+          description: The timestamp when this span was ended.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        status:
+          $ref: '#/components/schemas/SpanStatus'
+          description: The status code of the span.
+          examples:
+          - OK
+        type:
+          $ref: '#/components/schemas/SpanType'
+          description: The type of the span.
+          examples:
+          - TaskSpan
+        attributes:
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSerializable-Input'
+          type: object
+          title: Attributes
+          description: The `Attributes` of the `Span`.
+          examples:
+          - key: value
+      type: object
+      required:
+      - created_at
+      - created_by
+      - id
+      - parent_id
+      - name
+      - start_time
+      - end_time
+      - status
+      - type
+      - attributes
+      title: SpanResponse
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
+    PagedResponse_SpanResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/SpanResponse-Output'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[SpanResponse]
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    SpanStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: SpanStatus
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

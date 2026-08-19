@@ -1,0 +1,704 @@
+openapi: 3.2.0
+info:
+  title: PhariaData Connectors API
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  contact:
+    name: PhariaData API Support
+    url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
+    email: pharia-data@aleph-alpha.com
+  license:
+    name: Open Aleph License
+  version: 1.0.0
+servers:
+- url: '{host}/v1/studio/data'
+  variables:
+    host:
+      default: https://api.pharia.example.com
+security:
+- Bearer: []
+tags:
+- name: Connectors
+  description: Available connectors for the Data Platform to ingest data from external sources.
+paths:
+  /connectors:
+    get:
+      tags:
+      - Connectors
+      summary: Get all connectors
+      description: Get all connectors
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorList'
+      security:
+      - Bearer: []
+    post:
+      tags:
+      - Connectors
+      summary: Create a new connector
+      description: Create a new connector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorCreate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connector'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+              examples:
+                invalid_ttl:
+                  summary: Invalid TTL parameter
+                  value:
+                    error: Bad Request
+                    message: TTL must be between 60 and 3600 seconds
+                    statusCode: 400
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+  /connectors/{connectorID}:
+    get:
+      tags:
+      - Connectors
+      summary: Get a connector
+      description: Get a connector
+      parameters:
+      - name: connectorID
+        in: path
+        description: The ID of the connector to get.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Connector'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+    patch:
+      tags:
+      - Connectors
+      summary: Update a connector
+      description: Update a connector
+      parameters:
+      - name: connectorID
+        in: path
+        description: The ID of the connector to patch.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorUpdate'
+      responses:
+        '204':
+          description: No Content
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+  /connectors/{connectorID}/files:
+    get:
+      tags:
+      - Connectors
+      summary: Get all files for a connector
+      description: Get all files for a connector
+      parameters:
+      - name: connectorID
+        in: path
+        description: The ID of the connector to get files for.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListWithPagination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+  /connectors/{connectorID}/runs:
+    get:
+      tags:
+      - Connectors
+      summary: Get all runs for a connector
+      description: Get all runs for a connector
+      parameters:
+      - name: connectorID
+        in: path
+        description: The ID of the connector to get files for.
+        required: true
+        schema:
+          type: string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+      - name: status
+        in: query
+        description: status of run.
+        required: false
+        schema:
+          type: string
+          example: completed
+          enum:
+          - created
+          - running
+          - completed
+          - failed
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunListWithPagination'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HandleFailedResponse'
+      security:
+      - Bearer: []
+components:
+  schemas:
+    RunListWithPagination:
+      type: object
+      properties:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationRun'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of runs displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of runs created.
+          example: 1
+    File:
+      type: object
+      properties:
+        fileID:
+          type: string
+          description: Unique identifier for the file.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        stageID:
+          type: string
+          description: Unique identifier of the stage where the file is stored.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        mediaType:
+          type: string
+          description: The media type of the file, indicating its format (e.g., application/octet-stream).
+          example: application/octet-stream
+          enum:
+          - application/octet-stream
+        name:
+          type: string
+          description: The name of the file, used for easy identification.
+          example: dataset_name
+        size:
+          type: integer
+          description: The size of the file in bytes.
+          example: 1024
+        version:
+          type: string
+          description: The current version of the file, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the file in ISO 8601 format.
+          example: '2024-07-04'
+        createdAt:
+          type: string
+          description: The timestamp when the file was initially created in ISO 8601 format.
+          example: '2024-07-04'
+        expireAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
+          example: '2024-07-04'
+    ConnectorUpdate:
+      type: object
+      properties:
+        connector_mode:
+          type: boolean
+          description: Whether the connector is enabled for sync.
+    ConnectorList:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of connectors displayed per page.
+          example: 1
+    FileListWithPagination:
+      type: object
+      properties:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
+    ConnectorCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        connectionId:
+          type: string
+          description: The connection ID of the connector from OAuth-Gateway-API.
+        name:
+          type: string
+          description: The name of the connector. It is not unique.
+        connector_mode:
+          type: string
+          enum:
+          - non-synced
+          - synced
+          description: Whether the connector is enabled for sync.
+        stage_id:
+          type: string
+          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
+        source:
+          type: object
+          description: The data source configuration.
+          properties:
+            type:
+              type: string
+              enum:
+              - sharepoint
+              - google_drive
+            configuration:
+              type: object
+              properties:
+                driveId:
+                  type: string
+                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
+                folderId:
+                  type: string
+                  description: The folder Id from Sharepoint or Google Drive.
+                fileIds:
+                  type: array
+                  items:
+                    type: string
+                  description: List of file Ids from from Shareporint or Google Drive.
+        destination:
+          type: object
+          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
+          properties:
+            type:
+              type: string
+              enum:
+              - DataPlatform:SearchStore
+              - DocumentIndex:SearchStore
+              - DocumentIndex:Collection
+              example: DataPlatform:SearchStore
+            searchStore:
+              type: string
+              description: Id of the search store
+            namespace:
+              type: string
+              description: Namesapce, requried when destination.type is DocumentIndex:Collection
+            collection:
+              type: string
+              description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
+        transformationContext:
+          type:
+          - object
+          - 'null'
+          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
+        createdAt:
+          type: string
+          description: The date and time the connector was created.
+    TransformationRun:
+      type: object
+      properties:
+        transformationId:
+          type: string
+          description: Unique identifier for the transformation.
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+        runId:
+          type: string
+          description: Unique identifier for the transformation run.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        transformationName:
+          type: string
+          description: The name of the transformation.
+          example: PDFToText
+        status:
+          type: string
+          description: The current status of the transformation run, indicating if it is pending, in progress, or completed.
+          example: completed
+          enum:
+          - created
+          - running
+          - failed
+          - completed
+        createdAt:
+          type: string
+          description: The timestamp when the transformation run was initially created in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the transformation run in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        errors:
+          type: array
+          description: A list of error messages encountered during the transformation run.
+          items:
+            $ref: '#/components/schemas/RunError'
+        parameters:
+          type: object
+          description: A mapping of parameters used for the transformation run, including input and output settings.
+          example:
+            key: value
+        metadata:
+          type: object
+          description: Additional metadata for the transformation run in a key-value format.
+          example:
+            key: value
+        input:
+          type: object
+          description: The input data object for the transformation run, specifying the data source and location.
+          properties:
+            type:
+              type: string
+              description: The type of data object that the transformation will receive as input.
+              example: DataPlatform:Stage:File
+              enum:
+              - DataPlatform:Stage:File
+            fileID:
+              type: string
+              description: The unique identifier of the file to be processed by the transformation.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            stageID:
+              type: string
+              description: The unique identifier of the stage containing the file to be processed.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            version:
+              type:
+              - string
+              - 'null'
+              description: The version of the file to be processed by the transformation.
+              example: null
+        destination:
+          type: object
+          description: The destination for the output generated by the transformation run, specifying the target location and format.
+          properties:
+            type:
+              type: string
+              description: The type of destination where the output will be stored.
+              example: DataPlatform:Repository
+              enum:
+              - DataPlatform:Repository
+            repositoryID:
+              type: string
+              description: The unique identifier of the repository where the output will be stored.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            mapping:
+              type:
+              - object
+              - 'null'
+              description: A mapping of fields to be used when storing the output in the destination.
+              example: null
+        connector:
+          type: object
+          description: The connector to be used for the transformation run, specifying the external service to sync with.
+          properties:
+            type:
+              type: string
+              description: The type of connector to be used for the transformation run.
+              example: DocumentIndex:Collection
+              enum:
+              - DocumentIndex:Collection
+            collection:
+              type: string
+              description: The collection name for the connector.
+              example: my-collection
+            namespace:
+              type: string
+              description: The namespace for the connector.
+              example: my-namespace
+        output:
+          type: object
+          description: The output data object for the transformation run, specifying the data source and location.
+          properties:
+            type:
+              type: string
+              description: The type of data object that the transformation will receive as input.
+              example: DataPlatform:Repository:Dataset
+              enum:
+              - DataPlatform:Repository:Dataset
+            repositoryID:
+              type: string
+              description: The unique identifier of the file to be processed by the transformation.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            datasetID:
+              type: string
+              description: The unique identifier of the stage containing the file to be processed.
+              example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+            version:
+              type:
+              - string
+              - 'null'
+              description: The version of the file to be processed by the transformation.
+              example: null
+    Connector:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        connectionId:
+          type: string
+          description: The connection ID of the connector from OAuth-Gateway-API.
+        name:
+          type: string
+          description: The name of the connector. It is not unique.
+        connector_mode:
+          type: string
+          enum:
+          - non-synced
+          - synced
+          description: Whether the connector is enabled for sync.
+        provider:
+          type: string
+          enum:
+          - sharepoint
+          - google_drive
+        stage_id:
+          type: string
+          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
+        source:
+          type: object
+          description: The data source configuration.
+          properties:
+            type:
+              type: string
+              enum:
+              - sharepoint
+              - google_drive
+            configuration:
+              type: object
+              properties:
+                driveId:
+                  type: string
+                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
+                folderId:
+                  type: string
+                  description: The folder Id from Sharepoint or Google Drive.
+                fileIds:
+                  type: array
+                  items:
+                    type: string
+                  description: List of file Ids from from Shareporint or Google Drive.
+        destination:
+          type: object
+          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
+          properties:
+            type:
+              type: string
+              enum:
+              - DataPlatform:SearchStore
+              - DocumentIndex:SearchStore
+              - DocumentIndex:Collection
+              example: DataPlatform:SearchStore
+            configuration:
+              type: object
+              properties:
+                searchStore:
+                  type: string
+                  description: Id of the search store
+                namespace:
+                  type: string
+                  description: Namesapce, requried when destination.type is DocumentIndex:Collection
+                collection:
+                  type: string
+                  description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
+        transformationContext:
+          type:
+          - object
+          - 'null'
+          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
+        createdAt:
+          type: string
+          description: The date and time the connector was created.
+        status:
+          type: string
+          description: The status of the connector.
+          example: created
+          enum:
+          - initiated
+          - start_to_full_sync
+          - full_sync_in_progress
+          - full_sync_completed
+          - full_sync_failed
+          - start_to_incremental_sync
+          - incremental_sync_in_progress
+          - incremental_sync_completed
+          - deleted
+          - full_sync_partially_completed
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    RunError:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error that occurred during the transformation run.
+          enum:
+          - UnexpectedError
+          - ExtractorError
+          - FileTooLargeError
+          - TooManyPagesError
+          - TransformerError
+          - LoaderError
+          - ConnectorError
+          - ConfigurationError
+          - InternalServiceError
+          - ServiceNotAvailableError
+          - TooManyTokensError
+          example: ExtractorError
+        message:
+          type: string
+          description: A human-readable description of the error that occurred.
+          example: Error message
+        httpCode:
+          type: integer
+          description: The HTTP status code associated with the error.
+          example: 422
+        dataCode:
+          type: string
+          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
+          enum:
+          - DATA0000
+          - DATA0001
+          - DATA0002
+          - DATA0003
+          - DATA0004
+          - DATA0005
+          - DATA0006
+          - DATA0007
+          - DATA0008
+          - DATA0009
+          - DATA0010
+          example: DATA0001
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-tagGroups:
+- name: PhariaData API
+  tags:
+  - Repositories
+  - Datasets
+  - Stages
+  - Downloads
+  - Transformations
+  - Connectors
+- name: Pharia Search API
+  tags:
+  - Search Store
+  - Document

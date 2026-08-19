@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaStudio Workspaces API",
+    "version": "0.1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workspaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Workspace Userlist With Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/workspaces/:workspace_id/userlist",
+            "params": [
+              {
+                "name": "workspace_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve. Starts at 1."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items per page."
+              },
+              {
+                "name": "email_filter",
+                "value": "",
+                "type": "query",
+                "description": "Return users whose email addresses contain the filter as a substring. Case insensitive. If not provided, all results are returned."
+              }
+            ]
+          },
+          "docs": "Get a list of all users of a Workspace by the `Workspace` identifier"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

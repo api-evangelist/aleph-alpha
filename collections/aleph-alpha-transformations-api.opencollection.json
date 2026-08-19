@@ -1,0 +1,223 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PhariaData Transformations API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transformations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of available transformations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/transformations",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve, used for paginated responses."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page in the response."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search for transformations by their specific name."
+              }
+            ]
+          },
+          "docs": "Fetches a paginated list of all available transformations in the Data Platform."
+        },
+        {
+          "info": {
+            "name": "Retrieve transformation details by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/transformations/:transformationID",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information for a specific transformation identified by its unique ID. Includes properties such as name, input media type, supported destinations, and output schema."
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of created runs given a transformation ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/transformations/:transformationID/runs",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve, used for paginated responses."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page in the response."
+              },
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "query",
+                "description": "A file ID to filter the list of runs that received this file as input."
+              }
+            ]
+          },
+          "docs": "Fetches a paginated list of all created runs in the Data Platform for a specific transformation."
+        },
+        {
+          "info": {
+            "name": "Trigger a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/transformations/:transformationID/runs",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a transformation process for a specific transformation, identified by its unique ID. The operation applies the transformation to the input data object and stores the result in the specified destination. If connector configurations are provided, the output can also be delivered to external services. Some transformations accept parameters: the list of the allowed parameters for each transformation can be retrieved by the list transformations endpoint. ```Note: If a file is TXT or Markdow"
+        },
+        {
+          "info": {
+            "name": "Stream real-time run updates for a transformation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/transformations/:transformationID/runs/events",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve, used for paginated responses."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The number of items to include per page in the response."
+              },
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "query",
+                "description": "A file ID to filter the list of runs that received this file as input."
+              }
+            ]
+          },
+          "docs": "Opens a Server-Sent Events (SSE) connection that streams live run updates for a specific transformation.\n\n**SSE Events:**\n- `connected`: Connection established\n- `runs:new`: New runs appeared on the current page\n- `runs:updated`: Existing runs changed status\n- `runs:removed`: Runs fell off the current page window (e.g. pushed out by newer runs)\n- `done`: All currently visible runs reached a terminal state\n- `error`: Stream error occurred\n\nThe stream closes automatically when all runs reach a ter"
+        },
+        {
+          "info": {
+            "name": "Retrieve transformation run details by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{host}/v1/studio/data/transformations/:transformationID/runs/:runID",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              },
+              {
+                "name": "runID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation run."
+              }
+            ]
+          },
+          "docs": "Fetches detailed information for a specific transformation run identified by its unique ID. Includes properties such as status, start time, end time, and output destination."
+        },
+        {
+          "info": {
+            "name": "Trigger multiple transformations in batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{host}/v1/studio/data/transformations/:transformationID/runs/batch",
+            "params": [
+              {
+                "name": "transformationID",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for the transformation."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Initiates multiple transformation processes for a specific transformation, identified by its unique ID. This endpoint allows you to execute multiple transformation runs simultaneously by providing an array of transformation configurations. Each transformation in the batch applies to its respective input data object and stores the result in the specified destination. If connector configurations are provided, the outputs can also be delivered to external services. Some transformations accept param"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

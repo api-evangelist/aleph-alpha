@@ -1,0 +1,1375 @@
+{
+  "item": [
+    {
+      "id": "f40e1726-475d-4993-a510-adf84d0b5622",
+      "name": "Connectors",
+      "description": {
+        "content": "Available connectors for the Data Platform to ingest data from external sources.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ca5a0111-9762-4aaf-92e4-f7a9c07d345c",
+          "name": "Get all connectors",
+          "request": {
+            "name": "Get all connectors",
+            "description": {
+              "content": "Get all connectors",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6e4e82fb-c2f4-419a-a5df-f2771d5cefe2",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"connectors\": [\n    {\n      \"id\": \"string\",\n      \"connectionId\": \"string\",\n      \"name\": \"string\",\n      \"connector_mode\": \"non-synced\",\n      \"provider\": \"google_drive\",\n      \"stage_id\": \"string\",\n      \"source\": {\n        \"type\": \"google_drive\",\n        \"configuration\": {\n          \"driveId\": \"string\",\n          \"folderId\": \"string\",\n          \"fileIds\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:SearchStore\",\n        \"configuration\": {\n          \"searchStore\": \"string\",\n          \"namespace\": \"string\",\n          \"collection\": \"string\"\n        }\n      },\n      \"transformationContext\": {\n        \"parameters\": {}\n      },\n      \"createdAt\": \"string\",\n      \"status\": \"incremental_sync_in_progress\"\n    },\n    {\n      \"id\": \"string\",\n      \"connectionId\": \"string\",\n      \"name\": \"string\",\n      \"connector_mode\": \"synced\",\n      \"provider\": \"sharepoint\",\n      \"stage_id\": \"string\",\n      \"source\": {\n        \"type\": \"google_drive\",\n        \"configuration\": {\n          \"driveId\": \"string\",\n          \"folderId\": \"string\",\n          \"fileIds\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:SearchStore\",\n        \"configuration\": {\n          \"searchStore\": \"string\",\n          \"namespace\": \"string\",\n          \"collection\": \"string\"\n        }\n      },\n      \"transformationContext\": {\n        \"parameters\": {}\n      },\n      \"createdAt\": \"string\",\n      \"status\": \"deleted\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "619e946f-7045-45fc-b657-70e16688691e",
+          "name": "Create a new connector",
+          "request": {
+            "name": "Create a new connector",
+            "description": {
+              "content": "Create a new connector",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<string>\",\n  \"connectionId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"connector_mode\": \"<string>\",\n  \"stage_id\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"configuration\": {\n      \"driveId\": \"<string>\",\n      \"folderId\": \"<string>\",\n      \"fileIds\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"<string>\",\n    \"searchStore\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"collection\": \"<string>\"\n  },\n  \"transformationContext\": {\n    \"parameters\": \"<object>\"\n  },\n  \"createdAt\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d5e4e83-1811-4c8d-940c-2d3867f6e422",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"connectionId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"connector_mode\": \"<string>\",\n  \"stage_id\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"configuration\": {\n      \"driveId\": \"<string>\",\n      \"folderId\": \"<string>\",\n      \"fileIds\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"searchStore\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"collection\": \"<string>\"\n  },\n  \"transformationContext\": {\n    \"parameters\": \"<object>\"\n  },\n  \"createdAt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"connectionId\": \"string\",\n  \"name\": \"string\",\n  \"connector_mode\": \"synced\",\n  \"provider\": \"google_drive\",\n  \"stage_id\": \"string\",\n  \"source\": {\n    \"type\": \"google_drive\",\n    \"configuration\": {\n      \"driveId\": \"string\",\n      \"folderId\": \"string\",\n      \"fileIds\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"configuration\": {\n      \"searchStore\": \"string\",\n      \"namespace\": \"string\",\n      \"collection\": \"string\"\n    }\n  },\n  \"transformationContext\": {\n    \"parameters\": {}\n  },\n  \"createdAt\": \"string\",\n  \"status\": \"incremental_sync_completed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92059ba1-0c8c-4fb1-9d43-a2f92ffb20ba",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"connectionId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"connector_mode\": \"<string>\",\n  \"stage_id\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"configuration\": {\n      \"driveId\": \"<string>\",\n      \"folderId\": \"<string>\",\n      \"fileIds\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"searchStore\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"collection\": \"<string>\"\n  },\n  \"transformationContext\": {\n    \"parameters\": \"<object>\"\n  },\n  \"createdAt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Bad Request\",\n  \"message\": \"TTL must be between 60 and 3600 seconds\",\n  \"statusCode\": 400\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb8088de-95f3-4aa8-9646-c0e411acd6c3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"connectionId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"connector_mode\": \"<string>\",\n  \"stage_id\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"configuration\": {\n      \"driveId\": \"<string>\",\n      \"folderId\": \"<string>\",\n      \"fileIds\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"searchStore\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"collection\": \"<string>\"\n  },\n  \"transformationContext\": {\n    \"parameters\": \"<object>\"\n  },\n  \"createdAt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d496ae0-8927-4aff-94df-f782b1863890",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<string>\",\n  \"connectionId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"connector_mode\": \"<string>\",\n  \"stage_id\": \"<string>\",\n  \"source\": {\n    \"type\": \"<string>\",\n    \"configuration\": {\n      \"driveId\": \"<string>\",\n      \"folderId\": \"<string>\",\n      \"fileIds\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"searchStore\": \"<string>\",\n    \"namespace\": \"<string>\",\n    \"collection\": \"<string>\"\n  },\n  \"transformationContext\": {\n    \"parameters\": \"<object>\"\n  },\n  \"createdAt\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7e0dfed4-f8cf-4e71-aa3a-96f192aca845",
+          "name": "Get a connector",
+          "request": {
+            "name": "Get a connector",
+            "description": {
+              "content": "Get a connector",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors",
+                ":connectorID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectorID",
+                  "description": "(Required) The ID of the connector to get."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a38d304b-307d-4445-b3e6-91c2ba33db12",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"connectionId\": \"string\",\n  \"name\": \"string\",\n  \"connector_mode\": \"synced\",\n  \"provider\": \"google_drive\",\n  \"stage_id\": \"string\",\n  \"source\": {\n    \"type\": \"google_drive\",\n    \"configuration\": {\n      \"driveId\": \"string\",\n      \"folderId\": \"string\",\n      \"fileIds\": [\n        \"string\",\n        \"string\"\n      ]\n    }\n  },\n  \"destination\": {\n    \"type\": \"DataPlatform:SearchStore\",\n    \"configuration\": {\n      \"searchStore\": \"string\",\n      \"namespace\": \"string\",\n      \"collection\": \"string\"\n    }\n  },\n  \"transformationContext\": {\n    \"parameters\": {}\n  },\n  \"createdAt\": \"string\",\n  \"status\": \"incremental_sync_completed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdf23bbc-0ffb-43e6-8b9d-0036058b664b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f20bb9f1-b820-4906-9439-9f32a832f6ae",
+          "name": "Update a connector",
+          "request": {
+            "name": "Update a connector",
+            "description": {
+              "content": "Update a connector",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors",
+                ":connectorID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectorID",
+                  "description": "(Required) The ID of the connector to patch."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"connector_mode\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd690b92-37af-4b57-916a-b6e0536257c1",
+              "name": "No Content",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to patch."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"connector_mode\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "728efc4a-63c6-4324-87ad-4c4ec46f1c49",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to patch."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"connector_mode\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "935ae455-a013-4ec3-82a2-fbf9cedab7f4",
+          "name": "Get all files for a connector",
+          "request": {
+            "name": "Get all files for a connector",
+            "description": {
+              "content": "Get all files for a connector",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors",
+                ":connectorID",
+                "files"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectorID",
+                  "description": "(Required) The ID of the connector to get files for."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ed1bbf59-60d3-4d82-b3f2-c696f36f0a19",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"files\": [\n    {\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mediaType\": \"application/octet-stream\",\n      \"name\": \"dataset_name\",\n      \"size\": 1024,\n      \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"updatedAt\": \"2024-07-04\",\n      \"createdAt\": \"2024-07-04\",\n      \"expireAt\": \"2024-07-04\"\n    },\n    {\n      \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"mediaType\": \"application/octet-stream\",\n      \"name\": \"dataset_name\",\n      \"size\": 1024,\n      \"version\": \"55a62ef9-dd9c-4e5d-9b93-0361bae4db37\",\n      \"updatedAt\": \"2024-07-04\",\n      \"createdAt\": \"2024-07-04\",\n      \"expireAt\": \"2024-07-04\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ecefe93-3d86-4b19-af76-d9a3392d1fa3",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "072465d4-a37d-424b-9509-4bef0d3dc6ef",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "files"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "25b3bd5f-ac92-4da2-befa-34a21e48d024",
+          "name": "Get all runs for a connector",
+          "request": {
+            "name": "Get all runs for a connector",
+            "description": {
+              "content": "Get all runs for a connector",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors",
+                ":connectorID",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "status of run."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "connectorID",
+                  "description": "(Required) The ID of the connector to get files for."
+                },
+                {
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "type": "any",
+                  "value": "{{host}}",
+                  "key": "host"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e3bee569-e39d-4d29-9aa3-d60934f46bf4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "completed"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"transformationName\": \"PDFToText\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2021-08-25T15:04:05Z\",\n      \"updatedAt\": \"2021-08-25T15:04:05Z\",\n      \"errors\": [\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        },\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        }\n      ],\n      \"parameters\": {\n        \"key\": \"value\"\n      },\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"input\": {\n        \"type\": \"DataPlatform:Stage:File\",\n        \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:Repository\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"mapping\": null\n      },\n      \"connector\": {\n        \"type\": \"DocumentIndex:Collection\",\n        \"collection\": \"my-collection\",\n        \"namespace\": \"my-namespace\"\n      },\n      \"output\": {\n        \"type\": \"DataPlatform:Repository:Dataset\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      }\n    },\n    {\n      \"transformationId\": \"cb26237c-3beb-40f3-8e13-77d862f722b5\",\n      \"runId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n      \"transformationName\": \"PDFToText\",\n      \"status\": \"completed\",\n      \"createdAt\": \"2021-08-25T15:04:05Z\",\n      \"updatedAt\": \"2021-08-25T15:04:05Z\",\n      \"errors\": [\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        },\n        {\n          \"type\": \"ExtractorError\",\n          \"message\": \"Error message\",\n          \"httpCode\": 422,\n          \"dataCode\": \"DATA0001\"\n        }\n      ],\n      \"parameters\": {\n        \"key\": \"value\"\n      },\n      \"metadata\": {\n        \"key\": \"value\"\n      },\n      \"input\": {\n        \"type\": \"DataPlatform:Stage:File\",\n        \"fileID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"stageID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      },\n      \"destination\": {\n        \"type\": \"DataPlatform:Repository\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"mapping\": null\n      },\n      \"connector\": {\n        \"type\": \"DocumentIndex:Collection\",\n        \"collection\": \"my-collection\",\n        \"namespace\": \"my-namespace\"\n      },\n      \"output\": {\n        \"type\": \"DataPlatform:Repository:Dataset\",\n        \"repositoryID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"datasetID\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n        \"version\": null\n      }\n    }\n  ],\n  \"page\": 0,\n  \"size\": 1,\n  \"total\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e7b89428-a213-4a85-8e1f-5cf7bf6cc32f",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "completed"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0351beee-7a61-49c8-a950-c1080317463c",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":connectorID",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "completed"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "connectorID",
+                      "description": "(Required) The ID of the connector to get files for."
+                    },
+                    {
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "type": "any",
+                      "value": "{{host}}",
+                      "key": "host"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "https://api.pharia.example.com",
+      "key": "host"
+    },
+    {
+      "type": "string",
+      "value": "{{host}}/v1/studio/data",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "74b4b2fd-886d-4d37-a606-1ee977773280",
+    "name": "PhariaData Connectors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.\n\nContact Support:\n Name: PhariaData API Support\n Email: pharia-data@aleph-alpha.com",
+      "type": "text/plain"
+    }
+  }
+}
