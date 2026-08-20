@@ -25,6 +25,22 @@ modified: '2026-08-02'
 tags:
 - Company
 - Artificial Intelligence
+- Machine-Learning
+- Large Language Models
+- Generative AI
+- Sovereign AI
+- Inference
+- Embeddings
+- Semantic Search
+- Vector Search
+- Agents
+- MCP
+- Germany
+- Enterprise Software
+- Government
+tags_raw:
+- Company
+- Artificial Intelligence
 - Machine Learning
 - Large Language Models
 - Generative AI
@@ -46,6 +62,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - API Description
+  tags_raw:
   - API description
   properties:
   - type: OpenAPI
@@ -114,6 +132,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Cluster
+  tags_raw:
   - cluster
   properties:
   - type: OpenAPI
@@ -257,6 +277,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -340,6 +362,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Models
+  tags_raw:
   - models
   properties:
   - type: OpenAPI
@@ -371,7 +395,8 @@ apis:
   humanURL: >-
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
-  tags:
+  tags: []
+  tags_raw:
   - Operations
   properties:
   - type: OpenAPI
@@ -388,6 +413,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Permissions
+  tags_raw:
   - permissions
   properties:
   - type: OpenAPI
@@ -407,6 +434,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
@@ -538,6 +567,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Steering
+  tags_raw:
   - steering
   properties:
   - type: OpenAPI
@@ -554,6 +585,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Task
+  tags_raw:
   - tasks
   properties:
   - type: OpenAPI
@@ -570,6 +603,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Tokens
+  tags_raw:
   - tokens
   properties:
   - type: OpenAPI
@@ -615,6 +650,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Transformation
+  tags_raw:
   - Transformations
   properties:
   - type: OpenAPI
@@ -675,6 +712,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Use Cases
+  tags_raw:
   - usecases
   properties:
   - type: OpenAPI
@@ -691,6 +730,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - User
+  tags_raw:
   - users
   properties:
   - type: OpenAPI
