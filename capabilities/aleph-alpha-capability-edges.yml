@@ -3,7 +3,7 @@ provider: Aleph Alpha
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
-- Software & Technology
+- Public Sector & Government
 min_confidence: 0.7
 capability_model:
   source: https://github.com/vincentmakes/turbo-ea-capabilities
@@ -18,54 +18,53 @@ edges:
   capability_id: BC-610.60
   capability_id_l1: BC-610
   capability_name: Artificial Intelligence Management
-  confidence: 0.8
-  evidence: POST /complete  Completion; POST /chat/completions  Chat; POST /semantic_embed  Semantic Embeddings;
-    POST /explain  Explanation; POST /tokenize  Tokenize
-  reason: These are core LLM inference operations (completion, chat, embeddings, tokenisation, explainability),
-    i.e. the operational use of AI models. Maps to Artificial Intelligence Management rather than any
-    industry-specific capability.
+  confidence: 0.75
+  evidence: POST /complete  complete  Completion; POST /chat/completions  chatCompletions  Chat; POST
+    /semantic_embed  semanticEmbed  Semantic Embeddings; POST /explain  explain  Explanation
+  reason: These are LLM inference operations (completion, chat, embeddings, tokenisation, explainability)
+    — the operational use of AI models. Closest candidate is Artificial Intelligence Management; no business-domain
+    capability is realised by raw inference.
 - tag: v1/models
   spec_file: aleph-alpha-v1-models-api-openapi.yml
   capability_id: BC-610.60
   capability_id_l1: BC-610
   capability_name: Artificial Intelligence Management
-  confidence: 0.8
-  evidence: GET /v1/foundation-models    List all foundation models; GET /v1/inference-runtimes; POST
-    /v1/models    Create a new model; v1.GeneratorConfig
-  reason: Registration and lifecycle management of foundation models and their inference runtimes is ML
-    model lifecycle / MLOps. Deployment-adjacent, but the managed object is the model itself, so AI management
-    fits best.
-- tag: cluster
-  spec_file: aleph-alpha-cluster-api-openapi.yml
-  capability_id: BC-600.50
-  capability_id_l1: BC-600
-  capability_name: IT Infrastructure Management
   confidence: 0.75
-  evidence: Get available GPU resources / List all cluster nodes / dtos.NodeResources, dtos.Gpu, dtos.Memory
-  reason: Read APIs over compute cluster nodes, GPUs, memory and taints — compute infrastructure inventory
-    and resource management, i.e. IT Infrastructure Management. Could alternatively be read as platform
-    capacity management, hence 0.75.
-- tag: tokens
-  spec_file: aleph-alpha-tokens-api-openapi.yml
-  capability_id: BC-4270.40
-  capability_id_l1: BC-4270
-  capability_name: Developer Identity & Credential Management
-  confidence: 0.75
-  evidence: GET /users/me/tokens  Get issued API tokens; POST /users/me/tokens  Create a new API token;
-    DELETE /users/me/tokens/{token_id}
-  reason: Issuance and revocation of API tokens used to call the platform's public API — developer credential
-    stewardship. Alternative reading is generic IAM, so confidence is moderate.
-- tag: Spans
-  spec_file: aleph-alpha-spans-api-openapi.yml
+  evidence: GET /v1/foundation-models    List all foundation models; POST /v1/models    Create a new model;
+    v1.ModelDeploymentOutput, v1.GeneratorConfig
+  reason: Registration, update, deletion and deployment of foundation models and inference runtimes is
+    AI/ML model lifecycle management (MLOps).
+- tag: Application Traces
+  spec_file: aleph-alpha-application-traces-api-openapi.yml
   capability_id: BC-4220.20
   capability_id_l1: BC-4220
   capability_name: Observability Management
   confidence: 0.7
-  evidence: A Span is a single unit of work within a Trace and represents an individual operation in the
-    execution sequence ... providing detailed insights into each operation's performance and behavior
-  reason: Spans are OpenTelemetry-style tracing primitives used to observe execution of tasks, which is
-    Observability Management (logs, metrics, traces). Applied to the vendor's own AI workloads rather
-    than a generic SaaS fleet, so 0.7.
+  evidence: POST /projects/{project_id}/traces_v2  Receive Otlp Traces; schemas TraceSpan, SpanStatus,
+    TraceEvent
+  reason: OTLP trace ingestion and retrieval for running applications is distributed-tracing observability.
+    Mapped to Observability Management; moderate confidence since it is scoped to LLM application traces
+    within a studio product.
+- tag: Benchmark Executions
+  spec_file: aleph-alpha-benchmark-executions-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: POST /projects/{project_id}/evaluation/benchmarks/{benchmark_id}/executions  Create Benchmark
+    Execution; "overview of all evaluation steps during execution (run, evaluation, aggregation)"
+  reason: Executes evaluation runs of AI model/task outputs — part of the AI/ML model lifecycle (evaluation
+    stage) in an LLM platform, fitting Artificial Intelligence Management.
+- tag: Benchmarks
+  spec_file: aleph-alpha-benchmarks-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: '"A Benchmark provides a way to compare and evaluate the quality of your task results for
+    a specific dataset"; schemas EvaluationLogic, AggregationLogic'
+  reason: Definition and management of model evaluation benchmarks on an AI platform — AI/ML lifecycle
+    (model evaluation) management.
 - tag: Traces
   spec_file: aleph-alpha-traces-api-openapi.yml
   capability_id: BC-4220.20
@@ -74,16 +73,14 @@ edges:
   confidence: 0.7
   evidence: A Trace provides a mechanism similar to OpenTelemetry for tracking the execution flow of a
     task ... Tracing is essential for performance monitoring and debugging.
-  reason: Explicitly OpenTelemetry-style distributed tracing for monitoring execution, which is squarely
-    Observability Management. Confidence tempered because it is a product-embedded tracing feature rather
-    than the vendor's own service observability.
-- tag: models
-  spec_file: aleph-alpha-models-api-openapi.yml
-  capability_id: BC-610.60
-  capability_id_l1: BC-610
-  capability_name: Artificial Intelligence Management
+  reason: Explicitly OpenTelemetry-style tracing for performance monitoring and debugging, which is observability
+    management.
+- tag: cluster
+  spec_file: aleph-alpha-cluster-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
   confidence: 0.7
-  evidence: Get All Model Cards / Get the tokenizer of a model / POST /models/chat/completions  Chat Completion
-  reason: Catalogue of available LLM model cards plus inference endpoints (completion, chat completion)
-    — management and serving of AI models, mapping to Artificial Intelligence Management. Part inference
-    plumbing, so 0.7.
+  evidence: GET /cluster/gpus Get available GPU resources / GET /cluster/nodes List all cluster nodes
+  reason: Compute cluster node and GPU resource inventory for the deployment platform, which is IT infrastructure
+    (compute) management.
