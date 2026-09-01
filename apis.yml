@@ -73,7 +73,7 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - API description
+  - API Description
   tags_raw:
   - API description
   properties:
@@ -578,7 +578,7 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - steering
+  - Steering
   tags_raw:
   - steering
   properties:
@@ -661,7 +661,7 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - Transformations
+  - Transformation
   tags_raw:
   - Transformations
   properties:
@@ -723,7 +723,7 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
-  - usecases
+  - Use Cases
   tags_raw:
   - usecases
   properties:
