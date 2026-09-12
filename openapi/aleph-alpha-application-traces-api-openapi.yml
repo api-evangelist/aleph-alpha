@@ -150,32 +150,34 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    TraceListResponse:
       properties:
-        loc:
+        traces:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/TraceSummary'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Traces
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - traces
+      - total
+      - page
+      - size
+      - num_pages
+      title: TraceListResponse
+      description: Response model for trace listing.
     TraceResponseV2:
       properties:
         id:
@@ -192,12 +194,19 @@ components:
       - spans
       title: TraceResponseV2
       description: Studio Trace model for detailed view.
-    SpanType:
-      type: string
-      enum:
-      - SPAN
-      - TASK_SPAN
-      title: SpanType
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
     TraceSummary:
       properties:
         trace_id:
@@ -227,22 +236,6 @@ components:
       - duration_ms
       title: TraceSummary
       description: Summary information for a trace.
-    SpanStatus:
-      type: string
-      enum:
-      - ERROR
-      - OK
-      - ACTIVE
-      title: SpanStatus
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     TraceSpan:
       properties:
         id:
@@ -300,47 +293,23 @@ components:
       - created_by
       title: TraceSpan
       description: Studio Span model.
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
-    TraceListResponse:
+    HTTPValidationError:
       properties:
-        traces:
+        detail:
           items:
-            $ref: '#/components/schemas/TraceSummary'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Traces
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
+          title: Detail
       type: object
-      required:
-      - traces
-      - total
-      - page
-      - size
-      - num_pages
-      title: TraceListResponse
-      description: Response model for trace listing.
+      title: HTTPValidationError
+    TraceStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: TraceStatus
+      description: Status of a trace.
     TraceEvent:
       properties:
         id:
@@ -379,14 +348,45 @@ components:
       - created_by
       title: TraceEvent
       description: Studio Event model.
-    TraceStatus:
+    SpanStatus:
       type: string
       enum:
       - ERROR
       - OK
       - ACTIVE
-      title: TraceStatus
-      description: Status of a trace.
+      title: SpanStatus
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

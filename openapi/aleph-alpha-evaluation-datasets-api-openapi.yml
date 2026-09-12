@@ -303,6 +303,52 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    AssociatedBenchmark:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: AssociatedBenchmark
+      description: Benchmark associated with a dataset.
+    Body_create_dataset_projects__project_id__evaluation_datasets_post:
+      properties:
+        source_data:
+          type: string
+          contentMediaType: application/octet-stream
+          title: Source Data
+          description: File to upload. This needs to be in jsonl format.
+        name:
+          type: string
+          title: Name
+        total_datapoints:
+          type: integer
+          title: Total Datapoints
+        metadata:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Metadata
+          description: 'The format needs to be a valid dictionary parsed as a string. E.g., "{''a'': ''b''}".'
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+      type: object
+      required:
+      - source_data
+      - name
+      - total_datapoints
+      title: Body_create_dataset_projects__project_id__evaluation_datasets_post
     DownloadLinkResponse:
       properties:
         downloadId:
@@ -339,6 +385,83 @@ components:
       - expireAt
       title: DownloadLinkResponse
       description: Response model for dataset download links.
+    DatasetMetadataUpdate:
+      properties:
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        totalDatapoints:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Totaldatapoints
+      type: object
+      title: DatasetMetadataUpdate
+      description: Model for updating dataset metadata.
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    PagedResponse_Dataset_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/Dataset'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[Dataset]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     Dataset:
       properties:
         repositoryId:
@@ -397,127 +520,6 @@ components:
       - updatedAt
       title: Dataset
       description: Studio API model for datasets.
-    Body_create_dataset_projects__project_id__evaluation_datasets_post:
-      properties:
-        source_data:
-          type: string
-          contentMediaType: application/octet-stream
-          title: Source Data
-          description: File to upload. This needs to be in jsonl format.
-        name:
-          type: string
-          title: Name
-        total_datapoints:
-          type: integer
-          title: Total Datapoints
-        metadata:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Metadata
-          description: 'The format needs to be a valid dictionary parsed as a string. E.g., "{''a'': ''b''}".'
-        labels:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Labels
-      type: object
-      required:
-      - source_data
-      - name
-      - total_datapoints
-      title: Body_create_dataset_projects__project_id__evaluation_datasets_post
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DatasetMetadataUpdate:
-      properties:
-        labels:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Labels
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        totalDatapoints:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Totaldatapoints
-      type: object
-      title: DatasetMetadataUpdate
-      description: Model for updating dataset metadata.
-    AssociatedBenchmark:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: AssociatedBenchmark
-      description: Benchmark associated with a dataset.
-    Example_JsonSerializable_JsonSerializable_:
-      properties:
-        input:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        expected_output:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        id:
-          type: string
-          title: Id
-        metadata:
-          anyOf:
-          - additionalProperties:
-              $ref: '#/components/schemas/JsonSerializable-Output'
-            type: object
-          - type: 'null'
-          title: Metadata
-      type: object
-      required:
-      - input
-      - expected_output
-      title: Example[JsonSerializable, JsonSerializable]
     PagedResponse_Example_JsonSerializable__JsonSerializable__:
       properties:
         total:
@@ -545,55 +547,53 @@ components:
       - size
       - num_pages
       title: PagedResponse[Example[JsonSerializable, JsonSerializable]]
-    HTTPValidationError:
+    Example_JsonSerializable_JsonSerializable_:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
+        input:
           $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
+        expected_output:
           $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
-    PagedResponse_Dataset_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/Dataset'
-          type: array
-          title: Items
-          default: []
+        id:
+          type: string
+          title: Id
+        metadata:
+          anyOf:
+          - additionalProperties:
+              $ref: '#/components/schemas/JsonSerializable-Output'
+            type: object
+          - type: 'null'
+          title: Metadata
       type: object
       required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[Dataset]
+      - input
+      - expected_output
+      title: Example[JsonSerializable, JsonSerializable]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

@@ -144,39 +144,54 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    TraceResponse:
+    PagedResponse_TraceResponse_:
       properties:
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The timestamp when this resource was created in UTC.
-        created_by:
-          type: string
-          title: Created By
-          description: The ID of the user that created the resource.
-          examples:
-          - '12345'
-        id:
-          type: string
-          format: uuid
-          title: Id
-          description: A unique id for the opened `Trace`.
-          examples:
-          - 123e4567-e89b-12d3-a456-426614174000
-        spans:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
           items:
-            $ref: '#/components/schemas/SpanResponse-Output'
+            $ref: '#/components/schemas/TraceResponse'
           type: array
-          title: Spans
+          title: Items
+          default: []
       type: object
       required:
-      - created_at
-      - created_by
-      - id
-      - spans
-      title: TraceResponse
-      description: A trace represents a single tree of spans.
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[TraceResponse]
+    TaskSpanAttributes:
+      properties:
+        type:
+          type: string
+          const: TASK_SPAN
+          title: Type
+          default: TASK_SPAN
+        input:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        output:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+      type: object
+      required:
+      - input
+      - output
+      title: TaskSpanAttributes
+    SingularTraceSpanList:
+      items:
+        $ref: '#/components/schemas/SpanRequest'
+      type: array
+      title: SingularTraceSpanList
     SpanResponse-Output:
       properties:
         created_at:
@@ -259,6 +274,52 @@ components:
       - type
       - attributes
       title: SpanResponse
+    TraceResponse:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: A unique id for the opened `Trace`.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        spans:
+          items:
+            $ref: '#/components/schemas/SpanResponse-Output'
+          type: array
+          title: Spans
+      type: object
+      required:
+      - created_at
+      - created_by
+      - id
+      - spans
+      title: TraceResponse
+      description: A trace represents a single tree of spans.
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
     Context:
       properties:
         trace_id:
@@ -274,6 +335,96 @@ components:
       - trace_id
       - span_id
       title: Context
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Event:
+      properties:
+        name:
+          type: string
+          title: Name
+        message:
+          type: string
+          title: Message
+        body:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+      type: object
+      required:
+      - name
+      - message
+      - body
+      title: Event
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SpanAttributes:
+      properties:
+        type:
+          type: string
+          const: SPAN
+          title: Type
+          default: SPAN
+      type: object
+      title: SpanAttributes
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
+    SpanStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: SpanStatus
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
     SpanRequest:
       properties:
         context:
@@ -325,157 +476,6 @@ components:
       - events
       - status
       title: SpanRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    SpanType:
-      type: string
-      enum:
-      - SPAN
-      - TASK_SPAN
-      title: SpanType
-    TaskSpanAttributes:
-      properties:
-        type:
-          type: string
-          const: TASK_SPAN
-          title: Type
-          default: TASK_SPAN
-        input:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        output:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-      type: object
-      required:
-      - input
-      - output
-      title: TaskSpanAttributes
-    SpanAttributes:
-      properties:
-        type:
-          type: string
-          const: SPAN
-          title: Type
-          default: SPAN
-      type: object
-      title: SpanAttributes
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SingularTraceSpanList:
-      items:
-        $ref: '#/components/schemas/SpanRequest'
-      type: array
-      title: SingularTraceSpanList
-    PagedResponse_TraceResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/TraceResponse'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[TraceResponse]
-    Event:
-      properties:
-        name:
-          type: string
-          title: Name
-        message:
-          type: string
-          title: Message
-        body:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-      type: object
-      required:
-      - name
-      - message
-      - body
-      title: Event
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
-    SpanStatus:
-      type: string
-      enum:
-      - ERROR
-      - OK
-      - ACTIVE
-      title: SpanStatus
   securitySchemes:
     BearerAuth:
       type: http

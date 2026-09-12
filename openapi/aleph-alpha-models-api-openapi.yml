@@ -263,20 +263,6 @@ paths:
       - BearerAuth: []
 components:
   schemas:
-    Message:
-      properties:
-        role:
-          type: string
-          title: Role
-        content:
-          type: string
-          title: Content
-      type: object
-      required:
-      - role
-      - content
-      title: Message
-      description: Chat message model.
     ModelCardResponse:
       properties:
         name:
@@ -391,6 +377,44 @@ components:
       - link
       title: ModelCardResponse
       description: Response model for model cards.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ModelCompleteRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        prompt:
+          type: string
+          title: Prompt
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - prompt
+      title: ModelCompleteRequest
+      description: Request model for model completion.
+    Message:
+      properties:
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - role
+      - content
+      title: Message
+      description: Chat message model.
     ChatCompletionRequest:
       properties:
         messages:
@@ -438,30 +462,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ModelCompleteRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        prompt:
-          type: string
-          title: Prompt
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - prompt
-      title: ModelCompleteRequest
-      description: Request model for model completion.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
   securitySchemes:
     token:
       type: http

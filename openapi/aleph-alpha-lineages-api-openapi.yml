@@ -255,74 +255,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagedResponse_BenchmarkLineageResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/BenchmarkLineageResponse'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[BenchmarkLineageResponse]
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    BenchmarkLineageSortableColumns:
-      type: string
-      enum:
-      - run_latency
-      - run_tokens
-      - created_by
-      - created_at
-      title: BenchmarkLineageSortableColumns
-      description: Sortable columns for benchmark lineage queries.
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
     BenchmarkLineageResponse:
       properties:
         created_at:
@@ -391,6 +323,74 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    BenchmarkLineageSortableColumns:
+      type: string
+      enum:
+      - run_latency
+      - run_tokens
+      - created_by
+      - created_at
+      title: BenchmarkLineageSortableColumns
+      description: Sortable columns for benchmark lineage queries.
+    PagedResponse_BenchmarkLineageResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/BenchmarkLineageResponse'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[BenchmarkLineageResponse]
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

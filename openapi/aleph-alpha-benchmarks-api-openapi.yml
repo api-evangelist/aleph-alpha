@@ -230,88 +230,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PatchBenchmarkRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-          - type: 'null'
-          title: Name
-          description: The name of the benchmark.
-          examples:
-          - Benchmark
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-          description: The description of the benchamrk.
-          examples:
-          - This is a benchmark.
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-          description: The metadata of the benchmark.
-      type: object
-      title: PatchBenchmarkRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    PagedResponse_GetBenchmarkResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/GetBenchmarkResponse'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[GetBenchmarkResponse]
     AggregationLogic:
       properties:
         logic:
@@ -469,23 +387,6 @@ components:
       - aggregation_logic
       - last_executed_at
       title: GetBenchmarkResponse
-    BenchmarkSortableColumns:
-      type: string
-      enum:
-      - name
-      - description
-      - last_executed_at
-      - created_at
-      - updated_at
-      - created_by
-      - updated_by
-      title: BenchmarkSortableColumns
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
     EvaluationLogic:
       properties:
         logic:
@@ -620,6 +521,62 @@ components:
       - evaluation_logic
       - aggregation_logic
       title: PostBenchmarkRequest
+    PatchBenchmarkRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+          description: The name of the benchmark.
+          examples:
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchamrk.
+          examples:
+          - This is a benchmark.
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: The metadata of the benchmark.
+      type: object
+      title: PatchBenchmarkRequest
+    PagedResponse_GetBenchmarkResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/GetBenchmarkResponse'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[GetBenchmarkResponse]
     HTTPValidationError:
       properties:
         detail:
@@ -629,6 +586,49 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    BenchmarkSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - last_executed_at
+      - created_at
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkSortableColumns
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

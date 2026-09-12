@@ -181,6 +181,24 @@ paths:
           description: Filter index successfully unassigned.
 components:
   parameters:
+    filterIndex:
+      description: 'Filter index for an index assigned to a collection. Filter indexes are used to allow
+
+        filtering of results when searching on documents in a collection. An filter index name
+
+        can only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        than 50 characters.
+
+        '
+      name: filterIndex
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: creation-date
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
 
@@ -219,24 +237,6 @@ components:
         pattern: ^[a-zA-Z0-9\-\.]+$
       required: 'true'
       example: aleph-alpha
-    filterIndex:
-      description: 'Filter index for an index assigned to a collection. Filter indexes are used to allow
-
-        filtering of results when searching on documents in a collection. An filter index name
-
-        can only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
-
-        than 50 characters.
-
-        '
-      name: filterIndex
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: creation-date
     index:
       description: 'Index for a collection. Indexes are used for search operations on documents in collections.
 
@@ -254,6 +254,19 @@ components:
       required: 'true'
       example: asymmetric
   schemas:
+    metadataFilterField:
+      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
+
+        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+        The maximum length of the field name is 1000 characters.
+
+        '
+      type: string
+      maxLength: '1000'
+      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
     filterIndexConfig:
       description: 'Represents the configuration parameters for a filter index. Filter indexes can be used to filter search
 
@@ -272,19 +285,6 @@ components:
           - float
           - boolean
           - date_time
-    metadataFilterField:
-      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
-
-        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
-
-        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
-
-        The maximum length of the field name is 1000 characters.
-
-        '
-      type: string
-      maxLength: '1000'
-      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
   securitySchemes:
     token:
       type: http

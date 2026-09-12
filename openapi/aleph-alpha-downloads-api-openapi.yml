@@ -209,6 +209,32 @@ components:
         message:
           type: string
           example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    DownloadCreate:
+      type: object
+      properties:
+        datasetversion:
+          type: string
+          description: The current version of the dataset, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+    DownloadListResponse:
+      type: object
+      properties:
+        downloads:
+          type: array
+          description: A list of download retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/Download'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of downloads displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of downloads available.
     Download:
       type: object
       properties:
@@ -245,32 +271,6 @@ components:
           type: string
           description: The timestamp when the download request was initially created in ISO 8601 format.
           example: '2021-07-01T00:00:00Z'
-    DownloadListResponse:
-      type: object
-      properties:
-        downloads:
-          type: array
-          description: A list of download retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/Download'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of downloads displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of downloads available.
-    DownloadCreate:
-      type: object
-      properties:
-        datasetversion:
-          type: string
-          description: The current version of the dataset, allowing version tracking.
-          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
   securitySchemes:
     Bearer:
       type: http

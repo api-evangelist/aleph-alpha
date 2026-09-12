@@ -283,6 +283,117 @@ paths:
                 format: binary
 components:
   schemas:
+    filterConditions:
+      type: array
+      description: 'A collection of filter conditions that are combined according to the parent filter combinator.
+
+        '
+      items:
+        oneOf:
+        - type: object
+          description: 'Matches sections that have at least one item with the given modality.
+
+            '
+          properties:
+            modality:
+              type: string
+              enum:
+              - text
+              - image
+        - type: object
+          description: 'Matches sections whose metadata fields match the given condition. You must specify the field, and can only specify
+
+            a single condition.
+
+            '
+          properties:
+            metadata:
+              type: object
+              required:
+              - field
+              properties:
+                field:
+                  $ref: '#/components/schemas/metadataFilterField'
+                greater_than:
+                  type: number
+                  format: double
+                greater_than_or_equal_to:
+                  type: number
+                  format: double
+                less_than:
+                  type: number
+                  format: double
+                less_than_or_equal_to:
+                  type: number
+                  format: double
+                after:
+                  type: string
+                  format: date-time
+                at_or_after:
+                  type: string
+                  format: date-time
+                before:
+                  type: string
+                  format: date-time
+                at_or_before:
+                  type: string
+                  format: date-time
+                equal_to:
+                  type:
+                  - string
+                  - integer
+                  - boolean
+                is_null:
+                  type: boolean
+                  description: 'This condition matches all metadata fields with a value of null.
+
+                    The only allowed value for this condition is true.
+
+                    '
+              oneOf:
+              - required:
+                - greater_than
+              - required:
+                - greater_than_or_equal_to
+              - required:
+                - less_than
+              - required:
+                - less_than_or_equal_to
+              - required:
+                - after
+              - required:
+                - at_or_after
+              - required:
+                - before
+              - required:
+                - at_or_before
+              - required:
+                - equal_to
+              - required:
+                - is_null
+    documentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        path:
+          $ref: '#/components/schemas/documentPath'
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/text'
+            - $ref: '#/components/schemas/image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/textCursor'
+          - $ref: '#/components/schemas/imageCursor'
     image:
       description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
       type: object
@@ -309,29 +420,6 @@ components:
         item:
           type: integer
           description: Index of the item in the document
-    documentSection:
-      description: 'A section of a document.
-
-        '
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/documentPath'
-        section:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/text'
-            - $ref: '#/components/schemas/image'
-        start:
-          oneOf:
-          - $ref: '#/components/schemas/textCursor'
-          - $ref: '#/components/schemas/imageCursor'
-        end:
-          description: Inclusive cursor. The section of the document includes whatever is at this position
-          oneOf:
-          - $ref: '#/components/schemas/textCursor'
-          - $ref: '#/components/schemas/imageCursor'
     queryResult:
       description: 'The result for semantic document search.
 
@@ -364,6 +452,22 @@ components:
                 sub-query.
 
                 '
+    textCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
     documentPath:
       description: The path to a document. A path uniquely identifies a document among all managed documents.
       type: object
@@ -386,6 +490,53 @@ components:
             '
           type: string
           maxLength: '100'
+    filter:
+      description: 'A logical combination of filter conditions.
+
+        '
+      type: object
+      oneOf:
+      - type: object
+        description: Logical conjunction, i.e. forms the predicate "filterCondition1 AND filterCondition2 AND ..."
+        properties:
+          with:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical conjunction of negations, i.e. forms the predicate "(NOT filterCondition1) AND (NOT filterCondition2) AND ..."
+        properties:
+          without:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical disjunction, i.e. forms the predicate "filterCondition1 OR filterCondition2 OR ..."
+        properties:
+          withOneOf:
+            $ref: '#/components/schemas/filterConditions'
+    text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+      required:
+      - modality
+      - text
+    metadataFilterField:
+      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
+
+        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+        The maximum length of the field name is 1000 characters.
+
+        '
+      type: string
+      maxLength: '1000'
+      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
     indexConfig:
       description: 'Represents the configuration of an index. You can assign indexes to collections and use them
 
@@ -514,40 +665,6 @@ components:
               document_instruction:
                 type: string
                 description: The instruction to use for embedding document chunks.
-    filter:
-      description: 'A logical combination of filter conditions.
-
-        '
-      type: object
-      oneOf:
-      - type: object
-        description: Logical conjunction, i.e. forms the predicate "filterCondition1 AND filterCondition2 AND ..."
-        properties:
-          with:
-            $ref: '#/components/schemas/filterConditions'
-      - type: object
-        description: Logical conjunction of negations, i.e. forms the predicate "(NOT filterCondition1) AND (NOT filterCondition2) AND ..."
-        properties:
-          without:
-            $ref: '#/components/schemas/filterConditions'
-      - type: object
-        description: Logical disjunction, i.e. forms the predicate "filterCondition1 OR filterCondition2 OR ..."
-        properties:
-          withOneOf:
-            $ref: '#/components/schemas/filterConditions'
-    text:
-      description: Represent a single piece of continuous text. The modality must always be 'text'.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
-      required:
-      - modality
-      - text
     searchQueryParameters:
       description: 'The parameters for finding document sections within a collection based on a semantic search.
 
@@ -582,107 +699,6 @@ components:
             '
       required:
       - query
-    filterConditions:
-      type: array
-      description: 'A collection of filter conditions that are combined according to the parent filter combinator.
-
-        '
-      items:
-        oneOf:
-        - type: object
-          description: 'Matches sections that have at least one item with the given modality.
-
-            '
-          properties:
-            modality:
-              type: string
-              enum:
-              - text
-              - image
-        - type: object
-          description: 'Matches sections whose metadata fields match the given condition. You must specify the field, and can only specify
-
-            a single condition.
-
-            '
-          properties:
-            metadata:
-              type: object
-              required:
-              - field
-              properties:
-                field:
-                  $ref: '#/components/schemas/metadataFilterField'
-                greater_than:
-                  type: number
-                  format: double
-                greater_than_or_equal_to:
-                  type: number
-                  format: double
-                less_than:
-                  type: number
-                  format: double
-                less_than_or_equal_to:
-                  type: number
-                  format: double
-                after:
-                  type: string
-                  format: date-time
-                at_or_after:
-                  type: string
-                  format: date-time
-                before:
-                  type: string
-                  format: date-time
-                at_or_before:
-                  type: string
-                  format: date-time
-                equal_to:
-                  type:
-                  - string
-                  - integer
-                  - boolean
-                is_null:
-                  type: boolean
-                  description: 'This condition matches all metadata fields with a value of null.
-
-                    The only allowed value for this condition is true.
-
-                    '
-              oneOf:
-              - required:
-                - greater_than
-              - required:
-                - greater_than_or_equal_to
-              - required:
-                - less_than
-              - required:
-                - less_than_or_equal_to
-              - required:
-                - after
-              - required:
-                - at_or_after
-              - required:
-                - before
-              - required:
-                - at_or_before
-              - required:
-                - equal_to
-              - required:
-                - is_null
-    metadataFilterField:
-      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
-
-        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
-
-        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
-
-        The maximum length of the field name is 1000 characters.
-
-        '
-      type: string
-      maxLength: '1000'
-      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
     query:
       description: 'Represents a query as is an array of text and image elements.
 
@@ -692,22 +708,6 @@ components:
         oneOf:
         - $ref: '#/components/schemas/text'
         - $ref: '#/components/schemas/image'
-    textCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
-
-        '
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        item:
-          type: integer
-          description: Index of the item in the document
-        position:
-          type: integer
-          description: The character position the cursor can be found at within the string.
   parameters:
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.

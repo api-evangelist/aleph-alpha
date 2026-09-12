@@ -214,32 +214,68 @@ components:
       - type
       - attributes
       title: SpanResponse
-    ValidationError:
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
+    PagedResponse_SpanResponse_:
       properties:
-        loc:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/SpanResponse-Output'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Items
+          default: []
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[SpanResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     SpanResponse-Input:
       properties:
         created_at:
@@ -322,74 +358,6 @@ components:
       - type
       - attributes
       title: SpanResponse
-    SpanType:
-      type: string
-      enum:
-      - SPAN
-      - TASK_SPAN
-      title: SpanType
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
-    PagedResponse_SpanResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/SpanResponse-Output'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[SpanResponse]
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
     SpanStatus:
       type: string
       enum:
@@ -397,6 +365,38 @@ components:
       - OK
       - ACTIVE
       title: SpanStatus
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

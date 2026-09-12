@@ -245,25 +245,6 @@ components:
           - boolean
           - 'null'
           description: Indicates if the repository data is mutable (modifiable) after creation. When schema is provided, it is not supported for mutable repositories.
-    RepositoryListWithPagination:
-      type: object
-      properties:
-        repositories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Repository'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of repositories displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of repositories available.
-          example: 1
     Repository:
       type: object
       properties:
@@ -314,6 +295,25 @@ components:
           type: string
           description: The timestamp for when the repository was last updated in ISO 8601 format.
           example: '2021-08-25T15:04:05Z'
+    RepositoryListWithPagination:
+      type: object
+      properties:
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Repository'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of repositories displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of repositories available.
+          example: 1
   securitySchemes:
     Bearer:
       type: http

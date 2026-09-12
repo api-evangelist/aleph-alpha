@@ -226,32 +226,59 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    PagedResponse_BenchmarkExecutionResponse_:
       properties:
-        loc:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/BenchmarkExecutionResponse'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Items
+          default: []
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[BenchmarkExecutionResponse]
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
     HTTPValidationError:
       properties:
         detail:
@@ -261,12 +288,121 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
+    PostBenchmarkExecutionRequest:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: The name of the benchmark execution. This field is searchable.
+          examples:
+          - Benchmark Execution
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark execution. This field is searchable.
+          examples:
+          - This is a benchmark execution.
+        labels:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Labels
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        start:
+          type: string
+          format: date-time
+          title: Start
+          description: Start of the benchmark execution in UTC.
+        end:
+          type: string
+          format: date-time
+          title: End
+          description: End of the benchmark execution in UTC. Does not include upload time.
+        run_start:
+          type: string
+          format: date-time
+          title: Run Start
+          description: Start of running the given task on the benchmark dataset in UTC.
+        run_end:
+          type: string
+          format: date-time
+          title: Run End
+          description: End of running the given task on the benchmark dataset in UTC.
+        run_successful_count:
+          type: integer
+          title: Run Successful Count
+          description: Number of examples that the task was successfully executed on.
+        run_failed_count:
+          type: integer
+          title: Run Failed Count
+          description: Number of examples that the task raised an exception on. These will be skipped in the evaluation.
+        run_success_avg_latency:
+          type: number
+          title: Run Success Avg Latency
+          description: Average time it takes the task to generate an output in ns. Does not include failed runs.
+        run_success_avg_token_count:
+          type: number
+          title: Run Success Avg Token Count
+          description: Average amount of tokens it takes the task to generate an output. Includes tokens from intermediate steps. Does not include failed runs.
+        eval_start:
+          type: string
+          format: date-time
+          title: Eval Start
+          description: Start of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_end:
+          type: string
+          format: date-time
+          title: Eval End
+          description: End of evaluation process of the given task on the benchmark dataset in UTC.
+        eval_successful_count:
+          type: integer
+          title: Eval Successful Count
+          description: Number of evaluations of task runs that succeeded. Failed runs are skipped and not included.
+        eval_failed_count:
+          type: integer
+          title: Eval Failed Count
+          description: Number of evaluations of task runs that failed. Failed runs are skipped and not included.
+        aggregation_start:
+          type: string
+          format: date-time
+          title: Aggregation Start
+          description: Start of the aggregation process in UTC.
+        aggregation_end:
+          type: string
+          format: date-time
+          title: Aggregation End
+          description: End of the aggregation process in UTC.
+        statistics:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+          description: Data that is the result of the aggregation process.
+      type: object
+      required:
+      - name
+      - start
+      - end
+      - run_start
+      - run_end
+      - run_successful_count
+      - run_failed_count
+      - run_success_avg_latency
+      - run_success_avg_token_count
+      - eval_start
+      - eval_end
+      - eval_successful_count
+      - eval_failed_count
+      - aggregation_start
+      - aggregation_end
+      - statistics
+      title: PostBenchmarkExecutionRequest
     BenchmarkExecutionSortableColumns:
       type: string
       enum:
@@ -437,174 +573,38 @@ components:
       - id
       - benchmark_id
       title: BenchmarkExecutionResponse
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
-    PagedResponse_BenchmarkExecutionResponse_:
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    ValidationError:
       properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
+        loc:
           items:
-            $ref: '#/components/schemas/BenchmarkExecutionResponse'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Items
-          default: []
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[BenchmarkExecutionResponse]
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
-    PostBenchmarkExecutionRequest:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: The name of the benchmark execution. This field is searchable.
-          examples:
-          - Benchmark Execution
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-          description: The description of the benchmark execution. This field is searchable.
-          examples:
-          - This is a benchmark execution.
-        labels:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Labels
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-        start:
-          type: string
-          format: date-time
-          title: Start
-          description: Start of the benchmark execution in UTC.
-        end:
-          type: string
-          format: date-time
-          title: End
-          description: End of the benchmark execution in UTC. Does not include upload time.
-        run_start:
-          type: string
-          format: date-time
-          title: Run Start
-          description: Start of running the given task on the benchmark dataset in UTC.
-        run_end:
-          type: string
-          format: date-time
-          title: Run End
-          description: End of running the given task on the benchmark dataset in UTC.
-        run_successful_count:
-          type: integer
-          title: Run Successful Count
-          description: Number of examples that the task was successfully executed on.
-        run_failed_count:
-          type: integer
-          title: Run Failed Count
-          description: Number of examples that the task raised an exception on. These will be skipped in the evaluation.
-        run_success_avg_latency:
-          type: number
-          title: Run Success Avg Latency
-          description: Average time it takes the task to generate an output in ns. Does not include failed runs.
-        run_success_avg_token_count:
-          type: number
-          title: Run Success Avg Token Count
-          description: Average amount of tokens it takes the task to generate an output. Includes tokens from intermediate steps. Does not include failed runs.
-        eval_start:
-          type: string
-          format: date-time
-          title: Eval Start
-          description: Start of evaluation process of the given task on the benchmark dataset in UTC.
-        eval_end:
-          type: string
-          format: date-time
-          title: Eval End
-          description: End of evaluation process of the given task on the benchmark dataset in UTC.
-        eval_successful_count:
-          type: integer
-          title: Eval Successful Count
-          description: Number of evaluations of task runs that succeeded. Failed runs are skipped and not included.
-        eval_failed_count:
-          type: integer
-          title: Eval Failed Count
-          description: Number of evaluations of task runs that failed. Failed runs are skipped and not included.
-        aggregation_start:
-          type: string
-          format: date-time
-          title: Aggregation Start
-          description: Start of the aggregation process in UTC.
-        aggregation_end:
-          type: string
-          format: date-time
-          title: Aggregation End
-          description: End of the aggregation process in UTC.
-        statistics:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-          description: Data that is the result of the aggregation process.
-      type: object
-      required:
-      - name
-      - start
-      - end
-      - run_start
-      - run_end
-      - run_successful_count
-      - run_failed_count
-      - run_success_avg_latency
-      - run_success_avg_token_count
-      - eval_start
-      - eval_end
-      - eval_successful_count
-      - eval_failed_count
-      - aggregation_start
-      - aggregation_end
-      - statistics
-      title: PostBenchmarkExecutionRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

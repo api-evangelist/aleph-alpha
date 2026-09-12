@@ -127,6 +127,24 @@ paths:
                 $ref: '#/components/schemas/transitioningResult'
 components:
   parameters:
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
 
@@ -147,24 +165,6 @@ components:
         pattern: ^[a-zA-Z0-9\-\.]+$
       required: 'true'
       example: wikipedia-de
-    namespace:
-      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
-
-        for collections. A namespace typically corresponds to an organisation.
-
-        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
-
-        cannot be longer than 100 characters.
-
-        '
-      name: namespace
-      in: path
-      schema:
-        type: string
-        maxLength: '100'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: aleph-alpha
   schemas:
     transitioningResult:
       description: 'The result for a transitioning documents query.

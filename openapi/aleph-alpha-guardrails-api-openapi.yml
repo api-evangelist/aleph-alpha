@@ -86,6 +86,31 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    CheckRequest:
+      properties:
+        application_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Application Id
+        check_type:
+          type: string
+          title: Check Type
+        input:
+          type: string
+          title: Input
+        context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Context
+      type: object
+      required:
+      - check_type
+      - input
+      title: CheckRequest
+      description: Inbound request to check content against guardrails.
     Violation:
       properties:
         category:
@@ -127,31 +152,15 @@ components:
         not populate it (the category is sufficient); ``provider_error`` and
 
         richer providers may set it to surface why a step failed or matched.'
-    CheckRequest:
+    ErrorResponse:
       properties:
-        application_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Application Id
-        check_type:
-          type: string
-          title: Check Type
-        input:
-          type: string
-          title: Input
-        context:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Context
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
       type: object
       required:
-      - check_type
-      - input
-      title: CheckRequest
-      description: Inbound request to check content against guardrails.
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
     CheckResponse:
       properties:
         safe:
@@ -192,15 +201,6 @@ components:
       - type
       title: ErrorDetail
       description: Structured error detail matching the OpenAI Responses API convention.
-    ErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-      type: object
-      required:
-      - error
-      title: ErrorResponse
-      description: Structured error envelope.
   securitySchemes:
     HTTPBearer:
       type: http

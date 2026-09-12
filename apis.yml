@@ -902,3 +902,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 35
   pass: local-v1
+x-parent: aleph-alpha2
+x-relationship: product
