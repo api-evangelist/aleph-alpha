@@ -686,68 +686,6 @@ apis:
       https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
   - type: Documentation
     url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
-- aid: aleph-alpha:aleph-alpha-usecases-api
-  name: Aleph Alpha Usecases API
-  description: "**Usecases (Applications)**\n\nUsecases are full-stack end to end AI applications. The\
-    \ application exposes the necessary REST endpoints so\nAI usecases can be consumed and, optionally,\
-    \ a front-end (UI) to interact with the implemented workflows.\n\nOnce you have finished the usecase\
-    \ implementation and have published a Docker image to a registry, it is time to deploy the usecase!\n\
-    \nThe endpoints below enable you to create a usecase by providing a name and a description, list all\
-    \ created usecases, retrieve a single usecase by id, and update them.\n\nAlso, most importantly, the\
-    \ API enables you to deploy a created usecase. The deployment of usecases requires some more technical\
-    \ information.\n\n**Deployment**\n\nWe rely on [Kubernetes (K8s)](https://kubernetes.io/docs/home/)\
-    \ to deploy the usecases, which means that they are [Pods](https://kubernetes.io/docs/concepts/workloads/pods/)\
-    \ running in a K8s cluster.\n\nTo deploy usecases you must provide: the registry where the usecase\
-    \ image is located, the image tag (version), the environment variables you wish to inject into the\
-    \ usecase and other K8s configurations parameters, such as `imagePullSecrets`, `autoscaling`, `ingress`,\
-    \ and resource `requests` and `limits` for CPU and memory required to run the usecase. A complete\
-    \ specification is provided further below.\n\nBy default, a usecase is created with the below resources\
-    \ configuration:\n\n```yaml\nresources:\n    requests:\n        cpu: 250m\n        memory: 500Mi\n\
-    \    limits:\n        cpu: 500m\n        memory: 1Gi\n```\n\nThe API also provides endpoints to track\
-    \ the deployment status to assist in any troubleshooting if required. To retrieve the deployment status,\
-    \ use the endpoints to get a usecase by its ID.\n\n**Consuming usecases**\n\nOnce the deployment is\
-    \ up and running, now it's time to actually consume it! \n\n_1. (Optional) Usecase Ingress_\n\nIf\
-    \ the usecase was deployed with the ingress enabled, the service can be accessed at the URL provided\
-    \ in the deployment status. _Note: this requires that ingress creation is enabled in the PhariaOS\
-    \ API configuration; otherwise, the deployment request will be rejected._\n\n_2. Applications Proxy\
-    \ Server_\n\nThe PhariaOS Applications Proxy Server is available to fulfill the usecases consumption.\
-    \ The applications proxy can be accessed at https://pharia-os-applications.product.pharia.com.\n\n\
-    Requests to the proxy are redirected to the usecases by providing the usecase (application) UUID as\
-    \ a URL path parameter, which is **required**.\n\n> The incoming request endpoint to the proxy server\
-    \ is the redirected endpoint to the usecase: \n> `https://pharia-os-applications.product.pharia.com/{applicationId}/summarization\
-    \ -> $internal_use_case_URL/summarization`\n\n**Expected Responses**\n\nA valid request and resource\
-    \ path will return the expected resource in the response.\n\nIf the request path does not include\
-    \ the usecase (application) UUID, one of two responses is expected:\n* If the request path contains\
-    \ only a single part, the response is `BadRequest (400)`.\n* If the request path contains multiple\
-    \ parts, the response is `BadGateway (502)`, as the proxy is unable to validate our route the request\
-    \ to any usecase (application).\n\n**Examples**\n\n1. Sending a `POST` request to the proxy server.\
-    \ The request is targeted to the usecase `execute` endpoint.\n\n```sh\ncurl --request POST \\\n  --url\
-    \ https://pharia-os-applications.product.pharia.com/{applicationId}/execute \\\n  --header 'Content-Type:\
-    \ application/json' \\\n  --data '{\n\t\"question\": \"hello\"\n         }'\n```\n\n2. Sending a `GET`\
-    \ request to the proxy server. The request is targeted to the usecase `health` endpoint.\n\n```sh\n\
-    curl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/health\n\
-    ```\n\n3. Sending a `GET` request for the user interface. The request is targeted to the usecase `ui`\
-    \ endpoint.\n\n```sh\ncurl --request GET \\\n  --url https://pharia-os-applications.product.pharia.com/{applicationId}/ui/assets/usecase.js\n\
-    ```\n\n**Undeployment**\n\nOnce the usecase has fullfilled the purposes and no longer needs to run\
-    \ and consume resources in your K8s cluster, the API provides an endpoint to undeploy the usecase.\n\
-    \n**Deleting usecases**\n\nA usecase may be deleted on request only if it is not currently **active**\
-    \ (that is: deployed, deploying, or undeploying). Deletion cleans the usecase and all associated records\
-    \ from the database."
-  humanURL: >-
-    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
-  baseURL: https://api.aleph-alpha.com
-  tags:
-  - Use Cases
-  tags_raw:
-  - usecases
-  properties:
-  - type: OpenAPI
-    url: openapi/aleph-alpha-usecases-api-openapi.yml
-  - type: Documentation
-    url: >-
-      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
-  - type: Documentation
-    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
 - aid: aleph-alpha:aleph-alpha-users-api
   name: Aleph Alpha Users API
   description: The users API from Aleph Alpha — 2 operation(s) for users.
@@ -795,6 +733,26 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/aleph-alpha-workspaces-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
+  - type: Documentation
+    url: https://docs.aleph-alpha.com/phariaai-dev-guide/latest/responses-api/index.html
+- aid: aleph-alpha:aleph-alpha-use-cases-api
+  name: Aleph Alpha Use Cases API
+  description: >-
+    **Usecases (Applications)**
+
+
+    Usecases are full-stack end to end AI applications.
+  humanURL: >-
+    https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
+  baseURL: https://api.aleph-alpha.com
+  tags:
+  - Use Cases
+  properties:
+  - type: OpenAPI
+    url: openapi/aleph-alpha-use-cases-api-openapi.yml
   - type: Documentation
     url: >-
       https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/v4.7.0.html
