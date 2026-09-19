@@ -51,7 +51,7 @@ tags:
 - Company
 - Artificial Intelligence
 - Machine-Learning
-- Large Language Models
+- LLM
 - Generative AI
 - Sovereign AI
 - Inference
@@ -244,6 +244,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Documents
+  tags_raw:
   - Document
   properties:
   - type: OpenAPI
@@ -534,6 +536,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Services
+  tags_raw:
   - Service
   properties:
   - type: OpenAPI
@@ -729,6 +733,8 @@ apis:
     https://docs.aleph-alpha.com/phariaai-dev-guide/latest/pharia-openapi/pharia-inference/index.html
   baseURL: https://api.aleph-alpha.com
   tags:
+  - Workspace
+  tags_raw:
   - Workspaces
   properties:
   - type: OpenAPI
