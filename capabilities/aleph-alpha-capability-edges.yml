@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 7
+edge_count: 9
 edges:
 - tag: tasks
   spec_file: aleph-alpha-tasks-api-openapi.yml
@@ -24,6 +24,17 @@ edges:
   reason: These are LLM inference operations (completion, chat, embeddings, tokenisation, explainability)
     — the operational use of AI models. Closest candidate is Artificial Intelligence Management; no business-domain
     capability is realised by raw inference.
+- tag: tokens
+  spec_file: aleph-alpha-tokens-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.75
+  evidence: GET /users/me/tokens  Get issued API tokens; POST /users/me/tokens  Create a new API token;
+    DELETE /users/me/tokens/{token_id}
+  reason: Issuance and revocation of API tokens used to call the platform's public API — developer credential
+    stewardship. Alternative reading is generic IAM, so confidence is moderate.
+  recovered_from: sweep-20260829T005356Z-edges.json
 - tag: v1/models
   spec_file: aleph-alpha-v1-models-api-openapi.yml
   capability_id: BC-610.60
@@ -84,3 +95,14 @@ edges:
   evidence: GET /cluster/gpus Get available GPU resources / GET /cluster/nodes List all cluster nodes
   reason: Compute cluster node and GPU resource inventory for the deployment platform, which is IT infrastructure
     (compute) management.
+- tag: models
+  spec_file: aleph-alpha-models-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: Get All Model Cards / Get the tokenizer of a model / POST /models/chat/completions  Chat Completion
+  reason: Catalogue of available LLM model cards plus inference endpoints (completion, chat completion)
+    — management and serving of AI models, mapping to Artificial Intelligence Management. Part inference
+    plumbing, so 0.7.
+  recovered_from: sweep-20260829T005356Z-edges.json
