@@ -6,9 +6,7 @@ info:
 
     takes care of the chunking and embedding of your documents, and it keeps these embeddings in
 
-    sync when your documents change.
-
-    '
+    sync when your documents change.'
   contact:
     email: support@aleph-alpha.com
 servers:
@@ -26,7 +24,7 @@ paths:
       - Namespace
       security:
       - token: []
-      summary: List namespaces.
+      summary: List namespaces
       description: List all namespaces
       responses:
         '200':
@@ -40,31 +38,36 @@ paths:
                 example:
                 - namespace_1
                 - namespace_2
+      operationId: getNamespaces
+      x-operation-id-source: derived
   /namespaces/{namespace}:
     put:
       tags:
       - Namespace
       security:
       - token: []
-      summary: Create namespace.
-      description: Create namespace
+      summary: Create namespace
       parameters:
       - $ref: '#/components/parameters/namespace'
       responses:
         '200':
           description: Namespace successfully created
+      operationId: putNamespacesByNamespace
+      x-operation-id-source: derived
     delete:
       tags:
       - Namespace
       security:
       - token: []
-      summary: Delete namespace.
+      summary: Delete namespace
       description: Delete namespace. Only possible if there are no collections in the namespace.
       parameters:
       - $ref: '#/components/parameters/namespace'
       responses:
         '200':
           description: Namespace successfully deleted
+      operationId: deleteNamespacesByNamespace
+      x-operation-id-source: derived
 components:
   parameters:
     namespace:

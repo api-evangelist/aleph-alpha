@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: PhariaData Datasets API
-  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform. This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as streamlined access to data through downloads and real-time data streaming.
   contact:
     name: PhariaData API Support
     url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
@@ -100,6 +100,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDataset'
+      operationId: getRepositoriesByRepositoryIDDatasets
+      x-operation-id-source: derived
     post:
       tags:
       - Datasets
@@ -188,6 +190,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDataset'
+      operationId: postRepositoriesByRepositoryIDDatasets
+      x-operation-id-source: derived
   /repositories/{repositoryID}/datasets/{datasetID}:
     get:
       tags:
@@ -240,6 +244,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDataset'
+      operationId: getRepositoriesByRepositoryIDDatasetsByDatasetID
+      x-operation-id-source: derived
     delete:
       tags:
       - Datasets
@@ -285,11 +291,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDataset'
+      operationId: deleteRepositoriesByRepositoryIDDatasetsByDatasetID
+      x-operation-id-source: derived
     patch:
       tags:
       - Datasets
       summary: Update dataset metadata
-      description: Update the metadata fields of the latest version of a specified dataset within a repository.  This operation allows partial updates to the dataset's metadata, including fields such as name,  labels, totalDatapoints, version, and additional metadata.
+      description: Update the metadata fields of the latest version of a specified dataset within a repository. This operation allows partial updates to the dataset's metadata, including fields such as name, labels, totalDatapoints, version, and additional metadata.
       parameters:
       - name: repositoryID
         in: path
@@ -349,6 +357,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDownload'
+      operationId: patchRepositoriesByRepositoryIDDatasetsByDatasetID
+      x-operation-id-source: derived
   /repositories/{repositoryID}/datasets/{datasetID}/datapoints:
     get:
       tags:
@@ -421,6 +431,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDataset'
+      operationId: getRepositoriesByRepositoryIDDatasetsByDatasetIDDatapoints
+      x-operation-id-source: derived
     put:
       tags:
       - Datasets
@@ -486,8 +498,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponse'
+      operationId: putRepositoriesByRepositoryIDDatasetsByDatasetIDDatapoints
+      x-operation-id-source: derived
 components:
   schemas:
+    DatasetListResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/Dataset'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of datasets displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of datasets available.
+          example: 1
     HandleFailedResponse:
       type: object
       properties:
@@ -523,26 +557,6 @@ components:
           type: integer
           description: The total number of data points within the dataset.
           example: 0
-    DatasetListResponse:
-      type: object
-      properties:
-        datasets:
-          type: array
-          description: A list of files retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/Dataset'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of datasets displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of datasets available.
-          example: 1
     HandleFailedResponseDownload:
       type: object
       properties:

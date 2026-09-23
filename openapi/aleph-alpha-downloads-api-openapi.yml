@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: PhariaData Downloads API
-  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform. This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as streamlined access to data through downloads and real-time data streaming.
   contact:
     name: PhariaData API Support
     url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
@@ -84,6 +84,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDownload'
+      operationId: getRepositoriesByRepositoryIDDatasetsByDatasetIDDownloads
+      x-operation-id-source: derived
     post:
       tags:
       - Downloads
@@ -142,6 +144,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDownload'
+      operationId: postRepositoriesByRepositoryIDDatasetsByDatasetIDDownloads
+      x-operation-id-source: derived
   /repositories/{repositoryID}/datasets/{datasetID}/downloads/{downloadID}:
     get:
       tags:
@@ -201,21 +205,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HandleFailedResponseDownload'
+      operationId: getRepositoriesByRepositoryIDDatasetsByDatasetIDDownloadsByDownloadID
+      x-operation-id-source: derived
 components:
   schemas:
-    HandleFailedResponseDownload:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    DownloadCreate:
-      type: object
-      properties:
-        datasetversion:
-          type: string
-          description: The current version of the dataset, allowing version tracking.
-          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
     DownloadListResponse:
       type: object
       properties:
@@ -235,6 +228,19 @@ components:
         total:
           type: integer
           description: The total number of downloads available.
+    HandleFailedResponseDownload:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    DownloadCreate:
+      type: object
+      properties:
+        datasetversion:
+          type: string
+          description: The current version of the dataset, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
     Download:
       type: object
       properties:

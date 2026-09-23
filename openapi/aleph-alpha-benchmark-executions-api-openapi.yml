@@ -226,59 +226,53 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    PagedResponse_BenchmarkExecutionResponse_:
+    ValidationError:
       properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
+        loc:
           items:
-            $ref: '#/components/schemas/BenchmarkExecutionResponse'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Items
-          default: []
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[BenchmarkExecutionResponse]
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BenchmarkExecutionSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - eval_successful_count
+      - run_success_avg_latency
+      - run_success_avg_token_count
+      - created_at
+      - start
+      - end
+      - run_start
+      - run_end
+      - eval_start
+      - eval_end
+      - aggregation_start
+      - aggregation_end
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkExecutionSortableColumns
     HTTPValidationError:
       properties:
         detail:
@@ -403,27 +397,12 @@ components:
       - aggregation_end
       - statistics
       title: PostBenchmarkExecutionRequest
-    BenchmarkExecutionSortableColumns:
+    SortDirection:
       type: string
       enum:
-      - name
-      - description
-      - eval_successful_count
-      - run_success_avg_latency
-      - run_success_avg_token_count
-      - created_at
-      - start
-      - end
-      - run_start
-      - run_end
-      - eval_start
-      - eval_end
-      - aggregation_start
-      - aggregation_end
-      - updated_at
-      - created_by
-      - updated_by
-      title: BenchmarkExecutionSortableColumns
+      - asc
+      - desc
+      title: SortDirection
     BenchmarkExecutionResponse:
       properties:
         name:
@@ -573,38 +552,59 @@ components:
       - id
       - benchmark_id
       title: BenchmarkExecutionResponse
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
-    ValidationError:
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    PagedResponse_BenchmarkExecutionResponse_:
       properties:
-        loc:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/BenchmarkExecutionResponse'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Items
+          default: []
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[BenchmarkExecutionResponse]
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
   securitySchemes:
     BearerAuth:
       type: http

@@ -86,31 +86,6 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
-    CheckRequest:
-      properties:
-        application_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Application Id
-        check_type:
-          type: string
-          title: Check Type
-        input:
-          type: string
-          title: Input
-        context:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Context
-      type: object
-      required:
-      - check_type
-      - input
-      title: CheckRequest
-      description: Inbound request to check content against guardrails.
     Violation:
       properties:
         category:
@@ -161,6 +136,31 @@ components:
       - error
       title: ErrorResponse
       description: Structured error envelope.
+    CheckRequest:
+      properties:
+        application_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Application Id
+        check_type:
+          type: string
+          title: Check Type
+        input:
+          type: string
+          title: Input
+        context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Context
+      type: object
+      required:
+      - check_type
+      - input
+      title: CheckRequest
+      description: Inbound request to check content against guardrails.
     CheckResponse:
       properties:
         safe:

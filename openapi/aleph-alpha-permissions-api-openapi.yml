@@ -11,7 +11,7 @@ servers:
     host:
       default: https://api.pharia.example.com
 tags:
-- name: permissions
+- name: Permissions
 paths:
   /check_privileges:
     post:
@@ -19,11 +19,9 @@ paths:
       summary: Check user privileges
       description: 'Post an array of permissions as an authenticated users.
 
-        We return the subset of the posted permissions that have been granted to the user.
-
-        '
+        We return the subset of the posted permissions that have been granted to the user.'
       tags:
-      - permissions
+      - Permissions
       security:
       - token: []
       responses:

@@ -6,9 +6,7 @@ info:
 
     takes care of the chunking and embedding of your documents, and it keeps these embeddings in
 
-    sync when your documents change.
-
-    '
+    sync when your documents change.'
   contact:
     email: support@aleph-alpha.com
 servers:
@@ -26,7 +24,7 @@ paths:
       - Service
       security:
       - token: []
-      summary: Ping the Document Index.
+      summary: Ping the Document Index
       responses:
         '200':
           description: Hello!
@@ -35,26 +33,32 @@ paths:
               schema:
                 type: string
                 example: Hello from the Document Index!
+      operationId: getRoot
+      x-operation-id-source: derived
   /health/liveness:
     get:
       tags:
       - Service
       security:
       - token: []
-      summary: Liveness state of the Document Index.
+      summary: Liveness state of the Document Index
       responses:
         '200':
           description: The Document Index is alive
+      operationId: getHealthLiveness
+      x-operation-id-source: derived
   /health/readiness:
     get:
       tags:
       - Service
       security:
       - token: []
-      summary: Readiness state of the Document Index.
+      summary: Readiness state of the Document Index
       responses:
         '200':
           description: The Document Index is ready to receive requests
+      operationId: getHealthReadiness
+      x-operation-id-source: derived
 components:
   securitySchemes:
     token:

@@ -17,7 +17,7 @@ servers:
     host:
       default: https://api.pharia.example.com
 tags:
-- name: models
+- name: Models
 paths:
   /models/{modelName}/tokenizer:
     parameters:
@@ -27,17 +27,12 @@ paths:
       required: 'true'
       schema:
         type: string
-    servers:
-    - url: '{host}/v1'
-      variables:
-        host:
-          default: https://api.pharia.example.com
     get:
       operationId: getModelTokenizer
       summary: Get the tokenizer of a model
       description: Returns a representation of the tokenizer that was used to train that model
       tags:
-      - models
+      - Models
       security:
       - token: []
       responses:
@@ -47,19 +42,19 @@ paths:
             application/json:
               schema:
                 type: object
-  /models_available:
     servers:
     - url: '{host}/v1'
       variables:
         host:
           default: https://api.pharia.example.com
+  /models_available:
     get:
       summary: Available models (Deprecated)
       deprecated: 'true'
       description: Will return all currently available models.
       operationId: availableModels
       tags:
-      - models
+      - Models
       security:
       - token: []
       responses:
@@ -79,18 +74,18 @@ paths:
                       type: array
                       items:
                         type: string
-  /model-settings:
     servers:
     - url: '{host}/v1'
       variables:
         host:
           default: https://api.pharia.example.com
+  /model-settings:
     get:
       summary: Settings of models
       description: Only models available to the client will be listed.
       operationId: modelSettings
       tags:
-      - models
+      - Models
       security:
       - token: []
       responses:
@@ -174,15 +169,15 @@ paths:
                       type: string
                       format: uri
                       description: Link to further information about the model
-  /models:
     servers:
-    - url: '{host}/v1/studio'
+    - url: '{host}/v1'
       variables:
         host:
           default: https://api.pharia.example.com
+  /models:
     get:
       tags:
-      - models
+      - Models
       summary: Get All Model Cards
       description: Get all `ModelCard` from the list of models that are available.
       operationId: get_all_model_cards_models_get
@@ -198,15 +193,15 @@ paths:
                 title: Response Get All Model Cards Models Get
       security:
       - BearerAuth: []
-  /models/complete:
     servers:
     - url: '{host}/v1/studio'
       variables:
         host:
           default: https://api.pharia.example.com
+  /models/complete:
     post:
       tags:
-      - models
+      - Models
       summary: Complete
       description: Send a streamed complete request against the inference api. This always sets `stream=True` in the request body.
       operationId: complete_models_complete_post
@@ -230,15 +225,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
       - BearerAuth: []
-  /models/chat/completions:
     servers:
     - url: '{host}/v1/studio'
       variables:
         host:
           default: https://api.pharia.example.com
+  /models/chat/completions:
     post:
       tags:
-      - models
+      - Models
       summary: Chat Completion
       operationId: chat_completion_models_chat_completions_post
       requestBody:
@@ -261,8 +256,74 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
       - BearerAuth: []
+    servers:
+    - url: '{host}/v1/studio'
+      variables:
+        host:
+          default: https://api.pharia.example.com
 components:
   schemas:
+    Message:
+      properties:
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - role
+      - content
+      title: Message
+      description: Chat message model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatCompletionRequest:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/Message'
+          type: array
+          title: Messages
+        model:
+          type: string
+          title: Model
+        stream:
+          type: boolean
+          title: Stream
+          default: true
+      additionalProperties: true
+      type: object
+      required:
+      - messages
+      - model
+      title: ChatCompletionRequest
+      description: Request model for chat completion.
     ModelCardResponse:
       properties:
         name:
@@ -401,67 +462,6 @@ components:
       - prompt
       title: ModelCompleteRequest
       description: Request model for model completion.
-    Message:
-      properties:
-        role:
-          type: string
-          title: Role
-        content:
-          type: string
-          title: Content
-      type: object
-      required:
-      - role
-      - content
-      title: Message
-      description: Chat message model.
-    ChatCompletionRequest:
-      properties:
-        messages:
-          items:
-            $ref: '#/components/schemas/Message'
-          type: array
-          title: Messages
-        model:
-          type: string
-          title: Model
-        stream:
-          type: boolean
-          title: Stream
-          default: true
-      additionalProperties: true
-      type: object
-      required:
-      - messages
-      - model
-      title: ChatCompletionRequest
-      description: Request model for chat completion.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     token:
       type: http

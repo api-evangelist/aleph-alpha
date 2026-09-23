@@ -11,18 +11,16 @@ servers:
     host:
       default: https://api.pharia.example.com
 tags:
-- name: users
+- name: Users
 paths:
   /users/login:
     post:
       summary: Login with email and password
       description: 'This should not be used by most API consumers, who should generate API tokens using the login page and use bearer authentication.
 
-        This endpoint allows bootstrapping the API via login to generate more API tokens.
-
-        '
+        This endpoint allows bootstrapping the API via login to generate more API tokens.'
       tags:
-      - users
+      - Users
       requestBody:
         required: 'true'
         content:
@@ -50,14 +48,14 @@ paths:
             Set-Cookie:
               schema:
                 type: string
+      operationId: postUsersLogin
+      x-operation-id-source: derived
   /users/me:
     get:
       tags:
-      - users
+      - Users
       summary: Get settings for own user
-      description: 'Returns details of this user. Can be called by a user which has access to this user id or by an admin for any user.
-
-        '
+      description: Returns details of this user. Can be called by a user which has access to this user id or by an admin for any user.
       security:
       - token: []
       responses:
@@ -67,6 +65,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetail'
+      operationId: getUsersMe
+      x-operation-id-source: derived
 components:
   schemas:
     UserDetail:

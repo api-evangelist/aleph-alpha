@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: PhariaData Connectors API
-  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform.  This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and  control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as  streamlined access to data through downloads and real-time data streaming.
+  description: The PhariaData API provides a comprehensive suite of endpoints to manage data workflows within the Pharia Data Platform. This API enables users to organize, store, retrieve, and manipulate datasets across repositories with efficiency and control. Key functionalities include the creation and management of datasets, stages, and repositories, as well as streamlined access to data through downloads and real-time data streaming.
   contact:
     name: PhariaData API Support
     url: https://aleph-alpha.atlassian.net/servicedesk/customer/portals
@@ -25,7 +25,6 @@ paths:
       tags:
       - Connectors
       summary: Get all connectors
-      description: Get all connectors
       responses:
         '200':
           description: OK
@@ -35,11 +34,12 @@ paths:
                 $ref: '#/components/schemas/ConnectorList'
       security:
       - Bearer: []
+      operationId: getConnectors
+      x-operation-id-source: derived
     post:
       tags:
       - Connectors
       summary: Create a new connector
-      description: Create a new connector
       requestBody:
         required: true
         content:
@@ -80,12 +80,13 @@ paths:
                 $ref: '#/components/schemas/HandleFailedResponse'
       security:
       - Bearer: []
+      operationId: postConnectors
+      x-operation-id-source: derived
   /connectors/{connectorID}:
     get:
       tags:
       - Connectors
       summary: Get a connector
-      description: Get a connector
       parameters:
       - name: connectorID
         in: path
@@ -109,11 +110,12 @@ paths:
                 $ref: '#/components/schemas/HandleFailedResponse'
       security:
       - Bearer: []
+      operationId: getConnectorsByConnectorID
+      x-operation-id-source: derived
     patch:
       tags:
       - Connectors
       summary: Update a connector
-      description: Update a connector
       parameters:
       - name: connectorID
         in: path
@@ -139,12 +141,13 @@ paths:
                 $ref: '#/components/schemas/HandleFailedResponse'
       security:
       - Bearer: []
+      operationId: patchConnectorsByConnectorID
+      x-operation-id-source: derived
   /connectors/{connectorID}/files:
     get:
       tags:
       - Connectors
       summary: Get all files for a connector
-      description: Get all files for a connector
       parameters:
       - name: connectorID
         in: path
@@ -174,12 +177,13 @@ paths:
                 $ref: '#/components/schemas/HandleFailedResponse'
       security:
       - Bearer: []
+      operationId: getConnectorsByConnectorIDFiles
+      x-operation-id-source: derived
   /connectors/{connectorID}/runs:
     get:
       tags:
       - Connectors
       summary: Get all runs for a connector
-      description: Get all runs for a connector
       parameters:
       - name: connectorID
         in: path
@@ -221,28 +225,10 @@ paths:
                 $ref: '#/components/schemas/HandleFailedResponse'
       security:
       - Bearer: []
+      operationId: getConnectorsByConnectorIDRuns
+      x-operation-id-source: derived
 components:
   schemas:
-    FileListWithPagination:
-      type: object
-      properties:
-        files:
-          type: array
-          description: A list of files retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/File'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of files displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of files available in the data platform.
-          example: 1
     Connector:
       type: object
       properties:
@@ -342,108 +328,6 @@ components:
           - incremental_sync_completed
           - deleted
           - full_sync_partially_completed
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    RunListWithPagination:
-      type: object
-      properties:
-        runs:
-          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/TransformationRun'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of runs displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of runs created.
-          example: 1
-    ConnectorCreate:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the connector.
-        connectionId:
-          type: string
-          description: The connection ID of the connector from OAuth-Gateway-API.
-        name:
-          type: string
-          description: The name of the connector. It is not unique.
-        connector_mode:
-          type: string
-          enum:
-          - non-synced
-          - synced
-          description: Whether the connector is enabled for sync.
-        stage_id:
-          type: string
-          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
-        source:
-          type: object
-          description: The data source configuration.
-          properties:
-            type:
-              type: string
-              enum:
-              - sharepoint
-              - google_drive
-            configuration:
-              type: object
-              properties:
-                driveId:
-                  type: string
-                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
-                folderId:
-                  type: string
-                  description: The folder Id from Sharepoint or Google Drive.
-                fileIds:
-                  type: array
-                  items:
-                    type: string
-                  description: List of file Ids from from Shareporint or Google Drive.
-        destination:
-          type: object
-          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
-          properties:
-            type:
-              type: string
-              enum:
-              - DataPlatform:SearchStore
-              - DocumentIndex:SearchStore
-              - DocumentIndex:Collection
-              example: DataPlatform:SearchStore
-            searchStore:
-              type: string
-              description: Id of the search store
-            namespace:
-              type: string
-              description: Namesapce, requried when destination.type is DocumentIndex:Collection
-            collection:
-              type: string
-              description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
-        transformationContext:
-          type:
-          - object
-          - 'null'
-          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
-          properties:
-            parameters:
-              type: object
-              description: The parameters to be used for the transformation run.
-        createdAt:
-          type: string
-          description: The date and time the connector was created.
     ConnectorList:
       type: object
       properties:
@@ -459,92 +343,32 @@ components:
           type: integer
           description: The number of connectors displayed per page.
           example: 1
-    RunError:
+    FileListWithPagination:
       type: object
       properties:
-        type:
-          type: string
-          description: The type of error that occurred during the transformation run.
-          enum:
-          - UnexpectedError
-          - ExtractorError
-          - FileTooLargeError
-          - TooManyPagesError
-          - TransformerError
-          - LoaderError
-          - ConnectorError
-          - ConfigurationError
-          - InternalServiceError
-          - ServiceNotAvailableError
-          - TooManyTokensError
-          example: ExtractorError
-        message:
-          type: string
-          description: A human-readable description of the error that occurred.
-          example: Error message
-        httpCode:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
           type: integer
-          description: The HTTP status code associated with the error.
-          example: 422
-        dataCode:
-          type: string
-          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
-          enum:
-          - DATA0000
-          - DATA0001
-          - DATA0002
-          - DATA0003
-          - DATA0004
-          - DATA0005
-          - DATA0006
-          - DATA0007
-          - DATA0008
-          - DATA0009
-          - DATA0010
-          example: DATA0001
-    File:
-      type: object
-      properties:
-        fileID:
-          type: string
-          description: Unique identifier for the file.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        stageID:
-          type: string
-          description: Unique identifier of the stage where the file is stored.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        mediaType:
-          type: string
-          description: The media type of the file, indicating its format (e.g., application/octet-stream).
-          example: application/octet-stream
-          enum:
-          - application/octet-stream
-        name:
-          type: string
-          description: The name of the file, used for easy identification.
-          example: dataset_name
+          description: The current page number in the paginated list.
+          example: 0
         size:
           type: integer
-          description: The size of the file in bytes.
-          example: 1024
-        version:
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
           type: string
-          description: The current version of the file, allowing version tracking.
-          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
-        updatedAt:
-          type: string
-          description: The timestamp of the last update made to the file in ISO 8601 format.
-          example: '2024-07-04'
-        createdAt:
-          type: string
-          description: The timestamp when the file was initially created in ISO 8601 format.
-          example: '2024-07-04'
-        expireAt:
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
-          example: '2024-07-04'
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
     ConnectorUpdate:
       type: object
       properties:
@@ -684,6 +508,188 @@ components:
               - 'null'
               description: The version of the file to be processed by the transformation.
               example: null
+    RunListWithPagination:
+      type: object
+      properties:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationRun'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of runs displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of runs created.
+          example: 1
+    ConnectorCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        connectionId:
+          type: string
+          description: The connection ID of the connector from OAuth-Gateway-API.
+        name:
+          type: string
+          description: The name of the connector. It is not unique.
+        connector_mode:
+          type: string
+          enum:
+          - non-synced
+          - synced
+          description: Whether the connector is enabled for sync.
+        stage_id:
+          type: string
+          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
+        source:
+          type: object
+          description: The data source configuration.
+          properties:
+            type:
+              type: string
+              enum:
+              - sharepoint
+              - google_drive
+            configuration:
+              type: object
+              properties:
+                driveId:
+                  type: string
+                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
+                folderId:
+                  type: string
+                  description: The folder Id from Sharepoint or Google Drive.
+                fileIds:
+                  type: array
+                  items:
+                    type: string
+                  description: List of file Ids from from Shareporint or Google Drive.
+        destination:
+          type: object
+          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
+          properties:
+            type:
+              type: string
+              enum:
+              - DataPlatform:SearchStore
+              - DocumentIndex:SearchStore
+              - DocumentIndex:Collection
+              example: DataPlatform:SearchStore
+            searchStore:
+              type: string
+              description: Id of the search store
+            namespace:
+              type: string
+              description: Namesapce, requried when destination.type is DocumentIndex:Collection
+            collection:
+              type: string
+              description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
+        transformationContext:
+          type:
+          - object
+          - 'null'
+          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
+        createdAt:
+          type: string
+          description: The date and time the connector was created.
+    RunError:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error that occurred during the transformation run.
+          enum:
+          - UnexpectedError
+          - ExtractorError
+          - FileTooLargeError
+          - TooManyPagesError
+          - TransformerError
+          - LoaderError
+          - ConnectorError
+          - ConfigurationError
+          - InternalServiceError
+          - ServiceNotAvailableError
+          - TooManyTokensError
+          example: ExtractorError
+        message:
+          type: string
+          description: A human-readable description of the error that occurred.
+          example: Error message
+        httpCode:
+          type: integer
+          description: The HTTP status code associated with the error.
+          example: 422
+        dataCode:
+          type: string
+          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
+          enum:
+          - DATA0000
+          - DATA0001
+          - DATA0002
+          - DATA0003
+          - DATA0004
+          - DATA0005
+          - DATA0006
+          - DATA0007
+          - DATA0008
+          - DATA0009
+          - DATA0010
+          example: DATA0001
+    File:
+      type: object
+      properties:
+        fileID:
+          type: string
+          description: Unique identifier for the file.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        stageID:
+          type: string
+          description: Unique identifier of the stage where the file is stored.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        mediaType:
+          type: string
+          description: The media type of the file, indicating its format (e.g., application/octet-stream).
+          example: application/octet-stream
+          enum:
+          - application/octet-stream
+        name:
+          type: string
+          description: The name of the file, used for easy identification.
+          example: dataset_name
+        size:
+          type: integer
+          description: The size of the file in bytes.
+          example: 1024
+        version:
+          type: string
+          description: The current version of the file, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the file in ISO 8601 format.
+          example: '2024-07-04'
+        createdAt:
+          type: string
+          description: The timestamp when the file was initially created in ISO 8601 format.
+          example: '2024-07-04'
+        expireAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
+          example: '2024-07-04'
   securitySchemes:
     Bearer:
       type: http

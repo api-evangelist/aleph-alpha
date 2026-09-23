@@ -230,56 +230,105 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AggregationLogic:
+    PatchBenchmarkRequest:
       properties:
-        logic:
-          type: string
-          title: Logic
-          description: The code of the aggregation logic.
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+          description: The name of the benchmark.
           examples:
-          - logic
-        evaluation_schema:
-          additionalProperties: true
-          type: object
-          title: Evaluation Schema
-          description: The evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchamrk.
           examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
+          - This is a benchmark.
+        metadata:
+          anyOf:
+          - additionalProperties: true
             type: object
-        aggregation_schema:
-          additionalProperties: true
-          type: object
-          title: Aggregation Schema
-          description: The aggregated evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
+          - type: 'null'
+          title: Metadata
+          description: The metadata of the benchmark.
+      type: object
+      title: PatchBenchmarkRequest
+    PagedResponse_GetBenchmarkResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/GetBenchmarkResponse'
+          type: array
+          title: Items
+          default: []
       type: object
       required:
-      - logic
-      - evaluation_schema
-      - aggregation_schema
-      title: AggregationLogic
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[GetBenchmarkResponse]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    BenchmarkSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - last_executed_at
+      - created_at
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkSortableColumns
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
     GetBenchmarkResponse:
       properties:
         updated_at:
@@ -387,6 +436,111 @@ components:
       - aggregation_logic
       - last_executed_at
       title: GetBenchmarkResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AggregationLogic:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: The code of the aggregation logic.
+          examples:
+          - logic
+        evaluation_schema:
+          additionalProperties: true
+          type: object
+          title: Evaluation Schema
+          description: The evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        aggregation_schema:
+          additionalProperties: true
+          type: object
+          title: Aggregation Schema
+          description: The aggregated evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+      type: object
+      required:
+      - logic
+      - evaluation_schema
+      - aggregation_schema
+      title: AggregationLogic
+    PostBenchmarkRequest:
+      properties:
+        dataset_id:
+          type: string
+          title: Dataset Id
+          description: The unique id of the dataset.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          maxLength: 100
+          title: Name
+          description: The name of the benchmark.
+          examples:
+          - Benchmark
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the benchmark.
+          examples:
+          - This is a benchmark.
+        benchmark_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Benchmark Metadata
+          description: The metadata of the benchmark.
+          examples:
+          - key: value
+        evaluation_logic:
+          $ref: '#/components/schemas/EvaluationLogic'
+          description: The evaluation logic of the benchmark.
+        aggregation_logic:
+          $ref: '#/components/schemas/AggregationLogic'
+          description: The aggregation logic of the benchmark.
+      type: object
+      required:
+      - dataset_id
+      - name
+      - evaluation_logic
+      - aggregation_logic
+      title: PostBenchmarkRequest
     EvaluationLogic:
       properties:
         logic:
@@ -475,160 +629,6 @@ components:
       - expected_output_schema
       - evaluation_schema
       title: EvaluationLogic
-    PostBenchmarkRequest:
-      properties:
-        dataset_id:
-          type: string
-          title: Dataset Id
-          description: The unique id of the dataset.
-          examples:
-          - 123e4567-e89b-12d3-a456-426614174000
-        name:
-          type: string
-          maxLength: 100
-          title: Name
-          description: The name of the benchmark.
-          examples:
-          - Benchmark
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-          description: The description of the benchmark.
-          examples:
-          - This is a benchmark.
-        benchmark_metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Benchmark Metadata
-          description: The metadata of the benchmark.
-          examples:
-          - key: value
-        evaluation_logic:
-          $ref: '#/components/schemas/EvaluationLogic'
-          description: The evaluation logic of the benchmark.
-        aggregation_logic:
-          $ref: '#/components/schemas/AggregationLogic'
-          description: The aggregation logic of the benchmark.
-      type: object
-      required:
-      - dataset_id
-      - name
-      - evaluation_logic
-      - aggregation_logic
-      title: PostBenchmarkRequest
-    PatchBenchmarkRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-          - type: 'null'
-          title: Name
-          description: The name of the benchmark.
-          examples:
-          - Benchmark
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-          description: The description of the benchamrk.
-          examples:
-          - This is a benchmark.
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-          description: The metadata of the benchmark.
-      type: object
-      title: PatchBenchmarkRequest
-    PagedResponse_GetBenchmarkResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/GetBenchmarkResponse'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[GetBenchmarkResponse]
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
-    BenchmarkSortableColumns:
-      type: string
-      enum:
-      - name
-      - description
-      - last_executed_at
-      - created_at
-      - updated_at
-      - created_by
-      - updated_by
-      title: BenchmarkSortableColumns
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

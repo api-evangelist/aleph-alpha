@@ -31,9 +31,7 @@ paths:
   /openapi.yaml:
     get:
       summary: OpenAPI specification
-      description: 'Returns the latest OpenAPI specification for this API.
-
-        '
+      description: Returns the latest OpenAPI specification for this API.
       tags:
       - API description
       responses:
@@ -43,6 +41,8 @@ paths:
             text/yaml:
               schema:
                 type: string
+      operationId: getOpenapiYaml
+      x-operation-id-source: derived
 components:
   securitySchemes:
     token:

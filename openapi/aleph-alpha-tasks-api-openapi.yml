@@ -11,18 +11,16 @@ servers:
     host:
       default: https://api.pharia.example.com
 tags:
-- name: tasks
+- name: Tasks
   description: Requests for different types of tasks you can request with our models.
 paths:
   /complete:
     post:
       summary: Completion
-      description: 'Will complete a prompt using a specific model. To obtain a valid model, use `GET` `/model-settings`.
-
-        '
+      description: Will complete a prompt using a specific model. To obtain a valid model, use `GET` `/model-settings`.
       operationId: complete
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -65,12 +63,10 @@ paths:
         JSON completion is currently only available for luminous workers.
 
 
-        To obtain a valid model, use `GET /models_available`.
-
-        '
+        To obtain a valid model, use `GET /models_available`.'
       operationId: completeJson
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -102,7 +98,7 @@ paths:
       summary: Chat
       description: Retrieves one or multiple chat completions for a given prompt
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -141,12 +137,10 @@ paths:
 
         To ensure deployed embedding models support this endpoint, they need to be configured with
 
-        `embedding_task.supported = true` in the model settings.
-
-        '
+        `embedding_task.supported = true` in the model settings.'
       operationId: embeddings
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -178,7 +172,7 @@ paths:
       description: Embeds a prompt using a specific model and semantic embedding method. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`.
       operationId: semanticEmbed
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -210,7 +204,7 @@ paths:
       description: Embeds multiple prompts using a specific model and semantic embedding method. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`.
       operationId: batchSemanticEmbed
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -242,7 +236,7 @@ paths:
       description: Embeds the input using an instruction and a specific model. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`.
       operationId: instructableEmbed
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -275,7 +269,7 @@ paths:
       description: Embeds a text using a specific model. Resulting vectors that can be used for downstream tasks (e.g. semantic similarity) and models (e.g. classifiers). To obtain a valid model, use `GET` `/model-settings`.
       operationId: embed
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -307,7 +301,7 @@ paths:
       description: Evaluates the model's likelihood to produce a completion given a prompt.
       operationId: evaluate
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -339,11 +333,9 @@ paths:
       summary: Explanation
       description: 'Better understand the source of a completion, specifically on how much each section of a
 
-        prompt impacts each token of the completion.
-
-        '
+        prompt impacts each token of the completion.'
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -375,7 +367,7 @@ paths:
       description: Tokenize a prompt for a specific model. To obtain a valid model, use `GET` `/model-settings`.
       operationId: tokenize
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       requestBody:
@@ -397,7 +389,7 @@ paths:
       description: Detokenize a list of tokens into a string. To obtain a valid model, use `GET` `/model-settings`.
       operationId: detokenize
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       requestBody:
@@ -419,12 +411,10 @@ paths:
       deprecated: 'true'
       description: 'A list of the ten most recent tasks successfully completed by the API. Contains statistics
 
-        about the task, including duration of execution and cost in credits.
-
-        '
+        about the task, including duration of execution and cost in credits.'
       operationId: recentRequests
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       responses:
@@ -440,7 +430,7 @@ paths:
       description: Transcribes an audio file using a specified transcription model
       operationId: transcribe
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       requestBody:
@@ -459,12 +449,10 @@ paths:
   /translate:
     post:
       summary: Translation
-      description: 'Translates input text from one to another specified target language
-
-        '
+      description: Translates input text from one to another specified target language
       operationId: translate
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -498,12 +486,10 @@ paths:
 
         a relevance score. To claim that a deployed reranker model supports this endpoint, it needs to be
 
-        configured with `rerank_task.supported = true` in the model settings.
-
-        '
+        configured with `rerank_task.supported = true` in the model settings.'
       operationId: rerank
       tags:
-      - tasks
+      - Tasks
       security:
       - token: []
       parameters:
@@ -531,305 +517,104 @@ paths:
                 $ref: '#/components/schemas/RerankResponse'
 components:
   schemas:
-    ChatResponseTopLogprob:
-      type: object
-      required:
-      - token
-      - logprob
-      - bytes
-      properties:
-        token:
-          description: The token.
-          type: string
-        logprob:
-          description: The log probability of the token.
-          type: number
-        bytes:
-          description: A list of integers representing the UTF-8 bytes representation of the token.
-          type: array
-          items:
-            type: integer
-    FunctionObject:
-      type: object
-      properties:
-        description:
-          type: string
-          description: 'A description of what the function does, used by the model to choose when and how to call the
+    WorkerSteeringConcept:
+      type: string
+      pattern: ^_worker/[a-zA-Z0-9-_]{1,64}$
+      description: 'A reference to a worker-defined steering concept. The value must be a
 
-            function.
+        string starting with `_worker/` followed by a name matching the pattern
 
-            '
-        name:
-          type: string
-          description: 'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes,
-
-            with a maximum length of 64.
-
-            '
-        parameters:
-          $ref: '#/components/schemas/FunctionParameters'
-        strict:
-          type: boolean
-          nullable: 'true'
-          default: 'false'
-          description: 'Whether to enable strict schema adherence when generating the function call. If set to true, the
-
-            model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema
-
-            is supported when `strict` is `true`. Learn more about Structured Outputs in [our
-
-            docs](https://docs.aleph-alpha.com/products/pharia-ai/pharia-os/references/inference/structured-output/).
-
-            '
-      required:
-      - name
-    SteeringConceptRef:
-      oneOf:
-      - $ref: '#/components/schemas/WorkerSteeringConcept'
-      - $ref: '#/components/schemas/SteeringConceptId'
-    ChatRequestTool:
-      type: object
-      title: Function tool
-      description: 'A function tool that can be used to generate a response.
+        `^[a-zA-Z0-9-_]{1,64}$`.
 
         '
-      properties:
-        type:
-          type: string
-          enum:
-          - function
-          description: The type of the tool. Currently, only `function` is supported.
-        function:
-          $ref: '#/components/schemas/FunctionObject'
-      required:
-      - type
-      - function
-    EmbeddingV2ResponseData:
+    SemanticEmbeddingResponse:
       type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - embedding
-          description: The object type, which is always "embedding".
+      example:
+        model_version: 2021-12
         embedding:
+        - '-0.053497314'
+        - '0.0053749084'
+        - '0.06427002'
+        - '0.05316162'
+        - '-0.0044059753'
+        - '...'
+        num_tokens_prompt_total: '42'
+      properties:
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        embedding:
+          type: array
+          items:
+            type: number
+            format: float
+          description: A list of floats that can be used to compare against other embeddings.
+        num_tokens_prompt_total:
+          type: integer
+          description: "Number of tokens in the prompt.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+    EmbeddingV2Request:
+      type: object
+      example:
+        model: qwen3-embedding-0.6b
+        input: this text will be embedded
+        encoding_format: float
+        dimensions: '128'
+      properties:
+        model:
+          type: string
+          description: The name of the model used to generate the embedding.
+        input:
+          description: Input text to be embedded.
           oneOf:
-          - type: array
-            items:
-              type: number
-              format: float
-            title: Embedding (float)
-            description: The embedding vector as an array of floats.
           - type: string
-            title: Embedding (base64)
-            description: The embedding vector as a base64-encoded numpy array.
-          description: The embedding vector, which is a list of floats or a base64-encoded numpy array depending on the encoding_format parameter.
-        index:
+            title: String
+            description: The string that will be turned into an embedding.
+          - type: array
+            title: Array of strings
+            items:
+              type: string
+            description: The array of strings that will be turned into an embedding. We will return an embedding for each element in the array
+          - type: array
+            title: Array of integers
+            items:
+              type: integer
+            description: The array of integers that will be turned into an embedding. Each integer represents a token. An array of tokens represents a string for which the embedding is generated.
+          - type: array
+            title: Array of arrays of integers
+            items:
+              type: array
+              items:
+                type: integer
+            description: The array of arrays containing integers that will be turned into an embedding. An array of tokens represents a string for which the embedding is generated. We will return an embedding for each element in the outer array.
+        encoding_format:
+          type: string
+          enum:
+          - float
+          - base64
+          description: The format to return the embeddings in. Can be either `float` or `base64`.
+        dimensions:
           type: integer
-          description: The index of the embedding in the list of embeddings.
+          minimum: '1'
+          description: The number of dimensions the resulting output embeddings should have. Not supported by all models.
+        user:
+          type: string
+          description: This parameter is unsupported and will be rejected.
+          deprecated: 'true'
       required:
-      - object
-      - embedding
-      - index
-    SemanticEmbeddingRequest:
+      - model
+      - input
+    TranslationSegment:
       type: object
-      example:
-        model: llama-3.1-8b-instruct
-        prompt: An apple a day keeps the doctor away.
-        representation: symmetric
-        compress_to_size: '128'
       properties:
-        model:
-          type: string
-          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings, please refer to the `/model-settings` endpoint.
-        hosting:
-          $ref: '#/components/schemas/Hosting'
-        prompt:
-          $ref: '#/components/schemas/Prompt'
-        representation:
-          type: string
-          enum:
-          - symmetric
-          - document
-          - query
-          description: 'Type of embedding representation to embed the prompt with.
-
-
-            `"symmetric"`: Symmetric embeddings assume that the text to be compared is interchangeable. Usage examples for symmetric embeddings are clustering, classification, anomaly detection or visualisation tasks. "symmetric" embeddings should be compared with other "symmetric" embeddings.
-
-
-            `"document"` and `"query"`: Asymmetric embeddings assume that there is a difference between queries and documents. They are used together in use cases such as search where you want to compare shorter queries against larger documents.
-
-
-            `"query"`-embeddings are optimized for shorter texts, such as questions or keywords.
-
-
-            `"document"`-embeddings are optimized for larger pieces of text to compare queries against.
-
-            '
-        compress_to_size:
-          $ref: '#/components/schemas/SemanticEmbeddingCompressToSize'
-          nullable: 'true'
-        normalize:
-          type: boolean
-          default: 'false'
-          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
-
-            '
-        contextual_control_threshold:
-          type: number
-          default: 'null'
-          nullable: 'true'
-          description: 'If set to `null`, attention control parameters only apply to those tokens that have
-
-            explicitly been set in the request.
-
-            If set to a non-null value, we apply the control parameters to similar tokens as well.
-
-            Controls that have been applied to one token will then be applied to all other tokens
-
-            that have at least the similarity score defined by this parameter.
-
-            The similarity score is the cosine similarity of token embeddings.
-
-            '
-        control_log_additive:
-          type: boolean
-          default: 'true'
-          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
-
-            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
-
-            '
-      required:
-      - prompt
-      - representation
-    MultimodalPrompt:
-      title: Multimodal
-      type: array
-      description: An array of prompt items for multimodal request. Can support any combination of text, images, and token ids.
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/TextPromptItem'
-        - $ref: '#/components/schemas/ImagePromptItem'
-        - $ref: '#/components/schemas/TokenIdsPromptItem'
-    TextPromptItemImportance:
-      type: object
-      description: 'Explains the importance of a text prompt item.
-
-        The amount of items in the "scores" array depends on the granularity setting.
-
-        Each score object contains an inclusive start character and a length of the substring plus
-
-        a floating point score value.
-
-        '
-      properties:
-        type:
-          type: string
-          enum:
-          - text
-        scores:
-          type: array
-          items:
-            type: object
-            properties:
-              start:
-                type: integer
-              length:
-                type: integer
-              score:
-                type: number
-    RerankRequest:
-      type: object
-      example:
-        model: your-reranker-model
-        query: What is the capital of France?
-        documents:
-        - The capital of Brazil is Brasilia.
-        - The capital of France is Paris.
-        - Horses and cows are both animals.
-        top_n: '2'
-      properties:
-        query:
-          type: string
-          description: The query to rerank the documents against.
-        documents:
-          type: array
-          items:
-            type: string
-          description: The list of documents to rerank.
-        top_n:
-          nullable: 'true'
-          type: integer
-          description: The number of documents to return. Defaults to the number of documents if not provided.
-      required:
-      - query
-      - documents
-    TargetItemImportance:
-      type: object
-      description: 'Explains the importance of text in the target string that came before the currently
-
-        to-be-explained target token. The amount of items in the "scores" array depends on the
-
-        granularity setting.
-
-        Each score object contains an inclusive start character and a length of the substring plus
-
-        a floating point score value.
-
-        '
-      properties:
-        type:
-          type: string
-          enum:
-          - target
-        scores:
-          type: array
-          items:
-            type: object
-            properties:
-              start:
-                type: integer
-              length:
-                type: integer
-              score:
-                type: number
-    TranslationRequest:
-      type: object
-      example:
-        model: pharia-1-mt-translation
-        source: What is your name?
-        target_language: de
-      properties:
-        model:
-          type: string
-          description: The name of the model to be used for the translation.
         source:
           type: string
           description: The input text to be translated.
-        target_language:
+        translation:
           type: string
-          description: 'The desired target language into which the input text should be translated. The language
-
-            must be specified using ISO 639 (and RFC 1766) language codes such as "en" for English,
-
-            "de" for German, "fr" for French, etc. For a list of supported languages, refer to the
-
-            `/languages` endpoint.
-
-            '
-      required:
-      - model
-      - source
-      - target_language
-    Prompt:
-      description: "This field is used to send prompts to the model.\nA prompt can either be a text prompt or a multimodal prompt.\nA text prompt is a string of text.\nA multimodal prompt is an array of prompt items. It can be a combination of text,\nimages, and token ID arrays.\n\nIn the case of a multimodal prompt, the prompt items will be concatenated and a single\nprompt will be used for the model.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into 144 tokens.\n"
-      oneOf:
-      - title: Text Prompt
-        type: string
-        description: The text to be completed. Unconditional completion can be started with an empty string (default). The prompt may contain a zero shot or few shot task.
-      - $ref: '#/components/schemas/MultimodalPrompt'
+          description: The translated output text of the segment.
+        score:
+          type: number
+          description: Estimate for the overall quality of the translation on a scale of 0 to 1.
     EmbeddingRequest:
       type: object
       example:
@@ -904,66 +689,155 @@ components:
       required:
       - model
       - prompt
-    RecentRequestsResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          create_timestamp:
-            type: string
-          model_name:
-            type: string
-          request_type:
-            type: string
-          token_count_prompt:
-            type: integer
-          image_count_prompt:
-            type: integer
-          token_count_completion:
-            type: integer
-          duration_millis:
-            type: integer
-          credits:
-            type: number
-    FunctionParameters:
+    TextPromptItem:
       type: object
-      description: 'The parameters the functions accepts, described as a JSON Schema object. Omitting `parameters`
-
-        defines a function with an empty parameter list.
-
-        '
-      additionalProperties: 'true'
-    CompletionSummary:
-      description: Response object being returned once per completion request after all streams have finished.
-      type: object
-      example:
-        type: completion_summary
-        num_tokens_prompt_total: '4'
-        num_tokens_generated: '5'
+      title: Text
       required:
       - type
-      - num_tokens_prompt_total
-      - num_tokens_generated
+      - data
       properties:
         type:
-          description: Marker tag denoting the type of the stream item. Will always be `completion_summary` for `CompletionSummary`s.
           type: string
           enum:
-          - completion_summary
-        optimized_prompt:
-          $ref: '#/components/schemas/OptimizedPrompt'
-        num_tokens_prompt_total:
-          description: "Number of tokens combined across all completion tasks.\n\nIn particular, if you set best_of or n to a number larger than 1 then we report the\ncombined prompt token count for all best_of or n tasks.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
-          type: integer
-        num_tokens_generated:
-          description: 'Number of tokens combined across all completion tasks.
+          - text
+        data:
+          type: string
+        controls:
+          type: array
+          items:
+            type: object
+            required:
+            - start
+            - length
+            - factor
+            properties:
+              start:
+                type: integer
+                description: Starting character index to apply the factor to.
+              length:
+                type: integer
+                description: The amount of characters to apply the factor to.
+              factor:
+                type: number
+                description: 'Factor to apply to the given token in the attention matrix.
 
-            If multiple completions are returned or best_of is set to a value greater than 1 then
 
-            this value contains the combined generated token count.    ChatRequest:
+                  - 0 <= factor < 1 => Suppress the given token
+
+                  - factor == 1 => identity operation, no change to attention
+
+                  - factor > 1 => Amplify the given token
+
+                  '
+              token_overlap:
+                type: string
+                enum:
+                - partial
+                - complete
+                default: partial
+                description: 'What to do if a control partially overlaps with a text token.
+
+
+                  If set to "partial", the factor will be adjusted proportionally with the amount
+
+                  of the token it overlaps. So a factor of 2.0 of a control that only covers 2 of
+
+                  4 token characters, would be adjusted to 1.5. (It always moves closer to 1, since
+
+                  1 is an identity operation for control factors.)
+
+
+                  If set to "complete", the full factor will be applied as long as the control
+
+                  overlaps with the token at all.
+
+                  '
+    Prompt:
+      description: "This field is used to send prompts to the model.\nA prompt can either be a text prompt or a multimodal prompt.\nA text prompt is a string of text.\nA multimodal prompt is an array of prompt items. It can be a combination of text,\nimages, and token ID arrays.\n\nIn the case of a multimodal prompt, the prompt items will be concatenated and a single\nprompt will be used for the model.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into 144 tokens.\n"
+      oneOf:
+      - title: Text Prompt
+        type: string
+        description: The text to be completed. Unconditional completion can be started with an empty string (default). The prompt may contain a zero shot or few shot task.
+      - $ref: '#/components/schemas/MultimodalPrompt'
+    ChatRequestMessage:
+      type: object
+      required:
+      - role
+      - content
+      properties:
+        role:
+          description: 'The role of the current message.
+
+
+            Only one optional "system" message is allowed at the beginning of the conversation. The remaining conversation:
+
+            - Must alternate between "user" and "assistant" messages.
+
+            - Must begin with a "user" message.
+
+            - Must end with a "user" message.
 
             '
-          type: integer
+          type: string
+          enum:
+          - system
+          - user
+          - assistant
+          - tool
+        content:
+          description: The content of the current message respecting the requirements of the chat template. The exact format strongly depends on the configured chat template. System prompt and following messages could have different formats.
+          oneOf:
+          - type: string
+            description: Text only message
+          - type: array
+            description: Message with arbitrary number of images and text in any order
+            items:
+              oneOf:
+              - type: object
+                required:
+                - type
+                - image_url
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - image_url
+                  image_url:
+                    type: object
+                    required:
+                    - url
+                    properties:
+                      url:
+                        type: string
+                        description: base64 encoded image data url
+                      detail:
+                        type: string
+                        enum:
+                        - auto
+                        description: Unsupported parameter, only allowed to be set to "auto"
+              - type: object
+                required:
+                - type
+                - text
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - text
+                  text:
+                    type: string
+                    description: Text content of the message
+        tool_calls:
+          type: array
+          description: The tool calls generated by the model, such as function calls.
+          items:
+            $ref: '#/components/schemas/ChatRequestMessageToolCall'
+        tool_call_id:
+          type: string
+          description: Tool call that this message is responding to.
+        name:
+          deprecated: 'true'
+          description: This parameter is unsupported and will be ignored.
     ChatRequestMessageToolCall:
       type: object
       title: Function tool call
@@ -996,273 +870,31 @@ components:
       - id
       - type
       - function
-    Hosting:
-      type: string
-      nullable: 'true'
-      enum:
-      - aleph-alpha
-      - 'null'
-      description: 'Optional parameter that specifies which datacenters may process the request.
-
-        You can either set the parameter to "aleph-alpha" or omit it (defaulting to `null`).
-
-
-        Not setting this value, or setting it to `null`, gives us maximal flexibility in processing your request in our
-
-        own datacenters and on servers hosted with other providers. Choose this option for maximum availability.
-
-
-        Setting it to "aleph-alpha" allows us to only process the request in our own datacenters.
-
-        Choose this option for maximal data privacy.
-
-        '
-    ImagePromptItemImportance:
+    DetokenizationResponse:
       type: object
-      description: 'Explains the importance of an image prompt item.
+      example:
+        result: ' An apple a day keeps the doctor away.'
+      properties:
+        result:
+          type: string
+    TokenIdsPromptItemImportance:
+      type: object
+      description: 'Explains the importance of a request prompt item of type "token_ids".
 
-        The amount of items in the "scores" array depends on the granularity setting.
+        Will contain one floating point importance value for each token in the same order as in
 
-        Each score object contains the top-left corner of a rectangular area in the image prompt.
-
-        The coordinates are all between 0 and 1 in terms of the total image size
+        the original prompt.
 
         '
       properties:
         type:
           type: string
           enum:
-          - image
+          - token_ids
         scores:
           type: array
           items:
-            type: object
-            properties:
-              rect:
-                type: object
-                properties:
-                  top:
-                    type: number
-                  left:
-                    type: number
-                  width:
-                    type: number
-                  height:
-                    type: number
-              score:
-                type: number
-    ChatResponse:
-      type: object
-      example:
-        id: d902da3c-67dd-47d6-acfc-b7dbcb01eb9d
-        choices:
-        - finish_reason: stop
-          index: '0'
-          message:
-            role: assistant
-            content: I'd be happy to help you with your homework. What subject and what specific problem or assignment are you working on? Share as much information as you can, and I'll do my best to assist you.
-          logprobs: 'null'
-        created: '1739975747'
-        model: llama-3.1-8b-instruct
-        system_fingerprint: .unknown.
-        object: chat.completion
-        usage:
-          prompt_tokens: '31'
-          completion_tokens: '43'
-          total_tokens: '74'
-      properties:
-        id:
-          description: An ID that is unique throughout the given request. When multiple chunks are returned using server-sent events, this ID will be the same for all of them.
-          type: string
-        choices:
-          description: A list of chat completion choices. Can be more than one if `n` is greater than 1.
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatResponseMessage'
-        created:
-          description: The Unix timestamp (in seconds) of when the chat completion was created.
-          type: integer
-        model:
-          description: The ID of the model that generated the completion.
-          type: string
-        system_fingerprint:
-          description: 'The specific version of the model that generated the completion. This field can be used to track inconsistencies between calls to different deployments of otherwise identical models.
-
-
-            When streaming is enabled, the value is only set in the last chunk of a completion and `null` otherwise.
-
-            '
-          type: string
-        object:
-          description: Will be `chat.completion` by default and `chat.completion.chunk` when streaming is enabled.
-          type: string
-          enum:
-          - chat.completion
-          - chat.completion.chunk
-        usage:
-          description: 'Usage statistics for the completion request.
-
-
-            When streaming is enabled, this field will be `null` by default. To include an additional usage-only message in the response stream, set `stream_options.include_usage` to `true`.
-
-            '
-          type: object
-          required:
-          - completion_tokens
-          - prompt_tokens
-          - total_tokens
-          properties:
-            completion_tokens:
-              description: Number of tokens in the generated completion.
-              type: integer
-            prompt_tokens:
-              description: Number of tokens in the prompt.
-              type: integer
-            total_tokens:
-              description: Total number of tokens used in the request (prompt + completion).
-              type: integer
-    ExplanationResponse:
-      description: 'The top-level response data structure that will be returned from an explanation request.
-
-        '
-      type: object
-      properties:
-        model_version:
-          type: string
-        explanations:
-          description: 'This array will contain one explanation object for each token in the target string.
-
-            '
-          type: array
-          items:
-            type: object
-            properties:
-              target:
-                description: 'The string representation of the target token which is being explained
-
-                  '
-                type: string
-              items:
-                description: 'Contains one item for each prompt item (in order), and the last item refers to the
-
-                  target.
-
-                  '
-                type: array
-                items:
-                  oneOf:
-                  - $ref: '#/components/schemas/TokenIdsPromptItemImportance'
-                  - $ref: '#/components/schemas/TargetItemImportance'
-                  - $ref: '#/components/schemas/TextPromptItemImportance'
-                  - $ref: '#/components/schemas/ImagePromptItemImportance'
-    EvaluationResponse:
-      type: object
-      example:
-        model_version: 2021-12
-        result:
-          log_probability: '-1.2281955'
-          log_perplexity: '1.2281955'
-          log_perplexity_per_token: '0.24563909'
-          log_perplexity_per_character: '1.2281955'
-          correct_greedy: 'true'
-          token_count: '5'
-          character_count: '1'
-          completion: ' keeps the doctor away.'
-        num_tokens_prompt_total: '9'
-      properties:
-        model_version:
-          type: string
-          description: model name and version (if any) of the used model for inference
-        result:
-          type: object
-          description: dictionary with result metrics of the evaluation
-          properties:
-            log_probability:
-              type: number
-              nullable: 'true'
-              description: log probability of producing the expected completion given the prompt. This metric refers to all tokens and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
-            log_perplexity:
-              type: number
-              nullable: 'true'
-              description: log perplexity associated with the expected completion given the prompt. This metric refers to all tokens and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
-            log_perplexity_per_token:
-              type: number
-              nullable: 'true'
-              description: log perplexity associated with the expected completion given the prompt normalized for the number of tokens. This metric computes an average per token and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
-            log_perplexity_per_character:
-              type: number
-              nullable: 'true'
-              description: log perplexity associated with the expected completion given the prompt normalized for the number of characters. This metric is independent of any tokenizer. It can be directly compared among models with different tokenizers.
-            correct_greedy:
-              type: boolean
-              nullable: 'true'
-              description: Flag indicating whether a greedy completion would have produced the expected completion.
-            token_count:
-              type: integer
-              nullable: 'true'
-              description: Number of tokens in the expected completion.
-            character_count:
-              type: integer
-              nullable: 'true'
-              description: Number of characters in the expected completion.
-            completion:
-              type: string
-              nullable: 'true'
-              description: argmax completion given the input consisting of prompt and expected completion. This may be used as an indicator of what the model would have produced. As only one single forward is performed an incoherent text could be produced especially for long expected completions.
-        num_tokens_prompt_total:
-          type: integer
-          description: "The sum over the number of tokens of both the `prompt` and the `completion_expected` fields.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
-    WorkerSteeringConcept:
-      type: string
-      pattern: ^_worker/[a-zA-Z0-9-_]{1,64}$
-      description: 'A reference to a worker-defined steering concept. The value must be a
-
-        string starting with `_worker/` followed by a name matching the pattern
-
-        `^[a-zA-Z0-9-_]{1,64}$`.
-
-        '
-    RerankResponse:
-      type: object
-      example:
-        results:
-        - index: '0'
-          relevance_score: '0.704557'
-        - index: '1'
-          relevance_score: '0.698765'
-        usage:
-          completion_tokens: '0'
-          prompt_tokens: '0'
-          total_tokens: '18'
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              index:
-                type: integer
-                description: The index of the document in the original list of documents.
-              relevance_score:
-                type: number
-                description: The relevance score of the document.
-        usage:
-          description: Usage statistics for the request.
-          type: object
-          required:
-          - completion_tokens
-          - prompt_tokens
-          - total_tokens
-          properties:
-            completion_tokens:
-              description: Number of tokens in the generated completion. Will always be 0 for rerank tasks.
-              type: integer
-            prompt_tokens:
-              description: Number of tokens in the prompt. Will always be 0 for rerank tasks.
-              type: integer
-            total_tokens:
-              description: Total number of tokens used in the request.
-              type: integer
+            type: number
     ExplanationRequest:
       type: object
       properties:
@@ -1446,817 +1078,138 @@ components:
       - model
       - prompt
       - target
-    TokenIdsPromptItem:
+    DetokenizationRequest:
       type: object
-      title: Token Ids
-      required:
-      - type
-      - data
+      example:
+        model: llama-3.1-8b-instruct
+        token_ids:
+        - '560'
+        - '34438'
+        - '246'
+        - '1966'
+        - '18075'
+        - '275'
+        - '8809'
+        - '3476'
+        - '17'
       properties:
-        type:
+        model:
           type: string
-          enum:
-          - token_ids
-        data:
+        token_ids:
           type: array
           items:
             type: integer
-        controls:
-          type: array
-          items:
-            type: object
-            required:
-            - index
-            - factor
-            properties:
-              index:
-                type: integer
-                description: 'Index of the token, relative to the list of tokens IDs in the current prompt item.
-
-                  '
-              factor:
-                type: number
-                description: 'Factor to apply to the given token in the attention matrix.
-
-
-                  - 0 <= factor < 1 => Suppress the given token
-
-                  - factor == 1 => identity operation, no change to attention
-
-                  - factor > 1 => Amplify the given token
-
-                  '
-    TextPromptItem:
-      type: object
-      title: Text
       required:
-      - type
-      - data
+      - model
+      - token_ids
+    TranscribeRequest:
+      type: object
       properties:
-        type:
+        audiofile:
+          type: string
+          format: binary
+          description: 'The audio file to transcribe. For supported formats, see the documentation of the model that you are using.
+
+            '
+        metadata:
+          type: object
+          description: 'Example: {"model":"transcription-model", "language":"de"}
+
+            '
+          properties:
+            model:
+              type: string
+              description: The name of the transcription model to use
+            language:
+              type: string
+              description: 'Optional language code for the transcription. Must be specified using ISO 639-1 language codes such as
+
+                "en" for English, "de" for German, "fr" for French, etc.
+
+                For information on supported languages, refer to the documentation of the model that you are using.
+
+                '
+          required:
+          - model
+    RecentRequestsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          create_timestamp:
+            type: string
+          model_name:
+            type: string
+          request_type:
+            type: string
+          token_count_prompt:
+            type: integer
+          image_count_prompt:
+            type: integer
+          token_count_completion:
+            type: integer
+          duration_millis:
+            type: integer
+          credits:
+            type: number
+    ChatResponseMessage:
+      type: object
+      required:
+      - index
+      properties:
+        finish_reason:
+          description: 'The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence or `length` if the maximum number of tokens specified in the request was reached. If the API is unable to understand the stop reason emitted by one of the workers, `content_filter` is returned.
+
+
+            When streaming is enabled, the value is only set in the last chunk of a completion and `null` otherwise.
+
+            '
           type: string
           enum:
-          - text
-        data:
-          type: string
-        controls:
-          type: array
-          items:
-            type: object
-            required:
-            - start
-            - length
-            - factor
-            properties:
-              start:
-                type: integer
-                description: Starting character index to apply the factor to.
-              length:
-                type: integer
-                description: The amount of characters to apply the factor to.
-              factor:
-                type: number
-                description: 'Factor to apply to the given token in the attention matrix.
-
-
-                  - 0 <= factor < 1 => Suppress the given token
-
-                  - factor == 1 => identity operation, no change to attention
-
-                  - factor > 1 => Amplify the given token
-
-                  '
-              token_overlap:
-                type: string
-                enum:
-                - partial
-                - complete
-                default: partial
-                description: 'What to do if a control partially overlaps with a text token.
-
-
-                  If set to "partial", the factor will be adjusted proportionally with the amount
-
-                  of the token it overlaps. So a factor of 2.0 of a control that only covers 2 of
-
-                  4 token characters, would be adjusted to 1.5. (It always moves closer to 1, since
-
-                  1 is an identity operation for control factors.)
-
-
-                  If set to "complete", the full factor will be applied as long as the control
-
-                  overlaps with the token at all.
-
-                  '
-    ChatRequest:
-      type: object
-      required:
-      - messages
-      - model
-      example:
-        model: llama-3.1-8b-instruct
-        messages:
-        - role: system
-          content: You are a helpful assistant.
-        - role: user
-          content: Can you help me with my homework?
-        - role: assistant
-          content: Sure, what do you need help with?
-        - role: user
-          content: I need help with my math homework.
-      properties:
-        messages:
-          description: A list of messages comprising the conversation so far.
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatRequestMessage'
-        model:
-          description: 'The ID of the model to query.
-
-
-            The requested model must be eligible for chat completions.
-
-            '
-          type: string
-        frequency_penalty:
-          description: 'When specified, this number will decrease (or increase) the likelihood of repeating tokens that were mentioned prior in the completion.
-
-
-            The penalty is cumulative. The more a token is mentioned in the completion, the more its probability will decrease.
-
-            '
-          type: number
-          minimum: '-2'
-          maximum: '2'
-        logit_bias:
-          description: 'When specified, the provided hash map will affect the likelihood of the specified token <u>IDs</u> (!) appearing in the completion.
-
-
-            Mathematically, the bias is added to the logits generated by the model prior to sampling. Values between -1 and 1 should decrease or increase likelihood of selection while values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
-
-
-            Note that since JSON does not support integer keys, the token IDs are represented as strings.
-
-            '
-          additionalProperties:
-            type: number
-            minimum: '-100'
-            maximum: '100'
-        logprobs:
-          description: When set to true, the model will return the log probabilities of the sampled tokens in the completion.
-          type: boolean
-        top_logprobs:
-          description: When specified, the model will return the log probabilities of the top `n` tokens in the completion.
+          - stop
+          - length
+          - content_filter
+        index:
+          description: The index of the current chat completion in the conversation. Use this parameter to associate chunks with the correct message stream as chunks might arrive out of order. This is mostly relevant when streaming is enabled and multiple completions are requested.
           type: integer
-          minimum: '0'
-          maximum: '20'
-        max_tokens:
-          description: 'The maximum number of tokens to generate in the completion. The model will stop generating tokens once it reaches this length.
-
-
-            The maximum value for this parameter depends on the specific model and the length of the input prompt. When no value is provided, the highest possible value will be used.
-
-            '
-          type: integer
-          minimum: '1'
-        n:
-          description: 'The number of completions to generate for each prompt. The model will generate this many completions and return all of them.
-
-
-            When no value is provided, one completion will be returned.
-
-            '
-          type: integer
-          minimum: '1'
-        presence_penalty:
-          description: 'When specified, this number will decrease (or increase) the likelihood of repeating tokens that were mentioned prior in the completion.s
-
-
-            The penalty is not cumulative. Mentioning a token more than once will not increase the penalty further.
-
-            '
-          type: number
-          minimum: '-2'
-          maximum: '2'
-        response_format:
-          description: 'An object specifying the format that the model must output.
-
-            The response format can be passed either directly in the http request,
-
-            or via the Aleph Alpha Client using a pydantic or a JSONSchema object.
-
-            Also compatible with the OpenAI client passing a pydantic object
-
-            as response_format.
-
-            '
-          $ref: '#/components/schemas/ResponseFormat'
-        seed:
-          deprecated: 'true'
-          description: This parameter is unsupported and will be ignored.
-        service_tier:
-          deprecated: 'true'
-          description: This parameter is unsupported and will be ignored.
-        stop:
-          description: Optional. When specified, sequence generation will stop when the model generates the specified token or tokens.
-          oneOf:
-          - type: string
-          - type: array
-            items:
+        message:
+          description: Chat completion generated by the model when streaming is disabled.
+          type: object
+          required:
+          - role
+          - content
+          properties:
+            role:
+              description: The role of the current chat completion. Will `assistant`.
               type: string
-        stream:
-          description: 'When set to true, the model will transmit all completions tokens as soon as they become available via the [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format) protocol.
-
-            '
-          type: boolean
-        stream_options:
-          description: Additional options to affect the streaming behavior.
+              enum:
+              - assistant
+            content:
+              description: The content of the current chat completion.
+              type: string
+        delta:
+          description: Chat completion chunk generated by the model when streaming is enabled.
+          type: object
+          required:
+          - content
+          properties:
+            role:
+              description: The role of the current chat completion. Will be `assistant` for the first chunk of every completion stream and missing for the remaining chunks.
+              type: string
+              enum:
+              - assistant
+            content:
+              description: The content of the current chat completion. Will be empty for the first chunk of every completion stream and non-empty for the remaining chunks.
+              type: string
+        logprobs:
+          description: Log probability information for the choice. `null` if this is the end of a completion stream.
           type: object
           properties:
-            include_usage:
-              description: 'If set, an additional chunk will be streamed before the `data: [DONE]` message. The usage field on this chunk shows the token usage statistics for the entire request, and the choices field will always be an empty array.'
-              type: boolean
-        temperature:
-          description: 'Controls the randomness of the model. Lower values will make the model more deterministic and higher values will make it more random.
-
-
-            Mathematically, the temperature is used to divide the logits before sampling. A temperature of 0 will always return the most likely token.
-
-
-            When no value is provided, the default value of 1 will be used.
-
-            '
-          type: number
-          minimum: '0'
-          maximum: '2'
-        top_p:
-          description: '"nucleus" parameter to dynamically adjust the number of choices for each predicted token based on the cumulative probabilities. It specifies a probability threshold, below which all less likely tokens are filtered out.
-
-
-            When no value is provided, the default value of 1 will be used.
-
-            '
-          type: number
-          minimum: '0'
-          maximum: '1'
-        steering_concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/SteeringConceptRef'
-          default: []
-          description: 'Specifies how the output of the model should be steered. This steers
-
-            the output in the direction given by positive examples associated to
-
-            the steering concept and away from the negative examples.
-
-
-            Currently only one steering concept at a time is supported.
-
-            '
-        tools:
-          type: array
-          description: 'A list of tools the model may call. Currently, only functions are supported as a tool. Use
-
-            this to provide a list of functions the model may generate JSON inputs for. A max of 128
-
-            functions are supported.
-
-            '
-          items:
-            $ref: '#/components/schemas/ChatRequestTool'
-        tool_choice:
-          description: 'Controls which (if any) tool is called by the model.
-
-            `none` means the model will not call any tool and instead generates a message.
-
-            `auto` means the model can pick between generating a message or calling one or more tools.
-
-            `required` means the model must call one or more tools.
-
-            Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces
-
-            the model to call that tool.
-
-            `none` is the default when no tools are present. `auto` is the default if tools are present.
-
-            '
-          anyOf:
-          - type: string
-            description: '`none` means the model will not call any tool and instead generates a message. `auto` means the
-
-              model can pick between generating a message or calling one or more tools. `required` means the
-
-              model must call one or more tools.
-
-              '
-            enum:
-            - none
-            - auto
-            - required
-          - type: object
-            title: Function tool choice
-            description: Specifies a tool the model should use.
-            properties:
-              type:
-                type: string
-                enum:
-                - function
-                description: For function calling, the type is always `function`.
-              function:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: The name of the function to call.
-                required:
-                - name
-            required:
-            - type
-            - function
-        parallel_tool_calls:
-          deprecated: 'true'
-          description: This parameter is unsupported and will be rejected.
-        user:
-          deprecated: 'true'
-          description: This parameter is unsupported and will be ignored.
-    DetokenizationResponse:
-      type: object
-      example:
-        result: ' An apple a day keeps the doctor away.'
-      properties:
-        result:
-          type: string
-    TranscribeResponse:
-      type: object
-      example:
-        transcription: This is an example transcription. It contains two segments.
-        segments:
-        - start: '0.0'
-          end: '2.5'
-          text: This is an example transcription.
-          tokens:
-          - '1234'
-          - '5678'
-          - '9012'
-          - '3456'
-          - '7890'
-        - start: '2.5'
-          end: '4.0'
-          text: It contains two segments.
-          tokens:
-          - '3456'
-          - '7890'
-          - '1234'
-          - '5678'
-        language: en
-        num_tokens_prompt_total: '0'
-        num_tokens_generated: '5'
-      properties:
-        transcription:
-          type: string
-          description: The complete transcribed text from the audio file
-        segments:
-          type: array
-          items:
-            $ref: '#/components/schemas/TranscribeSegment'
-          description: List of transcribed segments with timing information
-        language:
-          type: string
-          description: 'The detected language of the transcription, returned as an ISO 639-1 language code such as
-
-            "en" for English, "de" for German, "fr" for French, etc.
-
-            For information on supported languages, refer to the documentation of the model that you are using.
-
-            '
-        num_tokens_prompt_total:
-          type: integer
-          description: 'Total number of tokens in the prompt. For many transcription models (e.g., whisper) zero, as the tokenization of the input audio file is not exposed.
-
-            '
-        num_tokens_generated:
-          type: integer
-          description: Total number of tokens generated
-    CompletionResponse:
-      description: Response object being returned when streaming is disabled.
-      type: object
-      example:
-        completions:
-        - completion: keeps the doctor away.
-          finish_reason: maximum_tokens
-        model_version: 2021-12
-        optimized_prompt: An apple a day
-        num_tokens_prompt_total: '4'
-        num_tokens_generated: '5'
-      properties:
-        model_version:
-          type: string
-          description: model name and version (if any) of the used model for inference
-        completions:
-          type: array
-          description: list of completions; may contain only one entry if no more are requested (see parameter n)
-          items:
-            type: object
-            properties:
-              log_probs:
-                type: object
-                nullable: 'true'
-                description: list with a dictionary for each generated token. The dictionary maps the keys' tokens to the respective log probabilities. This field is only returned if requested with the parameter "log_probs".
-              completion:
-                type: string
-                nullable: 'false'
-                description: generated completion on the basis of the prompt
-              raw_completion:
-                type: string
-                nullable: 'true'
-                description: 'For some models, we may optimize the completion that was generated by the model and
-
-                  return the optimized completion in the completion field of the CompletionResponse.
-
-                  The raw completion, if returned, will contain the un-optimized completion.
-
-                  Setting the parameter `raw_completion` in the CompletionRequest to true forces the
-
-                  raw completion of the model to be returned.
-
-                  Setting tokens to true or log_probs to any value will also trigger the raw
-
-                  completion to be returned.
-
-                  '
-              completion_tokens:
-                type: array
-                items:
-                  type: string
-                description: completion split into tokens. This field is only returned if requested with the parameter "tokens".
-              finish_reason:
-                type: string
-                nullable: 'true'
-                description: reason for termination of generation. This may be a stop sequence or maximum number of tokens reached.
-        optimized_prompt:
-          $ref: '#/components/schemas/OptimizedPrompt'
-        num_tokens_prompt_total:
-          type: integer
-          description: "Number of tokens combined across all completion tasks.\n\nIn particular, if you set best_of or n to a number larger than 1 then we report the\ncombined prompt token count for all best_of or n tasks.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
-        num_tokens_generated:
-          type: integer
-          description: 'Number of tokens combined across all completion tasks.
-
-            If multiple completions are returned or best_of is set to a value greater than 1 then
-
-            this value contains the combined generated token count.
-
-            '
-    TokenizationRequest:
-      type: object
-      example:
-        model: llama-3.1-8b-instruct
-        prompt: An apple a day keeps the doctor away.
-        tokens: 'true'
-        token_ids: 'true'
-      properties:
-        model:
-          type: string
-        prompt:
-          type: string
-        tokens:
-          type: boolean
-        token_ids:
-          type: boolean
-      required:
-      - model
-      - prompt
-      - tokens
-      - token_ids
-    BatchSemanticEmbeddingRequest:
-      type: object
-      example:
-        model: pharia-1-embedding-4608-control
-        prompts:
-        - An apple a day keeps the doctor away.
-        - A journey of thousand miles begins with a single step.
-        representation: symmetric
-        compress_to_size: '128'
-      properties:
-        model:
-          type: string
-          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings, please refer to the `/model-settings` endpoint.
-        hosting:
-          $ref: '#/components/schemas/Hosting'
-        prompts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Prompt'
-        representation:
-          type: string
-          enum:
-          - symmetric
-          - document
-          - query
-          description: 'Type of embedding representation to embed the prompt with.
-
-
-            `"symmetric"`: Symmetric embeddings assume that the text to be compared is interchangeable. Usage examples for symmetric embeddings are clustering, classification, anomaly detection or visualisation tasks. "symmetric" embeddings should be compared with other "symmetric" embeddings.
-
-
-            `"document"` and `"query"`: Asymmetric embeddings assume that there is a difference between queries and documents. They are used together in use cases such as search where you want to compare shorter queries against larger documents.
-
-
-            `"query"`-embeddings are optimized for shorter texts, such as questions or keywords.
-
-
-            `"document"`-embeddings are optimized for larger pieces of text to compare queries against.
-
-            '
-        compress_to_size:
-          $ref: '#/components/schemas/SemanticEmbeddingCompressToSize'
-          nullable: 'true'
-        normalize:
-          type: boolean
-          default: 'false'
-          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
-
-            '
-        contextual_control_threshold:
-          type: number
-          default: 'null'
-          nullable: 'true'
-          description: 'If set to `null`, attention control parameters only apply to those tokens that have
-
-            explicitly been set in the request.
-
-            If set to a non-null value, we apply the control parameters to similar tokens as well.
-
-            Controls that have been applied to one token will then be applied to all other tokens
-
-            that have at least the similarity score defined by this parameter.
-
-            The similarity score is the cosine similarity of token embeddings.
-
-            '
-        control_log_additive:
-          type: boolean
-          default: 'true'
-          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
-
-            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
-
-            '
-      required:
-      - prompts
-      - representation
-    ImagePromptItem:
-      type: object
-      title: Image
-      required:
-      - type
-      - data
-      properties:
-        type:
-          type: string
-          enum:
-          - image
-        data:
-          type: string
-          description: 'An image send as part of a prompt to a model. The image is represented as base64.
-
-
-            Note: The models operate on square images. All non-square images are center-cropped
-
-            before going to the model, so portions of the image may not be visible.
-
-
-            You can supply specific cropping parameters if you like, to choose a different area
-
-            of the image than a center-crop. Or, you can always transform the image yourself to
-
-            a square before sending it.
-
-            '
-        x:
-          type: integer
-          description: x-coordinate of top left corner of cropping box in pixels
-        y:
-          type: integer
-          description: y-coordinate of top left corner of cropping box in pixels
-        size:
-          type: integer
-          description: Size of the cropping square in pixels
-        controls:
-          type: array
-          items:
-            type: object
-            required:
-            - rect
-            - factor
-            properties:
-              rect:
-                type: object
-                required:
-                - left
-                - top
-                - width
-                - height
-                description: 'Bounding box in logical coordinates. From 0 to 1. With (0,0) being the upper left corner,
-
-                  and relative to the entire image.
-
-
-                  Keep in mind, non-square images are center-cropped by default before going to the model. (You
-
-                  can specify a custom cropping if you want.). Since control coordinates are relative to the
-
-                  entire image, all or a portion of your control may be outside the "model visible area".
-
-                  '
-                properties:
-                  left:
-                    type: number
-                    description: 'x-coordinate of top left corner of the control bounding box.
-
-                      Must be a value between 0 and 1, where 0 is the left corner and 1 is the right corner.
-
-                      '
-                  top:
-                    type: number
-                    description: 'y-coordinate of top left corner of the control bounding box
-
-                      Must be a value between 0 and 1, where 0 is the top pixel row and 1 is the bottom row.
-
-                      '
-                  width:
-                    type: number
-                    description: 'width of the control bounding box
-
-                      Must be a value between 0 and 1, where 1 means the full width of the image.
-
-                      '
-                  height:
-                    type: number
-                    description: 'height of the control bounding box
-
-                      Must be a value between 0 and 1, where 1 means the full height of the image.
-
-                      '
-              factor:
-                type: number
-                description: 'Factor to apply to the given token in the attention matrix.
-
-
-                  - 0 <= factor < 1 => Suppress the given token
-
-                  - factor == 1 => identity operation, no change to attention
-
-                  - factor > 1 => Amplify the given token
-
-                  '
-              token_overlap:
-                type: string
-                enum:
-                - partial
-                - complete
-                default: partial
-                description: 'What to do if a control partially overlaps with an image token.
-
-
-                  If set to "partial", the factor will be adjusted proportionally with the amount
-
-                  of the token it overlaps. So a factor of 2.0 of a control that only covers half
-
-                  of the image "tile", would be adjusted to 1.5. (It always moves closer to 1, since
-
-                  1 is an identity operation for control factors.)
-
-
-                  If set to "complete", the full factor will be applied as long as the control
-
-                  overlaps with the token at all.
-
-                  '
-    TranslationResponse:
-      type: object
-      example:
-        translation: Wie heißt du?
-        score: '0.704557'
-        segments: 'null'
-        num_tokens_prompt_total: '18'
-        num_tokens_generated: '0'
-      properties:
-        translation:
-          type: string
-          description: The complete translated output text
-        score:
-          type: number
-          description: Estimate for the overall quality of the translation on a scale of 0 to 1.
-        segments:
-          type: array
-          items:
-            $ref: '#/components/schemas/TranslationSegment'
-          description: List of translated segments
-          nullable: 'true'
-        num_tokens_prompt_total:
-          type: integer
-          description: 'Total number of tokens in the prompt.
-
-            '
-        num_tokens_generated:
-          type: integer
-          description: 'Total number of tokens generated. For translation tasks this will always be zero, as the current translation models don''t expose the tokens.
-
-            '
-    ChatRequestMessage:
-      type: object
-      required:
-      - role
-      - content
-      properties:
-        role:
-          description: 'The role of the current message.
-
-
-            Only one optional "system" message is allowed at the beginning of the conversation. The remaining conversation:
-
-            - Must alternate between "user" and "assistant" messages.
-
-            - Must begin with a "user" message.
-
-            - Must end with a "user" message.
-
-            '
-          type: string
-          enum:
-          - system
-          - user
-          - assistant
-          - tool
-        content:
-          description: The content of the current message respecting the requirements of the chat template. The exact format strongly depends on the configured chat template. System prompt and following messages could have different formats.
-          oneOf:
-          - type: string
-            description: Text only message
-          - type: array
-            description: Message with arbitrary number of images and text in any order
-            items:
-              oneOf:
-              - type: object
-                required:
-                - type
-                - image_url
-                properties:
-                  type:
-                    type: string
-                    enum:
-                    - image_url
-                  image_url:
-                    type: object
-                    required:
-                    - url
-                    properties:
-                      url:
-                        type: string
-                        description: base64 encoded image data url
-                      detail:
-                        type: string
-                        enum:
-                        - auto
-                        description: Unsupported parameter, only allowed to be set to "auto"
-              - type: object
-                required:
-                - type
-                - text
-                properties:
-                  type:
-                    type: string
-                    enum:
-                    - text
-                  text:
-                    type: string
-                    description: Text content of the message
-        tool_calls:
-          type: array
-          description: The tool calls generated by the model, such as function calls.
-          items:
-            $ref: '#/components/schemas/ChatRequestMessageToolCall'
-        tool_call_id:
-          type: string
-          description: Tool call that this message is responding to.
-        name:
-          deprecated: 'true'
-          description: This parameter is unsupported and will be ignored.
-    EmbeddingV2Usage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-          description: The number of tokens in the input.
-        total_tokens:
-          type: integer
-          description: The total number of tokens used by the request.
-      required:
-      - prompt_tokens
-      - total_tokens
+            content:
+              description: A list of message content tokens with log probability information.
+              type: array
+              items:
+                $ref: '#/components/schemas/ChatResponseLogprobs'
     StreamChunk:
       description: Response object being returned continuously per completion stream during transmission.
       type: object
@@ -2305,69 +1258,100 @@ components:
           type: array
           items:
             type: string
-    TranscribeSegment:
-      type: object
-      properties:
-        start:
-          type: number
-          format: float
-          description: Start time of the segment in seconds
-        end:
-          type: number
-          format: float
-          description: End time of the segment in seconds
-        text:
-          type: string
-          description: The transcribed text for this segment
-        tokens:
-          type: array
-          items:
-            type: integer
-          description: Token IDs for the transcribed text
-    SemanticEmbeddingCompressToSize:
-      type: integer
-      enum:
-      - '128'
-      description: 'The default behavior is to return the full embedding with 5120 dimensions. With this parameter you can compress the returned embedding to 128 dimensions.
-
-        The compression is expected to result in a small drop in accuracy performance (4-6%), with the benefit of being much smaller, which makes comparing these embeddings much faster for use cases where speed is critical.
-
-        With the compressed embedding can also perform better if you are embedding really short texts or documents.
-
-        '
-    BatchSemanticEmbeddingResponse:
+    CompletionSummary:
+      description: Response object being returned once per completion request after all streams have finished.
       type: object
       example:
-        model_version: 2021-12
-        embeddings:
-        - - '-0.053497314'
-          - '0.0053749084'
-          - '0.06427002'
-          - '0.05316162'
-          - '-0.0044059753'
-          - '...'
-        - - '-0.053497314'
-          - '0.0053749084'
-          - '0.06427002'
-          - '0.05316162'
-          - '-0.0044059753'
-          - '...'
-        num_tokens_prompt_total: '42'
+        type: completion_summary
+        num_tokens_prompt_total: '4'
+        num_tokens_generated: '5'
+      required:
+      - type
+      - num_tokens_prompt_total
+      - num_tokens_generated
       properties:
-        model_version:
+        type:
+          description: Marker tag denoting the type of the stream item. Will always be `completion_summary` for `CompletionSummary`s.
           type: string
-          description: model name and version (if any) of the used model for inference
-        embeddings:
-          type: array
-          items:
-            type: array
-            items:
-              type: number
-              format: float
-            description: A list of floats that can be used to compare against other embeddings.
+          enum:
+          - completion_summary
+        optimized_prompt:
+          $ref: '#/components/schemas/OptimizedPrompt'
         num_tokens_prompt_total:
+          description: "Number of tokens combined across all completion tasks.\n\nIn particular, if you set best_of or n to a number larger than 1 then we report the\ncombined prompt token count for all best_of or n tasks.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
           type: integer
-          description: "Number of tokens in the all prompts combined.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+        num_tokens_generated:
+          description: 'Number of tokens combined across all completion tasks.
+
+            If multiple completions are returned or best_of is set to a value greater than 1 then
+
+            this value contains the combined generated token count.    ChatRequest:
+
+            '
+          type: integer
+    InstructableEmbeddingRequest:
+      type: object
+      example:
+        model: pharia-1-embedding-4608-control
+        input: An apple a day keeps the doctor away.
+        instruction: Represent the user's question about rivers to find a relevant wikipedia paragraph
+      properties:
+        model:
+          type: string
+          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings with instructions, please refer to the `/model-settings` endpoint.
+        hosting:
+          $ref: '#/components/schemas/Hosting'
+        input:
+          $ref: '#/components/schemas/Prompt'
+        instruction:
+          type: string
+          description: 'To further improve performance by steering the model, you can use
+
+            instructions. Instructions can help the model understand nuances of
+
+            your specific data and ultimately lead to embeddings that are more
+
+            useful for your use-case. In this case, we aim to further increase
+
+            the absolute difference between the cosine similarities.
+
+            Instruction can also be the empty string.
+
+            '
+        normalize:
+          type: boolean
+          default: 'false'
+          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
+
+            '
+        contextual_control_threshold:
+          type: number
+          default: 'null'
+          nullable: 'true'
+          description: 'If set to `null`, attention control parameters only apply to those tokens that have
+
+            explicitly been set in the request.
+
+            If set to a non-null value, we apply the control parameters to similar tokens as well.
+
+            Controls that have been applied to one token will then be applied to all other tokens
+
+            that have at least the similarity score defined by this parameter.
+
+            The similarity score is the cosine similarity of token embeddings.
+
+            '
+        control_log_additive:
+          type: boolean
+          default: 'true'
+          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
+
+            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
+
+            '
+      required:
+      - input
+      - instruction
     CompletionRequest:
       type: object
       example:
@@ -2653,64 +1637,951 @@ components:
       required:
       - model
       - prompt
-    ChatResponseMessage:
+    ChatResponse:
       type: object
-      required:
-      - index
+      example:
+        id: d902da3c-67dd-47d6-acfc-b7dbcb01eb9d
+        choices:
+        - finish_reason: stop
+          index: '0'
+          message:
+            role: assistant
+            content: I'd be happy to help you with your homework. What subject and what specific problem or assignment are you working on? Share as much information as you can, and I'll do my best to assist you.
+          logprobs: 'null'
+        created: '1739975747'
+        model: llama-3.1-8b-instruct
+        system_fingerprint: .unknown.
+        object: chat.completion
+        usage:
+          prompt_tokens: '31'
+          completion_tokens: '43'
+          total_tokens: '74'
       properties:
-        finish_reason:
-          description: 'The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence or `length` if the maximum number of tokens specified in the request was reached. If the API is unable to understand the stop reason emitted by one of the workers, `content_filter` is returned.
+        id:
+          description: An ID that is unique throughout the given request. When multiple chunks are returned using server-sent events, this ID will be the same for all of them.
+          type: string
+        choices:
+          description: A list of chat completion choices. Can be more than one if `n` is greater than 1.
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatResponseMessage'
+        created:
+          description: The Unix timestamp (in seconds) of when the chat completion was created.
+          type: integer
+        model:
+          description: The ID of the model that generated the completion.
+          type: string
+        system_fingerprint:
+          description: 'The specific version of the model that generated the completion. This field can be used to track inconsistencies between calls to different deployments of otherwise identical models.
 
 
             When streaming is enabled, the value is only set in the last chunk of a completion and `null` otherwise.
 
             '
           type: string
+        object:
+          description: Will be `chat.completion` by default and `chat.completion.chunk` when streaming is enabled.
+          type: string
           enum:
-          - stop
-          - length
-          - content_filter
-        index:
-          description: The index of the current chat completion in the conversation. Use this parameter to associate chunks with the correct message stream as chunks might arrive out of order. This is mostly relevant when streaming is enabled and multiple completions are requested.
+          - chat.completion
+          - chat.completion.chunk
+        usage:
+          description: 'Usage statistics for the completion request.
+
+
+            When streaming is enabled, this field will be `null` by default. To include an additional usage-only message in the response stream, set `stream_options.include_usage` to `true`.
+
+            '
+          type: object
+          required:
+          - completion_tokens
+          - prompt_tokens
+          - total_tokens
+          properties:
+            completion_tokens:
+              description: Number of tokens in the generated completion.
+              type: integer
+            prompt_tokens:
+              description: Number of tokens in the prompt.
+              type: integer
+            total_tokens:
+              description: Total number of tokens used in the request (prompt + completion).
+              type: integer
+    RerankRequest:
+      type: object
+      example:
+        model: your-reranker-model
+        query: What is the capital of France?
+        documents:
+        - The capital of Brazil is Brasilia.
+        - The capital of France is Paris.
+        - Horses and cows are both animals.
+        top_n: '2'
+      properties:
+        query:
+          type: string
+          description: The query to rerank the documents against.
+        documents:
+          type: array
+          items:
+            type: string
+          description: The list of documents to rerank.
+        top_n:
+          nullable: 'true'
           type: integer
-        message:
-          description: Chat completion generated by the model when streaming is disabled.
-          type: object
-          required:
-          - role
-          - content
+          description: The number of documents to return. Defaults to the number of documents if not provided.
+      required:
+      - query
+      - documents
+    EmbeddingV2Usage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+          description: The number of tokens in the input.
+        total_tokens:
+          type: integer
+          description: The total number of tokens used by the request.
+      required:
+      - prompt_tokens
+      - total_tokens
+    FunctionObject:
+      type: object
+      properties:
+        description:
+          type: string
+          description: 'A description of what the function does, used by the model to choose when and how to call the
+
+            function.
+
+            '
+        name:
+          type: string
+          description: 'The name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and dashes,
+
+            with a maximum length of 64.
+
+            '
+        parameters:
+          $ref: '#/components/schemas/FunctionParameters'
+        strict:
+          type: boolean
+          nullable: 'true'
+          default: 'false'
+          description: 'Whether to enable strict schema adherence when generating the function call. If set to true, the
+
+            model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema
+
+            is supported when `strict` is `true`. Learn more about Structured Outputs in [our
+
+            docs](https://docs.aleph-alpha.com/products/pharia-ai/pharia-os/references/inference/structured-output/).
+
+            '
+      required:
+      - name
+    TokenIdsPromptItem:
+      type: object
+      title: Token Ids
+      required:
+      - type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - token_ids
+        data:
+          type: array
+          items:
+            type: integer
+        controls:
+          type: array
+          items:
+            type: object
+            required:
+            - index
+            - factor
+            properties:
+              index:
+                type: integer
+                description: 'Index of the token, relative to the list of tokens IDs in the current prompt item.
+
+                  '
+              factor:
+                type: number
+                description: 'Factor to apply to the given token in the attention matrix.
+
+
+                  - 0 <= factor < 1 => Suppress the given token
+
+                  - factor == 1 => identity operation, no change to attention
+
+                  - factor > 1 => Amplify the given token
+
+                  '
+    TargetItemImportance:
+      type: object
+      description: 'Explains the importance of text in the target string that came before the currently
+
+        to-be-explained target token. The amount of items in the "scores" array depends on the
+
+        granularity setting.
+
+        Each score object contains an inclusive start character and a length of the substring plus
+
+        a floating point score value.
+
+        '
+      properties:
+        type:
+          type: string
+          enum:
+          - target
+        scores:
+          type: array
+          items:
+            type: object
+            properties:
+              start:
+                type: integer
+              length:
+                type: integer
+              score:
+                type: number
+    OptimizedPrompt:
+      description: Describes prompt after optimizations. This field is only returned if the flag `disable_optimizations` flag is not set and the prompt has actually changed.
+      type: array
+      items:
+        oneOf:
+        - type: object
+          title: Text
           properties:
-            role:
-              description: The role of the current chat completion. Will `assistant`.
+            type:
               type: string
               enum:
-              - assistant
-            content:
-              description: The content of the current chat completion.
+              - text
+            data:
               type: string
-        delta:
-          description: Chat completion chunk generated by the model when streaming is enabled.
-          type: object
-          required:
-          - content
+        - type: object
+          title: Image
           properties:
-            role:
-              description: The role of the current chat completion. Will be `assistant` for the first chunk of every completion stream and missing for the remaining chunks.
+            type:
               type: string
               enum:
-              - assistant
-            content:
-              description: The content of the current chat completion. Will be empty for the first chunk of every completion stream and non-empty for the remaining chunks.
+              - image
+            data:
               type: string
-        logprobs:
-          description: Log probability information for the choice. `null` if this is the end of a completion stream.
-          type: object
+              description: base64 encoded image
+        - type: object
+          title: Token Ids
           properties:
-            content:
-              description: A list of message content tokens with log probability information.
+            type:
+              type: string
+              enum:
+              - token_ids
+            data:
               type: array
               items:
-                $ref: '#/components/schemas/ChatResponseLogprobs'
+                type: integer
+    ChatResponseTopLogprob:
+      type: object
+      required:
+      - token
+      - logprob
+      - bytes
+      properties:
+        token:
+          description: The token.
+          type: string
+        logprob:
+          description: The log probability of the token.
+          type: number
+        bytes:
+          description: A list of integers representing the UTF-8 bytes representation of the token.
+          type: array
+          items:
+            type: integer
+    RerankResponse:
+      type: object
+      example:
+        results:
+        - index: '0'
+          relevance_score: '0.704557'
+        - index: '1'
+          relevance_score: '0.698765'
+        usage:
+          completion_tokens: '0'
+          prompt_tokens: '0'
+          total_tokens: '18'
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+                description: The index of the document in the original list of documents.
+              relevance_score:
+                type: number
+                description: The relevance score of the document.
+        usage:
+          description: Usage statistics for the request.
+          type: object
+          required:
+          - completion_tokens
+          - prompt_tokens
+          - total_tokens
+          properties:
+            completion_tokens:
+              description: Number of tokens in the generated completion. Will always be 0 for rerank tasks.
+              type: integer
+            prompt_tokens:
+              description: Number of tokens in the prompt. Will always be 0 for rerank tasks.
+              type: integer
+            total_tokens:
+              description: Total number of tokens used in the request.
+              type: integer
+    EvaluationResponse:
+      type: object
+      example:
+        model_version: 2021-12
+        result:
+          log_probability: '-1.2281955'
+          log_perplexity: '1.2281955'
+          log_perplexity_per_token: '0.24563909'
+          log_perplexity_per_character: '1.2281955'
+          correct_greedy: 'true'
+          token_count: '5'
+          character_count: '1'
+          completion: ' keeps the doctor away.'
+        num_tokens_prompt_total: '9'
+      properties:
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        result:
+          type: object
+          description: dictionary with result metrics of the evaluation
+          properties:
+            log_probability:
+              type: number
+              nullable: 'true'
+              description: log probability of producing the expected completion given the prompt. This metric refers to all tokens and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
+            log_perplexity:
+              type: number
+              nullable: 'true'
+              description: log perplexity associated with the expected completion given the prompt. This metric refers to all tokens and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
+            log_perplexity_per_token:
+              type: number
+              nullable: 'true'
+              description: log perplexity associated with the expected completion given the prompt normalized for the number of tokens. This metric computes an average per token and is therefore dependent on the used tokenizer. It cannot be directly compared among models with different tokenizers.
+            log_perplexity_per_character:
+              type: number
+              nullable: 'true'
+              description: log perplexity associated with the expected completion given the prompt normalized for the number of characters. This metric is independent of any tokenizer. It can be directly compared among models with different tokenizers.
+            correct_greedy:
+              type: boolean
+              nullable: 'true'
+              description: Flag indicating whether a greedy completion would have produced the expected completion.
+            token_count:
+              type: integer
+              nullable: 'true'
+              description: Number of tokens in the expected completion.
+            character_count:
+              type: integer
+              nullable: 'true'
+              description: Number of characters in the expected completion.
+            completion:
+              type: string
+              nullable: 'true'
+              description: argmax completion given the input consisting of prompt and expected completion. This may be used as an indicator of what the model would have produced. As only one single forward is performed an incoherent text could be produced especially for long expected completions.
+        num_tokens_prompt_total:
+          type: integer
+          description: "The sum over the number of tokens of both the `prompt` and the `completion_expected` fields.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+    BatchSemanticEmbeddingResponse:
+      type: object
+      example:
+        model_version: 2021-12
+        embeddings:
+        - - '-0.053497314'
+          - '0.0053749084'
+          - '0.06427002'
+          - '0.05316162'
+          - '-0.0044059753'
+          - '...'
+        - - '-0.053497314'
+          - '0.0053749084'
+          - '0.06427002'
+          - '0.05316162'
+          - '-0.0044059753'
+          - '...'
+        num_tokens_prompt_total: '42'
+      properties:
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        embeddings:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+            description: A list of floats that can be used to compare against other embeddings.
+        num_tokens_prompt_total:
+          type: integer
+          description: "Number of tokens in the all prompts combined.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+    MultimodalPrompt:
+      title: Multimodal
+      type: array
+      description: An array of prompt items for multimodal request. Can support any combination of text, images, and token ids.
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/TextPromptItem'
+        - $ref: '#/components/schemas/ImagePromptItem'
+        - $ref: '#/components/schemas/TokenIdsPromptItem'
+    StreamSummary:
+      description: Response object being returned once per completion stream at the end of a stream.
+      type: object
+      example:
+        type: stream_summary
+        index: '0'
+        model_version: 2021-12
+        finish_reason: maximum_tokens
+      required:
+      - type
+      - index
+      - model_version
+      - finish_reason
+      properties:
+        type:
+          description: Marker tag denoting the type of the stream item. Will always be `stream_summary` for `StreamSummary`s.
+          type: string
+          enum:
+          - stream_summary
+        index:
+          description: The index of the current completion. Use this parameter to associate chunks with the correct message stream as chunks might arrive out of order. This is mostly relevant when multiple completions are requested.
+          type: integer
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        finish_reason:
+          type: string
+          description: reason for termination of generation. This may be a stop sequence or maximum number of tokens reached.
+    TranscribeResponse:
+      type: object
+      example:
+        transcription: This is an example transcription. It contains two segments.
+        segments:
+        - start: '0.0'
+          end: '2.5'
+          text: This is an example transcription.
+          tokens:
+          - '1234'
+          - '5678'
+          - '9012'
+          - '3456'
+          - '7890'
+        - start: '2.5'
+          end: '4.0'
+          text: It contains two segments.
+          tokens:
+          - '3456'
+          - '7890'
+          - '1234'
+          - '5678'
+        language: en
+        num_tokens_prompt_total: '0'
+        num_tokens_generated: '5'
+      properties:
+        transcription:
+          type: string
+          description: The complete transcribed text from the audio file
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TranscribeSegment'
+          description: List of transcribed segments with timing information
+        language:
+          type: string
+          description: 'The detected language of the transcription, returned as an ISO 639-1 language code such as
+
+            "en" for English, "de" for German, "fr" for French, etc.
+
+            For information on supported languages, refer to the documentation of the model that you are using.
+
+            '
+        num_tokens_prompt_total:
+          type: integer
+          description: 'Total number of tokens in the prompt. For many transcription models (e.g., whisper) zero, as the tokenization of the input audio file is not exposed.
+
+            '
+        num_tokens_generated:
+          type: integer
+          description: Total number of tokens generated
+    FunctionParameters:
+      type: object
+      description: 'The parameters the functions accepts, described as a JSON Schema object. Omitting `parameters`
+
+        defines a function with an empty parameter list.
+
+        '
+      additionalProperties: 'true'
+    ChatRequestTool:
+      type: object
+      title: Function tool
+      description: 'A function tool that can be used to generate a response.
+
+        '
+      properties:
+        type:
+          type: string
+          enum:
+          - function
+          description: The type of the tool. Currently, only `function` is supported.
+        function:
+          $ref: '#/components/schemas/FunctionObject'
+      required:
+      - type
+      - function
+    TokenizationResponse:
+      type: object
+      example:
+        tokens:
+        - ĠAn
+        - Ġapple
+        - Ġa
+        - Ġday
+        - Ġkeeps
+        - Ġthe
+        - Ġdoctor
+        - Ġaway
+        - .
+        token_ids:
+        - '560'
+        - '34438'
+        - '246'
+        - '1966'
+        - '18075'
+        - '275'
+        - '8809'
+        - '3476'
+        - '17'
+      properties:
+        tokens:
+          type: array
+          items:
+            type: string
+        token_ids:
+          type: array
+          items:
+            type: integer
+    SteeringConceptId:
+      type: string
+      pattern: ^[a-aA-Z0-9-_]+$
+      description: 'The ID of a steering concept that was created using the `steering_concepts` endpoint.
+
+        '
+    ImagePromptItem:
+      type: object
+      title: Image
+      required:
+      - type
+      - data
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+        data:
+          type: string
+          description: 'An image send as part of a prompt to a model. The image is represented as base64.
+
+
+            Note: The models operate on square images. All non-square images are center-cropped
+
+            before going to the model, so portions of the image may not be visible.
+
+
+            You can supply specific cropping parameters if you like, to choose a different area
+
+            of the image than a center-crop. Or, you can always transform the image yourself to
+
+            a square before sending it.
+
+            '
+        x:
+          type: integer
+          description: x-coordinate of top left corner of cropping box in pixels
+        y:
+          type: integer
+          description: y-coordinate of top left corner of cropping box in pixels
+        size:
+          type: integer
+          description: Size of the cropping square in pixels
+        controls:
+          type: array
+          items:
+            type: object
+            required:
+            - rect
+            - factor
+            properties:
+              rect:
+                type: object
+                required:
+                - left
+                - top
+                - width
+                - height
+                description: 'Bounding box in logical coordinates. From 0 to 1. With (0,0) being the upper left corner,
+
+                  and relative to the entire image.
+
+
+                  Keep in mind, non-square images are center-cropped by default before going to the model. (You
+
+                  can specify a custom cropping if you want.). Since control coordinates are relative to the
+
+                  entire image, all or a portion of your control may be outside the "model visible area".
+
+                  '
+                properties:
+                  left:
+                    type: number
+                    description: 'x-coordinate of top left corner of the control bounding box.
+
+                      Must be a value between 0 and 1, where 0 is the left corner and 1 is the right corner.
+
+                      '
+                  top:
+                    type: number
+                    description: 'y-coordinate of top left corner of the control bounding box
+
+                      Must be a value between 0 and 1, where 0 is the top pixel row and 1 is the bottom row.
+
+                      '
+                  width:
+                    type: number
+                    description: 'width of the control bounding box
+
+                      Must be a value between 0 and 1, where 1 means the full width of the image.
+
+                      '
+                  height:
+                    type: number
+                    description: 'height of the control bounding box
+
+                      Must be a value between 0 and 1, where 1 means the full height of the image.
+
+                      '
+              factor:
+                type: number
+                description: 'Factor to apply to the given token in the attention matrix.
+
+
+                  - 0 <= factor < 1 => Suppress the given token
+
+                  - factor == 1 => identity operation, no change to attention
+
+                  - factor > 1 => Amplify the given token
+
+                  '
+              token_overlap:
+                type: string
+                enum:
+                - partial
+                - complete
+                default: partial
+                description: 'What to do if a control partially overlaps with an image token.
+
+
+                  If set to "partial", the factor will be adjusted proportionally with the amount
+
+                  of the token it overlaps. So a factor of 2.0 of a control that only covers half
+
+                  of the image "tile", would be adjusted to 1.5. (It always moves closer to 1, since
+
+                  1 is an identity operation for control factors.)
+
+
+                  If set to "complete", the full factor will be applied as long as the control
+
+                  overlaps with the token at all.
+
+                  '
+    ChatResponseLogprobs:
+      type: object
+      required:
+      - token
+      - logprob
+      - bytes
+      - top_logprobs
+      properties:
+        token:
+          description: The token.
+          type: string
+        logprob:
+          description: The log probability of the token. If the log probability is not returned by the worker, -9999.0 is used as a fallback.
+          type: number
+        bytes:
+          description: A list of integers representing the UTF-8 bytes representation of the token.
+          type: array
+          items:
+            type: integer
+        top_logprobs:
+          description: List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatResponseTopLogprob'
+    EmbeddingResponse:
+      type: object
+      example:
+        model_version: 2021-12
+        embeddings:
+          layer_0:
+            max:
+            - '-0.053497314'
+            - '0.0053749084'
+            - '0.06427002'
+            - '0.05316162'
+            - '-0.0044059753'
+            - '...'
+          layer_1:
+            max:
+            - '0.14086914'
+            - '-0.24780273'
+            - '1.3232422'
+            - '-0.07055664'
+            - '1.2148438'
+            - '...'
+        tokens: 'null'
+        num_tokens_prompt_total: '42'
+      properties:
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        embeddings:
+          type: object
+          nullable: 'true'
+          description: "embeddings:\n    - pooling: a dict with layer names as keys and and pooling output as values. A pooling output is a dict with pooling operation as key and a pooled embedding (list of floats) as values\n"
+        tokens:
+          type: array
+          items:
+            type: string
+          nullable: 'true'
+        num_tokens_prompt_total:
+          type: integer
+          description: "Number of tokens in the prompt.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+    SteeringConceptRef:
+      oneOf:
+      - $ref: '#/components/schemas/WorkerSteeringConcept'
+      - $ref: '#/components/schemas/SteeringConceptId'
+    BatchSemanticEmbeddingRequest:
+      type: object
+      example:
+        model: pharia-1-embedding-4608-control
+        prompts:
+        - An apple a day keeps the doctor away.
+        - A journey of thousand miles begins with a single step.
+        representation: symmetric
+        compress_to_size: '128'
+      properties:
+        model:
+          type: string
+          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings, please refer to the `/model-settings` endpoint.
+        hosting:
+          $ref: '#/components/schemas/Hosting'
+        prompts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prompt'
+        representation:
+          type: string
+          enum:
+          - symmetric
+          - document
+          - query
+          description: 'Type of embedding representation to embed the prompt with.
+
+
+            `"symmetric"`: Symmetric embeddings assume that the text to be compared is interchangeable. Usage examples for symmetric embeddings are clustering, classification, anomaly detection or visualisation tasks. "symmetric" embeddings should be compared with other "symmetric" embeddings.
+
+
+            `"document"` and `"query"`: Asymmetric embeddings assume that there is a difference between queries and documents. They are used together in use cases such as search where you want to compare shorter queries against larger documents.
+
+
+            `"query"`-embeddings are optimized for shorter texts, such as questions or keywords.
+
+
+            `"document"`-embeddings are optimized for larger pieces of text to compare queries against.
+
+            '
+        compress_to_size:
+          $ref: '#/components/schemas/SemanticEmbeddingCompressToSize'
+          nullable: 'true'
+        normalize:
+          type: boolean
+          default: 'false'
+          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
+
+            '
+        contextual_control_threshold:
+          type: number
+          default: 'null'
+          nullable: 'true'
+          description: 'If set to `null`, attention control parameters only apply to those tokens that have
+
+            explicitly been set in the request.
+
+            If set to a non-null value, we apply the control parameters to similar tokens as well.
+
+            Controls that have been applied to one token will then be applied to all other tokens
+
+            that have at least the similarity score defined by this parameter.
+
+            The similarity score is the cosine similarity of token embeddings.
+
+            '
+        control_log_additive:
+          type: boolean
+          default: 'true'
+          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
+
+            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
+
+            '
+      required:
+      - prompts
+      - representation
+    CompletionResponse:
+      description: Response object being returned when streaming is disabled.
+      type: object
+      example:
+        completions:
+        - completion: keeps the doctor away.
+          finish_reason: maximum_tokens
+        model_version: 2021-12
+        optimized_prompt: An apple a day
+        num_tokens_prompt_total: '4'
+        num_tokens_generated: '5'
+      properties:
+        model_version:
+          type: string
+          description: model name and version (if any) of the used model for inference
+        completions:
+          type: array
+          description: list of completions; may contain only one entry if no more are requested (see parameter n)
+          items:
+            type: object
+            properties:
+              log_probs:
+                type: object
+                nullable: 'true'
+                description: list with a dictionary for each generated token. The dictionary maps the keys' tokens to the respective log probabilities. This field is only returned if requested with the parameter "log_probs".
+              completion:
+                type: string
+                nullable: 'false'
+                description: generated completion on the basis of the prompt
+              raw_completion:
+                type: string
+                nullable: 'true'
+                description: 'For some models, we may optimize the completion that was generated by the model and
+
+                  return the optimized completion in the completion field of the CompletionResponse.
+
+                  The raw completion, if returned, will contain the un-optimized completion.
+
+                  Setting the parameter `raw_completion` in the CompletionRequest to true forces the
+
+                  raw completion of the model to be returned.
+
+                  Setting tokens to true or log_probs to any value will also trigger the raw
+
+                  completion to be returned.
+
+                  '
+              completion_tokens:
+                type: array
+                items:
+                  type: string
+                description: completion split into tokens. This field is only returned if requested with the parameter "tokens".
+              finish_reason:
+                type: string
+                nullable: 'true'
+                description: reason for termination of generation. This may be a stop sequence or maximum number of tokens reached.
+        optimized_prompt:
+          $ref: '#/components/schemas/OptimizedPrompt'
+        num_tokens_prompt_total:
+          type: integer
+          description: "Number of tokens combined across all completion tasks.\n\nIn particular, if you set best_of or n to a number larger than 1 then we report the\ncombined prompt token count for all best_of or n tasks.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+        num_tokens_generated:
+          type: integer
+          description: 'Number of tokens combined across all completion tasks.
+
+            If multiple completions are returned or best_of is set to a value greater than 1 then
+
+            this value contains the combined generated token count.
+
+            '
+    SemanticEmbeddingCompressToSize:
+      type: integer
+      enum:
+      - '128'
+      description: 'The default behavior is to return the full embedding with 5120 dimensions. With this parameter you can compress the returned embedding to 128 dimensions.
+
+        The compression is expected to result in a small drop in accuracy performance (4-6%), with the benefit of being much smaller, which makes comparing these embeddings much faster for use cases where speed is critical.
+
+        With the compressed embedding can also perform better if you are embedding really short texts or documents.
+
+        '
+    EmbeddingV2ResponseData:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - embedding
+          description: The object type, which is always "embedding".
+        embedding:
+          oneOf:
+          - type: array
+            items:
+              type: number
+              format: float
+            title: Embedding (float)
+            description: The embedding vector as an array of floats.
+          - type: string
+            title: Embedding (base64)
+            description: The embedding vector as a base64-encoded numpy array.
+          description: The embedding vector, which is a list of floats or a base64-encoded numpy array depending on the encoding_format parameter.
+        index:
+          type: integer
+          description: The index of the embedding in the list of embeddings.
+      required:
+      - object
+      - embedding
+      - index
+    TranscribeSegment:
+      type: object
+      properties:
+        start:
+          type: number
+          format: float
+          description: Start time of the segment in seconds
+        end:
+          type: number
+          format: float
+          description: End time of the segment in seconds
+        text:
+          type: string
+          description: The transcribed text for this segment
+        tokens:
+          type: array
+          items:
+            type: integer
+          description: Token IDs for the transcribed text
     EvaluationRequest:
       type: object
       example:
@@ -2757,328 +2628,54 @@ components:
       - model
       - prompt
       - completion_expected
-    TranscribeRequest:
+    TextPromptItemImportance:
       type: object
-      properties:
-        audiofile:
-          type: string
-          format: binary
-          description: 'The audio file to transcribe. For supported formats, see the documentation of the model that you are using.
+      description: 'Explains the importance of a text prompt item.
 
-            '
-        metadata:
-          type: object
-          description: 'Example: {"model":"transcription-model", "language":"de"}
+        The amount of items in the "scores" array depends on the granularity setting.
 
-            '
-          properties:
-            model:
-              type: string
-              description: The name of the transcription model to use
-            language:
-              type: string
-              description: 'Optional language code for the transcription. Must be specified using ISO 639-1 language codes such as
+        Each score object contains an inclusive start character and a length of the substring plus
 
-                "en" for English, "de" for German, "fr" for French, etc.
-
-                For information on supported languages, refer to the documentation of the model that you are using.
-
-                '
-          required:
-          - model
-    SteeringConceptId:
-      type: string
-      pattern: ^[a-aA-Z0-9-_]+$
-      description: 'The ID of a steering concept that was created using the `steering_concepts` endpoint.
-
-        '
-    InstructableEmbeddingRequest:
-      type: object
-      example:
-        model: pharia-1-embedding-4608-control
-        input: An apple a day keeps the doctor away.
-        instruction: Represent the user's question about rivers to find a relevant wikipedia paragraph
-      properties:
-        model:
-          type: string
-          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings with instructions, please refer to the `/model-settings` endpoint.
-        hosting:
-          $ref: '#/components/schemas/Hosting'
-        input:
-          $ref: '#/components/schemas/Prompt'
-        instruction:
-          type: string
-          description: 'To further improve performance by steering the model, you can use
-
-            instructions. Instructions can help the model understand nuances of
-
-            your specific data and ultimately lead to embeddings that are more
-
-            useful for your use-case. In this case, we aim to further increase
-
-            the absolute difference between the cosine similarities.
-
-            Instruction can also be the empty string.
-
-            '
-        normalize:
-          type: boolean
-          default: 'false'
-          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
-
-            '
-        contextual_control_threshold:
-          type: number
-          default: 'null'
-          nullable: 'true'
-          description: 'If set to `null`, attention control parameters only apply to those tokens that have
-
-            explicitly been set in the request.
-
-            If set to a non-null value, we apply the control parameters to similar tokens as well.
-
-            Controls that have been applied to one token will then be applied to all other tokens
-
-            that have at least the similarity score defined by this parameter.
-
-            The similarity score is the cosine similarity of token embeddings.
-
-            '
-        control_log_additive:
-          type: boolean
-          default: 'true'
-          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
-
-            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
-
-            '
-      required:
-      - input
-      - instruction
-    TokenIdsPromptItemImportance:
-      type: object
-      description: 'Explains the importance of a request prompt item of type "token_ids".
-
-        Will contain one floating point importance value for each token in the same order as in
-
-        the original prompt.
+        a floating point score value.
 
         '
       properties:
         type:
           type: string
           enum:
-          - token_ids
+          - text
         scores:
           type: array
           items:
-            type: number
-    EmbeddingResponse:
-      type: object
-      example:
-        model_version: 2021-12
-        embeddings:
-          layer_0:
-            max:
-            - '-0.053497314'
-            - '0.0053749084'
-            - '0.06427002'
-            - '0.05316162'
-            - '-0.0044059753'
-            - '...'
-          layer_1:
-            max:
-            - '0.14086914'
-            - '-0.24780273'
-            - '1.3232422'
-            - '-0.07055664'
-            - '1.2148438'
-            - '...'
-        tokens: 'null'
-        num_tokens_prompt_total: '42'
-      properties:
-        model_version:
-          type: string
-          description: model name and version (if any) of the used model for inference
-        embeddings:
-          type: object
-          nullable: 'true'
-          description: "embeddings:\n    - pooling: a dict with layer names as keys and and pooling output as values. A pooling output is a dict with pooling operation as key and a pooled embedding (list of floats) as values\n"
-        tokens:
-          type: array
-          items:
-            type: string
-          nullable: 'true'
-        num_tokens_prompt_total:
-          type: integer
-          description: "Number of tokens in the prompt.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
-    OptimizedPrompt:
-      description: Describes prompt after optimizations. This field is only returned if the flag `disable_optimizations` flag is not set and the prompt has actually changed.
-      type: array
-      items:
-        oneOf:
-        - type: object
-          title: Text
-          properties:
-            type:
-              type: string
-              enum:
-              - text
-            data:
-              type: string
-        - type: object
-          title: Image
-          properties:
-            type:
-              type: string
-              enum:
-              - image
-            data:
-              type: string
-              description: base64 encoded image
-        - type: object
-          title: Token Ids
-          properties:
-            type:
-              type: string
-              enum:
-              - token_ids
-            data:
-              type: array
-              items:
+            type: object
+            properties:
+              start:
                 type: integer
-    TokenizationResponse:
-      type: object
-      example:
-        tokens:
-        - ĠAn
-        - Ġapple
-        - Ġa
-        - Ġday
-        - Ġkeeps
-        - Ġthe
-        - Ġdoctor
-        - Ġaway
-        - .
-        token_ids:
-        - '560'
-        - '34438'
-        - '246'
-        - '1966'
-        - '18075'
-        - '275'
-        - '8809'
-        - '3476'
-        - '17'
-      properties:
-        tokens:
-          type: array
-          items:
-            type: string
-        token_ids:
-          type: array
-          items:
-            type: integer
-    EmbeddingV2Request:
-      type: object
-      example:
-        model: qwen3-embedding-0.6b
-        input: this text will be embedded
-        encoding_format: float
-        dimensions: '128'
-      properties:
-        model:
-          type: string
-          description: The name of the model used to generate the embedding.
-        input:
-          description: Input text to be embedded.
-          oneOf:
-          - type: string
-            title: String
-            description: The string that will be turned into an embedding.
-          - type: array
-            title: Array of strings
-            items:
-              type: string
-            description: The array of strings that will be turned into an embedding. We will return an embedding for each element in the array
-          - type: array
-            title: Array of integers
-            items:
-              type: integer
-            description: The array of integers that will be turned into an embedding. Each integer represents a token. An array of tokens represents a string for which the embedding is generated.
-          - type: array
-            title: Array of arrays of integers
-            items:
-              type: array
-              items:
+              length:
                 type: integer
-            description: The array of arrays containing integers that will be turned into an embedding. An array of tokens represents a string for which the embedding is generated. We will return an embedding for each element in the outer array.
-        encoding_format:
-          type: string
-          enum:
-          - float
-          - base64
-          description: The format to return the embeddings in. Can be either `float` or `base64`.
-        dimensions:
-          type: integer
-          minimum: '1'
-          description: The number of dimensions the resulting output embeddings should have. Not supported by all models.
-        user:
-          type: string
-          description: This parameter is unsupported and will be rejected.
-          deprecated: 'true'
-      required:
-      - model
-      - input
-    ChatResponseLogprobs:
-      type: object
-      required:
-      - token
-      - logprob
-      - bytes
-      - top_logprobs
-      properties:
-        token:
-          description: The token.
-          type: string
-        logprob:
-          description: The log probability of the token. If the log probability is not returned by the worker, -9999.0 is used as a fallback.
-          type: number
-        bytes:
-          description: A list of integers representing the UTF-8 bytes representation of the token.
-          type: array
-          items:
-            type: integer
-        top_logprobs:
-          description: List of the most likely tokens and their log probability, at this token position. In rare cases, there may be fewer than the number of requested `top_logprobs` returned.
-          type: array
-          items:
-            $ref: '#/components/schemas/ChatResponseTopLogprob'
-    SemanticEmbeddingResponse:
-      type: object
-      example:
-        model_version: 2021-12
-        embedding:
-        - '-0.053497314'
-        - '0.0053749084'
-        - '0.06427002'
-        - '0.05316162'
-        - '-0.0044059753'
-        - '...'
-        num_tokens_prompt_total: '42'
-      properties:
-        model_version:
-          type: string
-          description: model name and version (if any) of the used model for inference
-        embedding:
-          type: array
-          items:
-            type: number
-            format: float
-          description: A list of floats that can be used to compare against other embeddings.
-        num_tokens_prompt_total:
-          type: integer
-          description: "Number of tokens in the prompt.\n\nTokenization:\n  - Token ID arrays are used as as-is.\n  - Text prompt items are tokenized using the tokenizers specific to the model.\n  - Each image is converted into a fixed amount of tokens that depends on the chosen model.\n"
+              score:
+                type: number
+    Hosting:
+      type: string
+      nullable: 'true'
+      enum:
+      - aleph-alpha
+      - 'null'
+      description: 'Optional parameter that specifies which datacenters may process the request.
+
+        You can either set the parameter to "aleph-alpha" or omit it (defaulting to `null`).
+
+
+        Not setting this value, or setting it to `null`, gives us maximal flexibility in processing your request in our
+
+        own datacenters and on servers hosted with other providers. Choose this option for maximum availability.
+
+
+        Setting it to "aleph-alpha" allows us to only process the request in our own datacenters.
+
+        Choose this option for maximal data privacy.
+
+        '
     ResponseFormat:
       type: object
       description: 'An object specifying the format that the model must output.
@@ -3124,70 +2721,154 @@ components:
 
                 '
               additionalProperties: 'true'
-    StreamSummary:
-      description: Response object being returned once per completion stream at the end of a stream.
-      type: object
-      example:
-        type: stream_summary
-        index: '0'
-        model_version: 2021-12
-        finish_reason: maximum_tokens
-      required:
-      - type
-      - index
-      - model_version
-      - finish_reason
-      properties:
-        type:
-          description: Marker tag denoting the type of the stream item. Will always be `stream_summary` for `StreamSummary`s.
-          type: string
-          enum:
-          - stream_summary
-        index:
-          description: The index of the current completion. Use this parameter to associate chunks with the correct message stream as chunks might arrive out of order. This is mostly relevant when multiple completions are requested.
-          type: integer
-        model_version:
-          type: string
-          description: model name and version (if any) of the used model for inference
-        finish_reason:
-          type: string
-          description: reason for termination of generation. This may be a stop sequence or maximum number of tokens reached.
-    TranslationSegment:
-      type: object
-      properties:
-        source:
-          type: string
-          description: The input text to be translated.
-        translation:
-          type: string
-          description: The translated output text of the segment.
-        score:
-          type: number
-          description: Estimate for the overall quality of the translation on a scale of 0 to 1.
-    DetokenizationRequest:
+    TokenizationRequest:
       type: object
       example:
         model: llama-3.1-8b-instruct
-        token_ids:
-        - '560'
-        - '34438'
-        - '246'
-        - '1966'
-        - '18075'
-        - '275'
-        - '8809'
-        - '3476'
-        - '17'
+        prompt: An apple a day keeps the doctor away.
+        tokens: 'true'
+        token_ids: 'true'
       properties:
         model:
           type: string
+        prompt:
+          type: string
+        tokens:
+          type: boolean
         token_ids:
-          type: array
-          items:
-            type: integer
+          type: boolean
       required:
       - model
+      - prompt
+      - tokens
       - token_ids
+    ExplanationResponse:
+      description: 'The top-level response data structure that will be returned from an explanation request.
+
+        '
+      type: object
+      properties:
+        model_version:
+          type: string
+        explanations:
+          description: 'This array will contain one explanation object for each token in the target string.
+
+            '
+          type: array
+          items:
+            type: object
+            properties:
+              target:
+                description: 'The string representation of the target token which is being explained
+
+                  '
+                type: string
+              items:
+                description: 'Contains one item for each prompt item (in order), and the last item refers to the
+
+                  target.
+
+                  '
+                type: array
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/TokenIdsPromptItemImportance'
+                  - $ref: '#/components/schemas/TargetItemImportance'
+                  - $ref: '#/components/schemas/TextPromptItemImportance'
+                  - $ref: '#/components/schemas/ImagePromptItemImportance'
+    TranslationRequest:
+      type: object
+      example:
+        model: pharia-1-mt-translation
+        source: What is your name?
+        target_language: de
+      properties:
+        model:
+          type: string
+          description: The name of the model to be used for the translation.
+        source:
+          type: string
+          description: The input text to be translated.
+        target_language:
+          type: string
+          description: 'The desired target language into which the input text should be translated. The language
+
+            must be specified using ISO 639 (and RFC 1766) language codes such as "en" for English,
+
+            "de" for German, "fr" for French, etc. For a list of supported languages, refer to the
+
+            `/languages` endpoint.
+
+            '
+      required:
+      - model
+      - source
+      - target_language
+    TranslationResponse:
+      type: object
+      example:
+        translation: Wie heißt du?
+        score: '0.704557'
+        segments: 'null'
+        num_tokens_prompt_total: '18'
+        num_tokens_generated: '0'
+      properties:
+        translation:
+          type: string
+          description: The complete translated output text
+        score:
+          type: number
+          description: Estimate for the overall quality of the translation on a scale of 0 to 1.
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TranslationSegment'
+          description: List of translated segments
+          nullable: 'true'
+        num_tokens_prompt_total:
+          type: integer
+          description: 'Total number of tokens in the prompt.
+
+            '
+        num_tokens_generated:
+          type: integer
+          description: 'Total number of tokens generated. For translation tasks this will always be zero, as the current translation models don''t expose the tokens.
+
+            '
+    ImagePromptItemImportance:
+      type: object
+      description: 'Explains the importance of an image prompt item.
+
+        The amount of items in the "scores" array depends on the granularity setting.
+
+        Each score object contains the top-left corner of a rectangular area in the image prompt.
+
+        The coordinates are all between 0 and 1 in terms of the total image size
+
+        '
+      properties:
+        type:
+          type: string
+          enum:
+          - image
+        scores:
+          type: array
+          items:
+            type: object
+            properties:
+              rect:
+                type: object
+                properties:
+                  top:
+                    type: number
+                  left:
+                    type: number
+                  width:
+                    type: number
+                  height:
+                    type: number
+              score:
+                type: number
     EmbeddingV2Response:
       type: object
       example:
@@ -3219,6 +2900,311 @@ components:
           description: The name of the model used to generate the embedding.
         usage:
           $ref: '#/components/schemas/EmbeddingV2Usage'
+    SemanticEmbeddingRequest:
+      type: object
+      example:
+        model: llama-3.1-8b-instruct
+        prompt: An apple a day keeps the doctor away.
+        representation: symmetric
+        compress_to_size: '128'
+      properties:
+        model:
+          type: string
+          description: Name of the model to use. A model name refers to a model's architecture (number of parameters among others). The most recent version of the model is always used. The model output contains information as to the model version. To find out which models support semantic embeddings, please refer to the `/model-settings` endpoint.
+        hosting:
+          $ref: '#/components/schemas/Hosting'
+        prompt:
+          $ref: '#/components/schemas/Prompt'
+        representation:
+          type: string
+          enum:
+          - symmetric
+          - document
+          - query
+          description: 'Type of embedding representation to embed the prompt with.
+
+
+            `"symmetric"`: Symmetric embeddings assume that the text to be compared is interchangeable. Usage examples for symmetric embeddings are clustering, classification, anomaly detection or visualisation tasks. "symmetric" embeddings should be compared with other "symmetric" embeddings.
+
+
+            `"document"` and `"query"`: Asymmetric embeddings assume that there is a difference between queries and documents. They are used together in use cases such as search where you want to compare shorter queries against larger documents.
+
+
+            `"query"`-embeddings are optimized for shorter texts, such as questions or keywords.
+
+
+            `"document"`-embeddings are optimized for larger pieces of text to compare queries against.
+
+            '
+        compress_to_size:
+          $ref: '#/components/schemas/SemanticEmbeddingCompressToSize'
+          nullable: 'true'
+        normalize:
+          type: boolean
+          default: 'false'
+          description: 'Return normalized embeddings. This can be used to save on additional compute when applying a cosine similarity metric.
+
+            '
+        contextual_control_threshold:
+          type: number
+          default: 'null'
+          nullable: 'true'
+          description: 'If set to `null`, attention control parameters only apply to those tokens that have
+
+            explicitly been set in the request.
+
+            If set to a non-null value, we apply the control parameters to similar tokens as well.
+
+            Controls that have been applied to one token will then be applied to all other tokens
+
+            that have at least the similarity score defined by this parameter.
+
+            The similarity score is the cosine similarity of token embeddings.
+
+            '
+        control_log_additive:
+          type: boolean
+          default: 'true'
+          description: '`true`: apply controls on prompt items by adding the `log(control_factor)` to attention scores.
+
+            `false`: apply controls on prompt items by `(attention_scores - -attention_scores.min(-1)) * control_factor`
+
+            '
+      required:
+      - prompt
+      - representation
+    ChatRequest:
+      type: object
+      required:
+      - messages
+      - model
+      example:
+        model: llama-3.1-8b-instruct
+        messages:
+        - role: system
+          content: You are a helpful assistant.
+        - role: user
+          content: Can you help me with my homework?
+        - role: assistant
+          content: Sure, what do you need help with?
+        - role: user
+          content: I need help with my math homework.
+      properties:
+        messages:
+          description: A list of messages comprising the conversation so far.
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatRequestMessage'
+        model:
+          description: 'The ID of the model to query.
+
+
+            The requested model must be eligible for chat completions.
+
+            '
+          type: string
+        frequency_penalty:
+          description: 'When specified, this number will decrease (or increase) the likelihood of repeating tokens that were mentioned prior in the completion.
+
+
+            The penalty is cumulative. The more a token is mentioned in the completion, the more its probability will decrease.
+
+            '
+          type: number
+          minimum: '-2'
+          maximum: '2'
+        logit_bias:
+          description: 'When specified, the provided hash map will affect the likelihood of the specified token <u>IDs</u> (!) appearing in the completion.
+
+
+            Mathematically, the bias is added to the logits generated by the model prior to sampling. Values between -1 and 1 should decrease or increase likelihood of selection while values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
+
+
+            Note that since JSON does not support integer keys, the token IDs are represented as strings.
+
+            '
+          additionalProperties:
+            type: number
+            minimum: '-100'
+            maximum: '100'
+        logprobs:
+          description: When set to true, the model will return the log probabilities of the sampled tokens in the completion.
+          type: boolean
+        top_logprobs:
+          description: When specified, the model will return the log probabilities of the top `n` tokens in the completion.
+          type: integer
+          minimum: '0'
+          maximum: '20'
+        max_tokens:
+          description: 'The maximum number of tokens to generate in the completion. The model will stop generating tokens once it reaches this length.
+
+
+            The maximum value for this parameter depends on the specific model and the length of the input prompt. When no value is provided, the highest possible value will be used.
+
+            '
+          type: integer
+          minimum: '1'
+        n:
+          description: 'The number of completions to generate for each prompt. The model will generate this many completions and return all of them.
+
+
+            When no value is provided, one completion will be returned.
+
+            '
+          type: integer
+          minimum: '1'
+        presence_penalty:
+          description: 'When specified, this number will decrease (or increase) the likelihood of repeating tokens that were mentioned prior in the completion.s
+
+
+            The penalty is not cumulative. Mentioning a token more than once will not increase the penalty further.
+
+            '
+          type: number
+          minimum: '-2'
+          maximum: '2'
+        response_format:
+          description: 'An object specifying the format that the model must output.
+
+            The response format can be passed either directly in the http request,
+
+            or via the Aleph Alpha Client using a pydantic or a JSONSchema object.
+
+            Also compatible with the OpenAI client passing a pydantic object
+
+            as response_format.
+
+            '
+          $ref: '#/components/schemas/ResponseFormat'
+        seed:
+          deprecated: 'true'
+          description: This parameter is unsupported and will be ignored.
+        service_tier:
+          deprecated: 'true'
+          description: This parameter is unsupported and will be ignored.
+        stop:
+          description: Optional. When specified, sequence generation will stop when the model generates the specified token or tokens.
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
+        stream:
+          description: 'When set to true, the model will transmit all completions tokens as soon as they become available via the [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format) protocol.
+
+            '
+          type: boolean
+        stream_options:
+          description: Additional options to affect the streaming behavior.
+          type: object
+          properties:
+            include_usage:
+              description: 'If set, an additional chunk will be streamed before the `data: [DONE]` message. The usage field on this chunk shows the token usage statistics for the entire request, and the choices field will always be an empty array.'
+              type: boolean
+        temperature:
+          description: 'Controls the randomness of the model. Lower values will make the model more deterministic and higher values will make it more random.
+
+
+            Mathematically, the temperature is used to divide the logits before sampling. A temperature of 0 will always return the most likely token.
+
+
+            When no value is provided, the default value of 1 will be used.
+
+            '
+          type: number
+          minimum: '0'
+          maximum: '2'
+        top_p:
+          description: '"nucleus" parameter to dynamically adjust the number of choices for each predicted token based on the cumulative probabilities. It specifies a probability threshold, below which all less likely tokens are filtered out.
+
+
+            When no value is provided, the default value of 1 will be used.
+
+            '
+          type: number
+          minimum: '0'
+          maximum: '1'
+        steering_concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SteeringConceptRef'
+          default: []
+          description: 'Specifies how the output of the model should be steered. This steers
+
+            the output in the direction given by positive examples associated to
+
+            the steering concept and away from the negative examples.
+
+
+            Currently only one steering concept at a time is supported.
+
+            '
+        tools:
+          type: array
+          description: 'A list of tools the model may call. Currently, only functions are supported as a tool. Use
+
+            this to provide a list of functions the model may generate JSON inputs for. A max of 128
+
+            functions are supported.
+
+            '
+          items:
+            $ref: '#/components/schemas/ChatRequestTool'
+        tool_choice:
+          description: 'Controls which (if any) tool is called by the model.
+
+            `none` means the model will not call any tool and instead generates a message.
+
+            `auto` means the model can pick between generating a message or calling one or more tools.
+
+            `required` means the model must call one or more tools.
+
+            Specifying a particular tool via `{"type": "function", "function": {"name": "my_function"}}` forces
+
+            the model to call that tool.
+
+            `none` is the default when no tools are present. `auto` is the default if tools are present.
+
+            '
+          anyOf:
+          - type: string
+            description: '`none` means the model will not call any tool and instead generates a message. `auto` means the
+
+              model can pick between generating a message or calling one or more tools. `required` means the
+
+              model must call one or more tools.
+
+              '
+            enum:
+            - none
+            - auto
+            - required
+          - type: object
+            title: Function tool choice
+            description: Specifies a tool the model should use.
+            properties:
+              type:
+                type: string
+                enum:
+                - function
+                description: For function calling, the type is always `function`.
+              function:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The name of the function to call.
+                required:
+                - name
+            required:
+            - type
+            - function
+        parallel_tool_calls:
+          deprecated: 'true'
+          description: This parameter is unsupported and will be rejected.
+        user:
+          deprecated: 'true'
+          description: This parameter is unsupported and will be ignored.
   securitySchemes:
     token:
       type: http

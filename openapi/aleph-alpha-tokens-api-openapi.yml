@@ -11,18 +11,16 @@ servers:
     host:
       default: https://api.pharia.example.com
 tags:
-- name: tokens
+- name: Tokens
   description: Manage tokens associated with your user account for API access.
 paths:
   /users/me/tokens:
     get:
       summary: Get issued API tokens
-      description: 'Will return a list of API tokens that are registered for this user (only token metadata is returned, not the actual tokens)
-
-        '
+      description: Will return a list of API tokens that are registered for this user (only token metadata is returned, not the actual tokens)
       operationId: tokens
       tags:
-      - tokens
+      - Tokens
       security:
       - token: []
       responses:
@@ -51,12 +49,10 @@ paths:
                   - token_id
     post:
       summary: Create a new API token
-      description: 'Create a new token to authenticate against the API with (the actual API token is only returned when calling this endpoint)
-
-        '
+      description: Create a new token to authenticate against the API with (the actual API token is only returned when calling this endpoint)
       operationId: newToken
       tags:
-      - tokens
+      - Tokens
       security:
       - token: []
       requestBody:
@@ -113,7 +109,7 @@ paths:
       summary: Delete an API token
       operationId: deleteToken
       tags:
-      - tokens
+      - Tokens
       security:
       - token: []
       responses:

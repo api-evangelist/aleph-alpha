@@ -9,13 +9,13 @@ info:
 servers:
 - url: https://api.pharia.example.com/v1/os
 tags:
-- name: cluster
+- name: Cluster
 paths:
   /cluster/gpus:
     get:
       description: Retrieve the available GPU resources for the cluster
       tags:
-      - cluster
+      - Cluster
       summary: Get available GPU resources
       parameters:
       - description: Sort GPUs ascending (asc) or descending (desc). Ascending is the default.
@@ -55,11 +55,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dtos.ProblemDetail500'
+      operationId: getClusterGpus
+      x-operation-id-source: derived
   /cluster/nodes:
     get:
       description: Retrieve all cluster nodes information
       tags:
-      - cluster
+      - Cluster
       summary: List all cluster nodes
       parameters:
       - name: limit
@@ -99,11 +101,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dtos.ProblemDetail500'
+      operationId: getClusterNodes
+      x-operation-id-source: derived
   /cluster/nodes/taints:
     get:
       description: Retrieve the taints of a cluster node
       tags:
-      - cluster
+      - Cluster
       summary: Get node taints
       parameters:
       - description: Filter nodes with GPU
@@ -143,11 +147,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dtos.ProblemDetail500'
+      operationId: getClusterNodesTaints
+      x-operation-id-source: derived
   /cluster/nodes/{nodeName}:
     get:
       description: Retrieve a cluster node by its name
       tags:
-      - cluster
+      - Cluster
       summary: Get node by name
       parameters:
       - description: Node name
@@ -187,24 +193,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/dtos.ProblemDetail500'
+      operationId: getClusterNodesByNodeName
+      x-operation-id-source: derived
 components:
   schemas:
-    dtos.Cpu:
-      type: object
-      required:
-      - allocatable
-      - capacity
-      - unit
-      properties:
-        allocatable:
-          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
-          type: number
-        capacity:
-          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
-          type: number
-        unit:
-          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
-          type: string
     dtos.ProblemDetail403:
       type: object
       properties:
@@ -262,45 +254,91 @@ components:
             $ref: '#/components/schemas/dtos.Gpu'
         memory:
           $ref: '#/components/schemas/dtos.Memory'
-    dtos.ProblemDetail500:
+    dtos.NodePaginatedResult:
+      type: object
+      required:
+      - data
+      - limit
+      - page
+      - total
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/dtos.NodeOutput'
+        limit:
+          type: integer
+        page:
+          type: integer
+        total:
+          type: integer
+    dtos.NodeStatus:
+      type: object
+      required:
+      - diskHealthy
+      - memoryHealthy
+      - ready
+      properties:
+        diskHealthy:
+          description: Disk is healthy
+          type: boolean
+        memoryHealthy:
+          description: Memory is healthy
+          type: boolean
+        ready:
+          description: Node is ready for usage
+          type: boolean
+    dtos.ProblemDetail404:
       type: object
       properties:
         code:
           type: integer
-          example: 1
+          example: 2
         detail:
           type: string
-          example: Internal Server Error
+          example: Not Found
         instance:
           type: string
-          example: https://api.example.com/docs/errors/500
+          example: https://api.example.com/docs/errors/404
         status:
           type: integer
-          example: 500
+          example: 404
         title:
           type: string
-          example: Internal Server Error
+          example: Not Found
         type:
           type: string
-    dtos.ProblemDetail401:
+    dtos.Memory:
       type: object
+      required:
+      - allocatable
+      - capacity
+      - unit
       properties:
-        code:
-          type: integer
-          example: 1100
-        detail:
+        allocatable:
+          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
+          type: number
+        capacity:
+          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
+          type: number
+        unit:
+          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
           type: string
-          example: Unauthorized
-        instance:
-          type: string
-          example: https://api.example.com/docs/errors/401
-        status:
-          type: integer
-          example: 401
-        title:
-          type: string
-          example: Unauthorized
-        type:
+    dtos.Cpu:
+      type: object
+      required:
+      - allocatable
+      - capacity
+      - unit
+      properties:
+        allocatable:
+          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
+          type: number
+        capacity:
+          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
+          type: number
+        unit:
+          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
           type: string
     dtos.Gpu:
       type: object
@@ -347,76 +385,46 @@ components:
         unit:
           description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
           type: string
-    dtos.Memory:
-      type: object
-      required:
-      - allocatable
-      - capacity
-      - unit
-      properties:
-        allocatable:
-          description: Amount of resources available to be allocated by Pods (e.g., 6 for CPU, 4026616 for Memory)
-          type: number
-        capacity:
-          description: Total amount of resources available in Node (e.g., 12 for CPU, 8026616 for Memory)
-          type: number
-        unit:
-          description: Unit of capacity and allocatable (e.g., "cores" for CPU, "Ki" for Memory)
-          type: string
-    dtos.ProblemDetail404:
+    dtos.ProblemDetail401:
       type: object
       properties:
         code:
           type: integer
-          example: 2
+          example: 1100
         detail:
           type: string
-          example: Not Found
+          example: Unauthorized
         instance:
           type: string
-          example: https://api.example.com/docs/errors/404
+          example: https://api.example.com/docs/errors/401
         status:
           type: integer
-          example: 404
+          example: 401
         title:
           type: string
-          example: Not Found
+          example: Unauthorized
         type:
           type: string
-    dtos.NodeStatus:
+    dtos.ProblemDetail500:
       type: object
-      required:
-      - diskHealthy
-      - memoryHealthy
-      - ready
       properties:
-        diskHealthy:
-          description: Disk is healthy
-          type: boolean
-        memoryHealthy:
-          description: Memory is healthy
-          type: boolean
-        ready:
-          description: Node is ready for usage
-          type: boolean
-    dtos.NodePaginatedResult:
-      type: object
-      required:
-      - data
-      - limit
-      - page
-      - total
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/dtos.NodeOutput'
-        limit:
+        code:
           type: integer
-        page:
+          example: 1
+        detail:
+          type: string
+          example: Internal Server Error
+        instance:
+          type: string
+          example: https://api.example.com/docs/errors/500
+        status:
           type: integer
-        total:
-          type: integer
+          example: 500
+        title:
+          type: string
+          example: Internal Server Error
+        type:
+          type: string
     dtos.NodeOutput:
       type: object
       required:
