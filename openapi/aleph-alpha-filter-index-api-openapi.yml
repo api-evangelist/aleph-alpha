@@ -182,39 +182,59 @@ paths:
       operationId: deleteCollectionsByNamespaceByCollectionIndexesByIndexFilterIndexesByFilterIndex
       x-operation-id-source: derived
 components:
-  schemas:
-    metadataFilterField:
-      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
-
-        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
-
-        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
-
-        The maximum length of the field name is 1000 characters.
-
-        '
-      type: string
-      maxLength: '1000'
-      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
-    filterIndexConfig:
-      description: 'Represents the configuration parameters for a filter index. Filter indexes can be used to filter search
-
-        results based on the metadata field defined in the configuration.
-
-        '
-      type: object
-      properties:
-        field_name:
-          $ref: '#/components/schemas/metadataFilterField'
-        field_type:
-          type: string
-          enum:
-          - string
-          - integer
-          - float
-          - boolean
-          - date_time
   parameters:
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
+    filterIndex:
+      description: 'Filter index for an index assigned to a collection. Filter indexes are used to allow
+
+        filtering of results when searching on documents in a collection. An filter index name
+
+        can only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        than 50 characters.
+
+        '
+      name: filterIndex
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: creation-date
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
 
@@ -235,58 +255,38 @@ components:
         pattern: ^[a-zA-Z0-9\-\.]+$
       required: 'true'
       example: wikipedia-de
-    index:
-      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+  schemas:
+    filterIndexConfig:
+      description: 'Represents the configuration parameters for a filter index. Filter indexes can be used to filter search
 
-        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
-
-        be longer than 50 characters.
-
-        '
-      name: index
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: asymmetric
-    namespace:
-      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
-
-        for collections. A namespace typically corresponds to an organisation.
-
-        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
-
-        cannot be longer than 100 characters.
+        results based on the metadata field defined in the configuration.
 
         '
-      name: namespace
-      in: path
-      schema:
-        type: string
-        maxLength: '100'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: aleph-alpha
-    filterIndex:
-      description: 'Filter index for an index assigned to a collection. Filter indexes are used to allow
+      type: object
+      properties:
+        field_name:
+          $ref: '#/components/schemas/metadataFilterField'
+        field_type:
+          type: string
+          enum:
+          - string
+          - integer
+          - float
+          - boolean
+          - date_time
+    metadataFilterField:
+      description: 'The metadata field on which to filter search results. Field names must only contain alphanumeric characters,
 
-        filtering of results when searching on documents in a collection. An filter index name
+        dashes and underscores. Nested fields can be specified using dot notation (e.g. ''a.b'').
 
-        can only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
 
-        than 50 characters.
+        The maximum length of the field name is 1000 characters.
 
         '
-      name: filterIndex
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: creation-date
+      type: string
+      maxLength: '1000'
+      pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
   securitySchemes:
     token:
       type: http

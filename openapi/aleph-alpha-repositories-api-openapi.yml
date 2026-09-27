@@ -247,25 +247,6 @@ components:
           - boolean
           - 'null'
           description: Indicates if the repository data is mutable (modifiable) after creation. When schema is provided, it is not supported for mutable repositories.
-    RepositoryListWithPagination:
-      type: object
-      properties:
-        repositories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Repository'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of repositories displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of repositories available.
-          example: 1
     Repository:
       type: object
       properties:
@@ -322,6 +303,25 @@ components:
         message:
           type: string
           example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    RepositoryListWithPagination:
+      type: object
+      properties:
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Repository'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of repositories displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of repositories available.
+          example: 1
   securitySchemes:
     Bearer:
       type: http

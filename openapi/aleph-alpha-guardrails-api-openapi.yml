@@ -127,15 +127,30 @@ components:
         not populate it (the category is sufficient); ``provider_error`` and
 
         richer providers may set it to surface why a step failed or matched.'
-    ErrorResponse:
+    ErrorDetail:
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
+        message:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Type
+        param:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
       type: object
       required:
-      - error
-      title: ErrorResponse
-      description: Structured error envelope.
+      - message
+      - type
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
     CheckRequest:
       properties:
         application_id:
@@ -177,30 +192,15 @@ components:
       - violations
       title: CheckResponse
       description: Result of a guardrail check.
-    ErrorDetail:
+    ErrorResponse:
       properties:
-        message:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Type
-        param:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Param
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
       type: object
       required:
-      - message
-      - type
-      title: ErrorDetail
-      description: Structured error detail matching the OpenAI Responses API convention.
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
   securitySchemes:
     HTTPBearer:
       type: http

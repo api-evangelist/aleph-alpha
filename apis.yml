@@ -50,7 +50,7 @@ modified: '2026-08-02'
 tags:
 - Company
 - Artificial Intelligence
-- Machine-Learning
+- Machine Learning
 - LLM
 - Generative AI
 - Sovereign AI
@@ -79,6 +79,7 @@ tags_raw:
 - Germany
 - Enterprise Software
 - Government
+- Machine-Learning
 apis:
 - aid: aleph-alpha:aleph-alpha-api-description-api
   name: Aleph Alpha API description API

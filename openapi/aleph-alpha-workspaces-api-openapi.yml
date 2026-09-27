@@ -81,6 +81,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     User:
       properties:
         type:
@@ -132,6 +141,35 @@ components:
       - email
       - profile
       title: User
+    PagedResponse_Union_User__Group__:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/User'
+            - $ref: '#/components/schemas/Group'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[Union[User, Group]]
     ValidationError:
       properties:
         loc:
@@ -158,15 +196,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     UserProfile:
       properties:
         given_name:
@@ -226,35 +255,6 @@ components:
       - created_at
       - updated_at
       title: Group
-    PagedResponse_Union_User__Group__:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/User'
-            - $ref: '#/components/schemas/Group'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[Union[User, Group]]
   securitySchemes:
     BearerAuth:
       type: http

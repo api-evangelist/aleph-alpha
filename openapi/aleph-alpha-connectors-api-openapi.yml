@@ -328,53 +328,6 @@ components:
           - incremental_sync_completed
           - deleted
           - full_sync_partially_completed
-    ConnectorList:
-      type: object
-      properties:
-        connectors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Connector'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of connectors displayed per page.
-          example: 1
-    FileListWithPagination:
-      type: object
-      properties:
-        files:
-          type: array
-          description: A list of files retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/File'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of files displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of files available in the data platform.
-          example: 1
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    ConnectorUpdate:
-      type: object
-      properties:
-        connector_mode:
-          type: boolean
-          description: Whether the connector is enabled for sync.
     TransformationRun:
       type: object
       properties:
@@ -508,6 +461,26 @@ components:
               - 'null'
               description: The version of the file to be processed by the transformation.
               example: null
+    FileListWithPagination:
+      type: object
+      properties:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
     RunListWithPagination:
       type: object
       properties:
@@ -527,6 +500,76 @@ components:
         total:
           type: integer
           description: The total number of runs created.
+          example: 1
+    File:
+      type: object
+      properties:
+        fileID:
+          type: string
+          description: Unique identifier for the file.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        stageID:
+          type: string
+          description: Unique identifier of the stage where the file is stored.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        mediaType:
+          type: string
+          description: The media type of the file, indicating its format (e.g., application/octet-stream).
+          example: application/octet-stream
+          enum:
+          - application/octet-stream
+        name:
+          type: string
+          description: The name of the file, used for easy identification.
+          example: dataset_name
+        size:
+          type: integer
+          description: The size of the file in bytes.
+          example: 1024
+        version:
+          type: string
+          description: The current version of the file, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the file in ISO 8601 format.
+          example: '2024-07-04'
+        createdAt:
+          type: string
+          description: The timestamp when the file was initially created in ISO 8601 format.
+          example: '2024-07-04'
+        expireAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
+          example: '2024-07-04'
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    ConnectorUpdate:
+      type: object
+      properties:
+        connector_mode:
+          type: boolean
+          description: Whether the connector is enabled for sync.
+    ConnectorList:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of connectors displayed per page.
           example: 1
     ConnectorCreate:
       type: object
@@ -647,49 +690,6 @@ components:
           - DATA0009
           - DATA0010
           example: DATA0001
-    File:
-      type: object
-      properties:
-        fileID:
-          type: string
-          description: Unique identifier for the file.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        stageID:
-          type: string
-          description: Unique identifier of the stage where the file is stored.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        mediaType:
-          type: string
-          description: The media type of the file, indicating its format (e.g., application/octet-stream).
-          example: application/octet-stream
-          enum:
-          - application/octet-stream
-        name:
-          type: string
-          description: The name of the file, used for easy identification.
-          example: dataset_name
-        size:
-          type: integer
-          description: The size of the file in bytes.
-          example: 1024
-        version:
-          type: string
-          description: The current version of the file, allowing version tracking.
-          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
-        updatedAt:
-          type: string
-          description: The timestamp of the last update made to the file in ISO 8601 format.
-          example: '2024-07-04'
-        createdAt:
-          type: string
-          description: The timestamp when the file was initially created in ISO 8601 format.
-          example: '2024-07-04'
-        expireAt:
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
-          example: '2024-07-04'
   securitySchemes:
     Bearer:
       type: http
