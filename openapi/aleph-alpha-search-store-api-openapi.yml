@@ -196,15 +196,62 @@ components:
           - image
         bytes:
           type: string
-    ModalityText:
+    transitioningResult:
+      description: 'The result for a transitioning documents query.
+
+        '
       type: object
       properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
+        currently_embedding:
+          type: integer
+        currently_archiving:
+          type: integer
+      required:
+      - currently_embedding
+      - currently_archiving
+    SearchStoreProperties:
+      type: object
+      required:
+      - chunkingStrategy
+      - embeddingStrategy
+      properties:
+        chunkingStrategy:
+          $ref: '#/components/schemas/ChunkingStrategy'
+        embeddingStrategy:
+          type: object
+          required:
+          - type
+          - config
+          properties:
+            type:
+              type: string
+              enum:
+              - semantic
+              - instruct
+              - vllm
+            config:
+              oneOf:
+              - $ref: '#/components/schemas/EmbeddingStrategyVllm'
+              - $ref: '#/components/schemas/EmbeddingStrategySemantic'
+              - $ref: '#/components/schemas/EmbeddingStrategyInstruct'
+        metadata:
+          $ref: '#/components/schemas/SearchStoreMetadata'
+        metadataSchema:
+          $ref: '#/components/schemas/MetadataSchema'
+    SearchStoreUpdate:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/SearchStoreMetadata'
+    SearchStoreInformation:
+      allOf:
+      - type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/SearchStoreID'
+          createdAt:
+            $ref: '#/components/schemas/CreatedAt'
+      - $ref: '#/components/schemas/SearchStoreProperties'
     SearchStoreQueryResult:
       description: 'The result for semantic document search.
 
@@ -237,30 +284,93 @@ components:
                 sub-query.
 
                 '
-    SearchStoreMetadata:
+    ModalityImage:
       type: object
-      description: 'Metadata attached to a search store.
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        image:
+          type: string
+          example: <base64-encoded-string>
+    MetadataSchema:
+      type: object
+      additionalProperties:
+        type: string
+        enum:
+        - string
+        - integer
+        - float
+        - boolean
+        - date_time
+      description: 'A dictionary of metadata fields on which to filter search results and their types.
 
 
-        This can be useful for storing additional structured information about
-
-        the search store itself or the contained files.
+        Field names must only contain alphanumeric characters, dashes and underscores.
 
 
-        Keys are strings with a maximum length of 64 characters. Values are either
+        Nested fields can be specified using dot notation (e.g. ''a.b'').
 
-        strings with a maximum length of 512 characters, numbers or boolean values.
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+
+        The maximum length of the field name is 1000 characters.
 
         '
-      additionalProperties:
-        anyOf:
-        - type: string
-          maxLength: 512
-        - type: boolean
-        - type: number
       example:
-        category: research-papers
-        approved: true
+        approved: boolean
+    DocumentSection:
+      description: 'A section of a document.
+
+        '
+      type: object
+      properties:
+        documentName:
+          type: string
+          description: The name of the document this chunk belongs to.
+          example: document-123
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Text'
+            - $ref: '#/components/schemas/Image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+    ModalityText:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    CreatedAt:
+      type: string
+      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+      example: '2025-12-31'
+    SearchStoreID:
+      type: string
+      pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+      example: 568cf1c0-5251-4210-8b61-d1eff43011b2
+    ChunkingStrategy:
+      type: object
+      properties:
+        maxChunkSizeTokens:
+          type: integer
+          minimum: 1
+        chunkOverlapTokens:
+          type: integer
     EmbeddingStrategySemantic:
       type: object
       properties:
@@ -300,128 +410,6 @@ components:
       required:
       - model
       - instruction
-    Text:
-      description: Represent a single piece of continuous text. The modality must always be 'text'.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
-    SearchStoreID:
-      type: string
-      pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
-      example: 568cf1c0-5251-4210-8b61-d1eff43011b2
-    transitioningResult:
-      description: 'The result for a transitioning documents query.
-
-        '
-      type: object
-      properties:
-        currently_embedding:
-          type: integer
-        currently_archiving:
-          type: integer
-      required:
-      - currently_embedding
-      - currently_archiving
-    TextCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
-
-        '
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        item:
-          type: integer
-          description: Index of the item in the document
-        position:
-          type: integer
-          description: The character position the cursor can be found at within the string.
-    SearchStoreProperties:
-      type: object
-      required:
-      - chunkingStrategy
-      - embeddingStrategy
-      properties:
-        chunkingStrategy:
-          $ref: '#/components/schemas/ChunkingStrategy'
-        embeddingStrategy:
-          type: object
-          required:
-          - type
-          - config
-          properties:
-            type:
-              type: string
-              enum:
-              - semantic
-              - instruct
-              - vllm
-            config:
-              oneOf:
-              - $ref: '#/components/schemas/EmbeddingStrategyVllm'
-              - $ref: '#/components/schemas/EmbeddingStrategySemantic'
-              - $ref: '#/components/schemas/EmbeddingStrategyInstruct'
-        metadata:
-          $ref: '#/components/schemas/SearchStoreMetadata'
-        metadataSchema:
-          $ref: '#/components/schemas/MetadataSchema'
-    CreatedAt:
-      type: string
-      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
-      example: '2025-12-31'
-    SearchStoreInformationPage:
-      type: object
-      properties:
-        page:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 1
-        total:
-          type: number
-          example: 10
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchStoreInformation'
-    MetadataSchema:
-      type: object
-      additionalProperties:
-        type: string
-        enum:
-        - string
-        - integer
-        - float
-        - boolean
-        - date_time
-      description: 'A dictionary of metadata fields on which to filter search results and their types.
-
-
-        Field names must only contain alphanumeric characters, dashes and underscores.
-
-
-        Nested fields can be specified using dot notation (e.g. ''a.b'').
-
-
-        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
-
-
-        The maximum length of the field name is 1000 characters.
-
-        '
-      example:
-        approved: boolean
-    SearchStoreCreate:
-      allOf:
-      - $ref: '#/components/schemas/SearchStoreProperties'
     SearchStoreSearchRequest:
       type: object
       properties:
@@ -439,6 +427,48 @@ components:
           type: integer
         maxResults:
           type: integer
+    Text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    ImageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    SearchStoreInformationPage:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchStoreInformation'
+    SearchStoreCreate:
+      allOf:
+      - $ref: '#/components/schemas/SearchStoreProperties'
     EmbeddingStrategyVllm:
       type: object
       properties:
@@ -493,31 +523,7 @@ components:
           document: 'passage: {{text}}'
         encodingFormat: float
         dimensions: 1024
-    SearchStoreInformation:
-      allOf:
-      - type: object
-        properties:
-          id:
-            $ref: '#/components/schemas/SearchStoreID'
-          createdAt:
-            $ref: '#/components/schemas/CreatedAt'
-      - $ref: '#/components/schemas/SearchStoreProperties'
-    ModalityImage:
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        image:
-          type: string
-          example: <base64-encoded-string>
-    SearchStoreUpdate:
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/SearchStoreMetadata'
-    ImageCursor:
+    TextCursor:
       description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
 
         '
@@ -526,54 +532,38 @@ components:
         modality:
           type: string
           enum:
-          - image
+          - text
         item:
           type: integer
           description: Index of the item in the document
-    DocumentSection:
-      description: 'A section of a document.
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+    SearchStoreMetadata:
+      type: object
+      description: 'Metadata attached to a search store.
+
+
+        This can be useful for storing additional structured information about
+
+        the search store itself or the contained files.
+
+
+        Keys are strings with a maximum length of 64 characters. Values are either
+
+        strings with a maximum length of 512 characters, numbers or boolean values.
 
         '
-      type: object
-      properties:
-        documentName:
-          type: string
-          description: The name of the document this chunk belongs to.
-          example: document-123
-        section:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/Text'
-            - $ref: '#/components/schemas/Image'
-        start:
-          oneOf:
-          - $ref: '#/components/schemas/TextCursor'
-          - $ref: '#/components/schemas/ImageCursor'
-        end:
-          description: Inclusive cursor. The section of the document includes whatever is at this position
-          oneOf:
-          - $ref: '#/components/schemas/TextCursor'
-          - $ref: '#/components/schemas/ImageCursor'
-    ChunkingStrategy:
-      type: object
-      properties:
-        maxChunkSizeTokens:
-          type: integer
-          minimum: 1
-        chunkOverlapTokens:
-          type: integer
+      additionalProperties:
+        anyOf:
+        - type: string
+          maxLength: 512
+        - type: boolean
+        - type: number
+      example:
+        category: research-papers
+        approved: true
   parameters:
-    PageNumber:
-      in: query
-      name: page
-      description: The page number to retrieve.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-        example: 1
     PageSize:
       in: query
       name: size
@@ -593,6 +583,16 @@ components:
       schema:
         type: string
       example: 7d78f98d-1c47-4c0b-8101-41b43b45e2cb
+    PageNumber:
+      in: query
+      name: page
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
   securitySchemes:
     Bearer:
       type: http

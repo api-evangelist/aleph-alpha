@@ -409,112 +409,46 @@ paths:
           description: Bad Gateway
 components:
   schemas:
-    ErrorDetail:
-      properties:
-        message:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Type
-        param:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Param
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
-      type: object
-      required:
-      - message
-      - type
-      title: ErrorDetail
-      description: Structured error detail matching the OpenAI Responses API convention.
-    InputItemMcpApprovalResponses:
+    InputItemMcpListTools:
       properties:
         type:
           type: string
-          const: mcp_approval_response
+          const: mcp_list_tools
           title: Type
         id:
           type: string
-          pattern: ^mcpa_[a-zA-Z0-9_-]+$
+          pattern: ^mcpl_[a-zA-Z0-9_-]+$
           title: Id
-          description: Unique identifier for the approval response
-        approval_request_id:
-          type: string
-          title: Approval Request Id
-        approve:
-          type: boolean
-          title: Approve
-        name:
+          description: Unique identifier for the MCP list tools
+        server_label:
           anyOf:
           - type: string
           - type: 'null'
-          title: Name
-        arguments:
+          title: Server Label
+        tools:
           anyOf:
-          - type: string
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
           - type: 'null'
-          title: Arguments
+          title: Tools
       type: object
       required:
       - type
       - id
-      - approval_request_id
-      - approve
-      title: InputItemMcpApprovalResponses
-    Function:
+      title: InputItemMcpListTools
+    InputItemReasoning:
       properties:
         type:
           type: string
-          const: function
+          const: reasoning
           title: Type
-          description: Tool type, must be 'function'
-        name:
-          type: string
-          title: Name
-          description: Name of the function tool
-        parameters:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Parameters
-        strict:
-          type: boolean
-          title: Strict
-          default: true
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      required:
-      - type
-      - name
-      title: Function
-      description: Function tool definition (client-executed).
-    InputItemFunctionCall:
-      properties:
-        type:
-          type: string
-          const: function_call
-          title: Type
-        call_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Call Id
         id:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
+          pattern: ^rs_[a-zA-Z0-9_-]+$
           title: Id
+          description: Unique identifier for reasoning messages
         status:
           anyOf:
           - type: string
@@ -524,131 +458,34 @@ components:
             - incomplete
           - type: 'null'
           title: Status
-        name:
+        role:
           anyOf:
           - type: string
           - type: 'null'
-          title: Name
-        arguments:
+          title: Role
+        content:
           anyOf:
           - type: string
+          - items:
+              $ref: '#/components/schemas/ContentItem'
+            type: array
+          - items:
+              type: string
+            type: array
           - type: 'null'
-          title: Arguments
-      type: object
-      required:
-      - type
-      title: InputItemFunctionCall
-      description: Input item for function call (history reconstruction).
-    PromptConfig:
-      properties:
-        id:
-          type: string
-          title: Id
-        variables:
-          additionalProperties:
-            type: string
-          type: object
-          title: Variables
-      type: object
-      required:
-      - id
-      title: PromptConfig
-      description: Prompt template configuration.
-    InputItemMcpApprovalRequest:
-      properties:
-        type:
-          type: string
-          const: mcp_approval_request
-          title: Type
-        id:
-          type: string
-          pattern: ^mcpr_[a-zA-Z0-9_-]+$
-          title: Id
-          description: Unique identifier for the approval request
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        server_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Label
-        arguments:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Arguments
-      type: object
-      required:
-      - type
-      - id
-      title: InputItemMcpApprovalRequest
-    InputItemMcpCall:
-      properties:
-        type:
-          type: string
-          const: mcp_call
-          title: Type
-        id:
-          type: string
-          pattern: ^mcp_[a-zA-Z0-9_-]+$
-          title: Id
-          description: Unique identifier for the MCP call
-        name:
-          type: string
-          title: Name
-        arguments:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Arguments
-        server_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Label
-        output:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output
-      type: object
-      required:
-      - type
-      - id
-      - name
-      title: InputItemMcpCall
-    ContentItem:
-      properties:
-        type:
-          type: string
-          title: Type
-          default: output_text
-        text:
-          type: string
-          title: Text
-        annotations:
+          title: Content
+        summary:
           items:
-            additionalProperties: true
-            type: object
+            $ref: '#/components/schemas/ReasoningSummaryItem'
           type: array
-          title: Annotations
+          title: Summary
+          description: Reasoning summary items returned by the downstream service.
       type: object
       required:
-      - text
-      title: ContentItem
-      description: 'Content item in response output.
-
-
-        Per Open Responses spec:
-
-        - type: output_text, refusal, etc.
-
-        - text: the actual content
-
-        - annotations: optional metadata'
+      - type
+      - id
+      title: InputItemReasoning
+      description: Input item for reasoning type messages.
     InputItemMessage:
       properties:
         type:
@@ -708,39 +545,30 @@ components:
         - id: unique identifier (optional on input, populated on output)
 
         - status: in_progress, completed, incomplete (optional on input)'
-    UsageInfo:
+    ErrorDetail:
       properties:
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-      type: object
-      required:
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      title: UsageInfo
-      description: Token usage information.
-    ReasoningSummaryItem:
-      properties:
+        message:
+          type: string
+          title: Message
         type:
           type: string
-          const: summary_text
           title: Type
-        text:
-          type: string
-          title: Text
+        param:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
       type: object
       required:
+      - message
       - type
-      - text
-      title: ReasoningSummaryItem
-      description: Summary item for reasoning output messages.
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
     InputItemFunctionCallOutput:
       properties:
         type:
@@ -776,6 +604,50 @@ components:
       - type
       title: InputItemFunctionCallOutput
       description: Input item for function call (history reconstruction).
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
+    InputItemMcpCall:
+      properties:
+        type:
+          type: string
+          const: mcp_call
+          title: Type
+        id:
+          type: string
+          pattern: ^mcp_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the MCP call
+        name:
+          type: string
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+      type: object
+      required:
+      - type
+      - id
+      - name
+      title: InputItemMcpCall
     ResponseResponse:
       properties:
         id:
@@ -1009,54 +881,141 @@ components:
         All fields marked as required in the OpenResponses spec are present here.
 
         Nullable fields default to None and are serialized as null (not omitted).'
-    InputItemReasoning:
+    UsageInfo:
+      properties:
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+      type: object
+      required:
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      title: UsageInfo
+      description: Token usage information.
+    Function:
       properties:
         type:
           type: string
-          const: reasoning
+          const: function
+          title: Type
+          description: Tool type, must be 'function'
+        name:
+          type: string
+          title: Name
+          description: Name of the function tool
+        parameters:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Parameters
+        strict:
+          type: boolean
+          title: Strict
+          default: true
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      required:
+      - type
+      - name
+      title: Function
+      description: Function tool definition (client-executed).
+    PromptConfig:
+      properties:
+        id:
+          type: string
+          title: Id
+        variables:
+          additionalProperties:
+            type: string
+          type: object
+          title: Variables
+      type: object
+      required:
+      - id
+      title: PromptConfig
+      description: Prompt template configuration.
+    ConversationRef:
+      properties:
+        id:
+          type: string
+          title: Id
+      type: object
+      required:
+      - id
+      title: ConversationRef
+      description: Minimal conversation reference embedded in response objects.
+    ContentItem:
+      properties:
+        type:
+          type: string
+          title: Type
+          default: output_text
+        text:
+          type: string
+          title: Text
+        annotations:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Annotations
+      type: object
+      required:
+      - text
+      title: ContentItem
+      description: 'Content item in response output.
+
+
+        Per Open Responses spec:
+
+        - type: output_text, refusal, etc.
+
+        - text: the actual content
+
+        - annotations: optional metadata'
+    InputItemMcpApprovalRequest:
+      properties:
+        type:
+          type: string
+          const: mcp_approval_request
           title: Type
         id:
           type: string
-          pattern: ^rs_[a-zA-Z0-9_-]+$
+          pattern: ^mcpr_[a-zA-Z0-9_-]+$
           title: Id
-          description: Unique identifier for reasoning messages
-        status:
-          anyOf:
-          - type: string
-            enum:
-            - in_progress
-            - completed
-            - incomplete
-          - type: 'null'
-          title: Status
-        role:
+          description: Unique identifier for the approval request
+        name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Role
-        content:
+          title: Name
+        server_label:
           anyOf:
           - type: string
-          - items:
-              $ref: '#/components/schemas/ContentItem'
-            type: array
-          - items:
-              type: string
-            type: array
           - type: 'null'
-          title: Content
-        summary:
-          items:
-            $ref: '#/components/schemas/ReasoningSummaryItem'
-          type: array
-          title: Summary
-          description: Reasoning summary items returned by the downstream service.
+          title: Server Label
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
       type: object
       required:
       - type
       - id
-      title: InputItemReasoning
-      description: Input item for reasoning type messages.
+      title: InputItemMcpApprovalRequest
     MCPTool:
       properties:
         type:
@@ -1119,6 +1078,61 @@ components:
       - type
       title: MCPTool
       description: MCP hosted tool definition (server-executed).
+    ReasoningSummaryItem:
+      properties:
+        type:
+          type: string
+          const: summary_text
+          title: Type
+        text:
+          type: string
+          title: Text
+      type: object
+      required:
+      - type
+      - text
+      title: ReasoningSummaryItem
+      description: Summary item for reasoning output messages.
+    InputItemFunctionCall:
+      properties:
+        type:
+          type: string
+          const: function_call
+          title: Type
+        call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Call Id
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      title: InputItemFunctionCall
+      description: Input item for function call (history reconstruction).
     ResponseRequest:
       properties:
         model:
@@ -1339,54 +1353,40 @@ components:
 
 
         Supports MCP hosted tools (server-executed).'
-    InputItemMcpListTools:
+    InputItemMcpApprovalResponses:
       properties:
         type:
           type: string
-          const: mcp_list_tools
+          const: mcp_approval_response
           title: Type
         id:
           type: string
-          pattern: ^mcpl_[a-zA-Z0-9_-]+$
+          pattern: ^mcpa_[a-zA-Z0-9_-]+$
           title: Id
-          description: Unique identifier for the MCP list tools
-        server_label:
+          description: Unique identifier for the approval response
+        approval_request_id:
+          type: string
+          title: Approval Request Id
+        approve:
+          type: boolean
+          title: Approve
+        name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Server Label
-        tools:
+          title: Name
+        arguments:
           anyOf:
-          - additionalProperties: true
-            type: object
-          - items: {}
-            type: array
+          - type: string
           - type: 'null'
-          title: Tools
+          title: Arguments
       type: object
       required:
       - type
       - id
-      title: InputItemMcpListTools
-    ConversationRef:
-      properties:
-        id:
-          type: string
-          title: Id
-      type: object
-      required:
-      - id
-      title: ConversationRef
-      description: Minimal conversation reference embedded in response objects.
-    ErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-      type: object
-      required:
-      - error
-      title: ErrorResponse
-      description: Structured error envelope.
+      - approval_request_id
+      - approve
+      title: InputItemMcpApprovalResponses
   securitySchemes:
     HTTPBearer:
       type: http

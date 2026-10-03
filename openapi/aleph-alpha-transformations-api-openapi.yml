@@ -598,71 +598,6 @@ components:
               - 'null'
               description: The version of the file to be processed by the transformation.
               example: null
-    TransformationListWithPagination:
-      type: object
-      properties:
-        transformations:
-          description: A list of transformations retrieved for the current page.
-          type: array
-          items:
-            $ref: '#/components/schemas/Transformation'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of transformations displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of transformations available.
-          example: 1
-    RunListWithPagination:
-      type: object
-      properties:
-        runs:
-          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/TransformationRun'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of runs displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of runs created.
-          example: 1
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    TransformationParameter:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the transformation parameter.
-          example: parser
-        allowedValues:
-          type: array
-          description: Allowed values for the parameters
-          items:
-            type: string
-            example: pypdf
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the parameter.
-          example: Parameter to select the parser
     Transformation:
       type: object
       properties:
@@ -711,6 +646,114 @@ components:
           description: A list of the parameters that can be passed on every request to trigger an execution of the transformation
           items:
             $ref: '#/components/schemas/TransformationParameter'
+    TransformationParameter:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the transformation parameter.
+          example: parser
+        allowedValues:
+          type: array
+          description: Allowed values for the parameters
+          items:
+            type: string
+            example: pypdf
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the parameter.
+          example: Parameter to select the parser
+    RunListWithPagination:
+      type: object
+      properties:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationRun'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of runs displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of runs created.
+          example: 1
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    TransformationListWithPagination:
+      type: object
+      properties:
+        transformations:
+          description: A list of transformations retrieved for the current page.
+          type: array
+          items:
+            $ref: '#/components/schemas/Transformation'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of transformations displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of transformations available.
+          example: 1
+    RunError:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error that occurred during the transformation run.
+          enum:
+          - UnexpectedError
+          - ExtractorError
+          - FileTooLargeError
+          - TooManyPagesError
+          - TransformerError
+          - LoaderError
+          - ConnectorError
+          - ConfigurationError
+          - InternalServiceError
+          - ServiceNotAvailableError
+          - TooManyTokensError
+          example: ExtractorError
+        message:
+          type: string
+          description: A human-readable description of the error that occurred.
+          example: Error message
+        httpCode:
+          type: integer
+          description: The HTTP status code associated with the error.
+          example: 422
+        dataCode:
+          type: string
+          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
+          enum:
+          - DATA0000
+          - DATA0001
+          - DATA0002
+          - DATA0003
+          - DATA0004
+          - DATA0005
+          - DATA0006
+          - DATA0007
+          - DATA0008
+          - DATA0009
+          - DATA0010
+          example: DATA0001
     TransformationRunCreate:
       type: object
       properties:
@@ -784,49 +827,6 @@ components:
               type: string
               description: Parameter
               example: value
-    RunError:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error that occurred during the transformation run.
-          enum:
-          - UnexpectedError
-          - ExtractorError
-          - FileTooLargeError
-          - TooManyPagesError
-          - TransformerError
-          - LoaderError
-          - ConnectorError
-          - ConfigurationError
-          - InternalServiceError
-          - ServiceNotAvailableError
-          - TooManyTokensError
-          example: ExtractorError
-        message:
-          type: string
-          description: A human-readable description of the error that occurred.
-          example: Error message
-        httpCode:
-          type: integer
-          description: The HTTP status code associated with the error.
-          example: 422
-        dataCode:
-          type: string
-          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
-          enum:
-          - DATA0000
-          - DATA0001
-          - DATA0002
-          - DATA0003
-          - DATA0004
-          - DATA0005
-          - DATA0006
-          - DATA0007
-          - DATA0008
-          - DATA0009
-          - DATA0010
-          example: DATA0001
   securitySchemes:
     Bearer:
       type: http

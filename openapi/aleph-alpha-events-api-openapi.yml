@@ -186,102 +186,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    PagedResponse_EventResponse_:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/EventResponse-Output'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[EventResponse]
-    EventResponse-Input:
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The timestamp when this resource was created in UTC.
-        created_by:
-          type: string
-          title: Created By
-          description: The ID of the user that created the resource.
-          examples:
-          - '12345'
-        id:
-          type: string
-          format: uuid
-          title: Id
-          description: The unique id of the event.
-          examples:
-          - 123e4567-e89b-12d3-a456-426614174000
-        name:
-          type: string
-          title: Name
-          description: The name of the event.
-          examples:
-          - Event
-        body:
-          anyOf:
-          - $ref: '#/components/schemas/JsonSerializable-Input'
-          - type: 'null'
-          description: The body of the event.
-          examples:
-          - key: value
-        message:
-          type: string
-          title: Message
-          description: The message of the event.
-          examples:
-          - Message
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-          description: The timestamp when this event was created.
-          examples:
-          - '2024-01-01 12:34:56.123456+00:00'
-      type: object
-      required:
-      - created_at
-      - created_by
-      - id
-      - name
-      - body
-      - message
-      - timestamp
-      title: EventResponse
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
     EventResponse-Output:
       properties:
         created_at:
@@ -338,6 +242,88 @@ components:
       - message
       - timestamp
       title: EventResponse
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    EventResponse-Input:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: The unique id of the event.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          title: Name
+          description: The name of the event.
+          examples:
+          - Event
+        body:
+          anyOf:
+          - $ref: '#/components/schemas/JsonSerializable-Input'
+          - type: 'null'
+          description: The body of the event.
+          examples:
+          - key: value
+        message:
+          type: string
+          title: Message
+          description: The message of the event.
+          examples:
+          - Message
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: The timestamp when this event was created.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+      type: object
+      required:
+      - created_at
+      - created_by
+      - id
+      - name
+      - body
+      - message
+      - timestamp
+      title: EventResponse
+    JsonSerializable-Input:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Input'
+        type: object
+      - type: 'null'
     ValidationError:
       properties:
         loc:
@@ -364,19 +350,33 @@ components:
       - msg
       - type
       title: ValidationError
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
+    PagedResponse_EventResponse_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/EventResponse-Output'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[EventResponse]
   securitySchemes:
     BearerAuth:
       type: http

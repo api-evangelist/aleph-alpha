@@ -150,44 +150,12 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    TraceEvent:
-      properties:
-        id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Id
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        body:
-          anyOf:
-          - $ref: '#/components/schemas/JsonSerializable-Output'
-          - type: 'null'
-        message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Message
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        created_at:
-          type: string
-          title: Created At
-        created_by:
-          type: string
-          title: Created By
-      type: object
-      required:
-      - timestamp
-      - created_at
-      - created_by
-      title: TraceEvent
-      description: Studio Event model.
+    SpanType:
+      type: string
+      enum:
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
     HTTPValidationError:
       properties:
         detail:
@@ -197,32 +165,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    SpanType:
-      type: string
-      enum:
-      - SPAN
-      - TASK_SPAN
-      title: SpanType
-    SpanStatus:
-      type: string
-      enum:
-      - ERROR
-      - OK
-      - ACTIVE
-      title: SpanStatus
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
     TraceSummary:
       properties:
         trace_id:
@@ -252,6 +194,47 @@ components:
       - duration_ms
       title: TraceSummary
       description: Summary information for a trace.
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    TraceListResponse:
+      properties:
+        traces:
+          items:
+            $ref: '#/components/schemas/TraceSummary'
+          type: array
+          title: Traces
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+      type: object
+      required:
+      - traces
+      - total
+      - page
+      - size
+      - num_pages
+      title: TraceListResponse
+      description: Response model for trace listing.
     TraceSpan:
       properties:
         id:
@@ -309,34 +292,6 @@ components:
       - created_by
       title: TraceSpan
       description: Studio Span model.
-    TraceListResponse:
-      properties:
-        traces:
-          items:
-            $ref: '#/components/schemas/TraceSummary'
-          type: array
-          title: Traces
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-      type: object
-      required:
-      - traces
-      - total
-      - page
-      - size
-      - num_pages
-      title: TraceListResponse
-      description: Response model for trace listing.
     TraceResponseV2:
       properties:
         id:
@@ -353,6 +308,59 @@ components:
       - spans
       title: TraceResponseV2
       description: Studio Trace model for detailed view.
+    TraceEvent:
+      properties:
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        body:
+          anyOf:
+          - $ref: '#/components/schemas/JsonSerializable-Output'
+          - type: 'null'
+        message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Message
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        created_at:
+          type: string
+          title: Created At
+        created_by:
+          type: string
+          title: Created By
+      type: object
+      required:
+      - timestamp
+      - created_at
+      - created_by
+      title: TraceEvent
+      description: Studio Event model.
+    TraceStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: TraceStatus
+      description: Status of a trace.
+    SpanStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: SpanStatus
     ValidationError:
       properties:
         loc:
@@ -379,14 +387,6 @@ components:
       - msg
       - type
       title: ValidationError
-    TraceStatus:
-      type: string
-      enum:
-      - ERROR
-      - OK
-      - ACTIVE
-      title: TraceStatus
-      description: Status of a trace.
   securitySchemes:
     BearerAuth:
       type: http

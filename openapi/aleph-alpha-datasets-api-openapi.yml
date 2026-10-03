@@ -502,47 +502,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    HandleFailedResponseDataset:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    DatasetMetadataUpdate:
-      type: object
-      properties:
-        labels:
-          type: array
-          description: List of labels associated with the dataset for categorization or tagging.
-          example:
-          - label
-          items:
-            type: string
-        metadata:
-          type: string
-          description: Additional metadata for the dataset in a key-value format.
-          example:
-            key: value
-        license:
-          type: string
-          description: The license of the uploaded dataset defines the permissions, restrictions, and obligations governing its use.
-          example:
-            id: OAL-1.0
-            url: https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf
-        name:
-          type: string
-          description: The name assigned to the dataset for easy identification.
-          example: dataset_name
-        totalDatapoints:
-          type: integer
-          description: The total number of data points within the dataset.
-          example: 0
     DatasetListResponse:
       type: object
       properties:
@@ -613,6 +572,47 @@ components:
           description: The timestamp when the dataset was initially created in ISO 8601 format.
           example: '2024-07-04'
     HandleFailedResponseDownload:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    DatasetMetadataUpdate:
+      type: object
+      properties:
+        labels:
+          type: array
+          description: List of labels associated with the dataset for categorization or tagging.
+          example:
+          - label
+          items:
+            type: string
+        metadata:
+          type: string
+          description: Additional metadata for the dataset in a key-value format.
+          example:
+            key: value
+        license:
+          type: string
+          description: The license of the uploaded dataset defines the permissions, restrictions, and obligations governing its use.
+          example:
+            id: OAL-1.0
+            url: https://github.com/Aleph-Alpha/.github/blob/main/OAL-1.0.pdf
+        name:
+          type: string
+          description: The name assigned to the dataset for easy identification.
+          example: dataset_name
+        totalDatapoints:
+          type: integer
+          description: The total number of data points within the dataset.
+          example: 0
+    HandleFailedResponseDataset:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    HandleFailedResponse:
       type: object
       properties:
         message:

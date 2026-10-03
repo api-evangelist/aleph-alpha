@@ -86,6 +86,64 @@ paths:
       - HTTPBearer: []
 components:
   schemas:
+    CheckRequest:
+      properties:
+        application_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Application Id
+        check_type:
+          type: string
+          title: Check Type
+        input:
+          type: string
+          title: Input
+        context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Context
+      type: object
+      required:
+      - check_type
+      - input
+      title: CheckRequest
+      description: Inbound request to check content against guardrails.
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
+    ErrorDetail:
+      properties:
+        message:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Type
+        param:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param
+        code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Code
+      type: object
+      required:
+      - message
+      - type
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
     Violation:
       properties:
         category:
@@ -127,55 +185,6 @@ components:
         not populate it (the category is sufficient); ``provider_error`` and
 
         richer providers may set it to surface why a step failed or matched.'
-    ErrorDetail:
-      properties:
-        message:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Type
-        param:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Param
-        code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Code
-      type: object
-      required:
-      - message
-      - type
-      title: ErrorDetail
-      description: Structured error detail matching the OpenAI Responses API convention.
-    CheckRequest:
-      properties:
-        application_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Application Id
-        check_type:
-          type: string
-          title: Check Type
-        input:
-          type: string
-          title: Input
-        context:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Context
-      type: object
-      required:
-      - check_type
-      - input
-      title: CheckRequest
-      description: Inbound request to check content against guardrails.
     CheckResponse:
       properties:
         safe:
@@ -192,15 +201,6 @@ components:
       - violations
       title: CheckResponse
       description: Result of a guardrail check.
-    ErrorResponse:
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-      type: object
-      required:
-      - error
-      title: ErrorResponse
-      description: Structured error envelope.
   securitySchemes:
     HTTPBearer:
       type: http

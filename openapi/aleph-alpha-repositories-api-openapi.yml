@@ -208,45 +208,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    RepositoryCreate:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name assigned to the repository for easy identification.
-          example: My Repository
-        mediaType:
-          type: string
-          description: The media type of the data stored in the repository
-          example: application/x-ndjson
-          enum:
-          - application/x-ndjson
-          - application/json
-          - application/jsonlines
-          - jsonlines
-        modality:
-          type: string
-          description: The format or type of data, indicating the way it is structured, such as text.
-          example: text
-          enum:
-          - text
-        schema:
-          type:
-          - object
-          - 'null'
-          description: Defines the [AVRO](https://avro.apache.org/docs/1.11.1/specification/) schema for data points within the dataset of a repository, specifying field types and default values. This schema is optional and can be null. When a schema is provided, all datasets in the repository must conform to the schema when being created.
-          example:
-            type: record
-            name: MySchema
-            fields:
-            - name: model
-              type: string
-              default: pharia
-        mutable:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if the repository data is mutable (modifiable) after creation. When schema is provided, it is not supported for mutable repositories.
     Repository:
       type: object
       properties:
@@ -297,12 +258,45 @@ components:
           type: string
           description: The timestamp for when the repository was last updated in ISO 8601 format.
           example: '2021-08-25T15:04:05Z'
-    HandleFailedResponse:
+    RepositoryCreate:
       type: object
       properties:
-        message:
+        name:
           type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+          description: The name assigned to the repository for easy identification.
+          example: My Repository
+        mediaType:
+          type: string
+          description: The media type of the data stored in the repository
+          example: application/x-ndjson
+          enum:
+          - application/x-ndjson
+          - application/json
+          - application/jsonlines
+          - jsonlines
+        modality:
+          type: string
+          description: The format or type of data, indicating the way it is structured, such as text.
+          example: text
+          enum:
+          - text
+        schema:
+          type:
+          - object
+          - 'null'
+          description: Defines the [AVRO](https://avro.apache.org/docs/1.11.1/specification/) schema for data points within the dataset of a repository, specifying field types and default values. This schema is optional and can be null. When a schema is provided, all datasets in the repository must conform to the schema when being created.
+          example:
+            type: record
+            name: MySchema
+            fields:
+            - name: model
+              type: string
+              default: pharia
+        mutable:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the repository data is mutable (modifiable) after creation. When schema is provided, it is not supported for mutable repositories.
     RepositoryListWithPagination:
       type: object
       properties:
@@ -322,6 +316,12 @@ components:
           type: integer
           description: The total number of repositories available.
           example: 1
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
   securitySchemes:
     Bearer:
       type: http

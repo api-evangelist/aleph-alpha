@@ -230,15 +230,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PostBenchmarkRequest:
       properties:
         dataset_id:
@@ -285,6 +276,103 @@ components:
       - evaluation_logic
       - aggregation_logic
       title: PostBenchmarkRequest
+    EvaluationLogic:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: The code of the evaluation logic.
+          examples:
+          - logic
+        input_schema:
+          additionalProperties: true
+          type: object
+          title: Input Schema
+          description: The input schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        output_schema:
+          additionalProperties: true
+          type: object
+          title: Output Schema
+          description: The output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        expected_output_schema:
+          additionalProperties: true
+          type: object
+          title: Expected Output Schema
+          description: The expected output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        evaluation_schema:
+          additionalProperties: true
+          type: object
+          title: Evaluation Schema
+          description: The evaluation schema of the evaluation logic, as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+      type: object
+      required:
+      - logic
+      - input_schema
+      - output_schema
+      - expected_output_schema
+      - evaluation_schema
+      title: EvaluationLogic
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PatchBenchmarkRequest:
       properties:
         name:
@@ -314,6 +402,56 @@ components:
           description: The metadata of the benchmark.
       type: object
       title: PatchBenchmarkRequest
+    AggregationLogic:
+      properties:
+        logic:
+          type: string
+          title: Logic
+          description: The code of the aggregation logic.
+          examples:
+          - logic
+        evaluation_schema:
+          additionalProperties: true
+          type: object
+          title: Evaluation Schema
+          description: The evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+        aggregation_schema:
+          additionalProperties: true
+          type: object
+          title: Aggregation Schema
+          description: The aggregated evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
+          examples:
+          - properties:
+              name:
+                title: Name
+                type: string
+              email:
+                title: Email
+                type: string
+            required:
+            - name
+            - email
+            title: Test
+            type: object
+      type: object
+      required:
+      - logic
+      - evaluation_schema
+      - aggregation_schema
+      title: AggregationLogic
     GetBenchmarkResponse:
       properties:
         updated_at:
@@ -421,187 +559,6 @@ components:
       - aggregation_logic
       - last_executed_at
       title: GetBenchmarkResponse
-    EvaluationLogic:
-      properties:
-        logic:
-          type: string
-          title: Logic
-          description: The code of the evaluation logic.
-          examples:
-          - logic
-        input_schema:
-          additionalProperties: true
-          type: object
-          title: Input Schema
-          description: The input schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-        output_schema:
-          additionalProperties: true
-          type: object
-          title: Output Schema
-          description: The output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-        expected_output_schema:
-          additionalProperties: true
-          type: object
-          title: Expected Output Schema
-          description: The expected output schema of the evaluation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-        evaluation_schema:
-          additionalProperties: true
-          type: object
-          title: Evaluation Schema
-          description: The evaluation schema of the evaluation logic, as a JSON schema https://json-schema.org/draft/2020-12/release-notes.
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-      type: object
-      required:
-      - logic
-      - input_schema
-      - output_schema
-      - expected_output_schema
-      - evaluation_schema
-      title: EvaluationLogic
-    BenchmarkSortableColumns:
-      type: string
-      enum:
-      - name
-      - description
-      - last_executed_at
-      - created_at
-      - updated_at
-      - created_by
-      - updated_by
-      title: BenchmarkSortableColumns
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
-    AggregationLogic:
-      properties:
-        logic:
-          type: string
-          title: Logic
-          description: The code of the aggregation logic.
-          examples:
-          - logic
-        evaluation_schema:
-          additionalProperties: true
-          type: object
-          title: Evaluation Schema
-          description: The evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-        aggregation_schema:
-          additionalProperties: true
-          type: object
-          title: Aggregation Schema
-          description: The aggregated evaluation schema of the aggregation logic as a JSON schema https://json-schema.org/draft/2020-12/release-notes..
-          examples:
-          - properties:
-              name:
-                title: Name
-                type: string
-              email:
-                title: Email
-                type: string
-            required:
-            - name
-            - email
-            title: Test
-            type: object
-      type: object
-      required:
-      - logic
-      - evaluation_schema
-      - aggregation_schema
-      title: AggregationLogic
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     PagedResponse_GetBenchmarkResponse_:
       properties:
         total:
@@ -629,6 +586,49 @@ components:
       - size
       - num_pages
       title: PagedResponse[GetBenchmarkResponse]
+    BenchmarkSortableColumns:
+      type: string
+      enum:
+      - name
+      - description
+      - last_executed_at
+      - created_at
+      - updated_at
+      - created_by
+      - updated_by
+      title: BenchmarkSortableColumns
+    SortDirection:
+      type: string
+      enum:
+      - asc
+      - desc
+      title: SortDirection
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

@@ -255,24 +255,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    BenchmarkLineageSortableColumns:
-      type: string
-      enum:
-      - run_latency
-      - run_tokens
-      - created_by
-      - created_at
-      title: BenchmarkLineageSortableColumns
-      description: Sortable columns for benchmark lineage queries.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PagedResponse_BenchmarkLineageResponse_:
       properties:
         total:
@@ -300,6 +282,24 @@ components:
       - size
       - num_pages
       title: PagedResponse[BenchmarkLineageResponse]
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    BenchmarkLineageSortableColumns:
+      type: string
+      enum:
+      - run_latency
+      - run_tokens
+      - created_by
+      - created_at
+      title: BenchmarkLineageSortableColumns
+      description: Sortable columns for benchmark lineage queries.
     SortDirection:
       type: string
       enum:
