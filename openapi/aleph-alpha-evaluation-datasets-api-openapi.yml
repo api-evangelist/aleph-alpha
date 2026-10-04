@@ -303,6 +303,72 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    PagedResponse_Dataset_:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/Dataset'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[Dataset]
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Body_create_dataset_projects__project_id__evaluation_datasets_post:
       properties:
         source_data:
@@ -335,33 +401,20 @@ components:
       - name
       - total_datapoints
       title: Body_create_dataset_projects__project_id__evaluation_datasets_post
-    PagedResponse_Dataset_:
+    AssociatedBenchmark:
       properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/Dataset'
-          type: array
-          title: Items
-          default: []
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
       type: object
       required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[Dataset]
+      - id
+      - name
+      title: AssociatedBenchmark
+      description: Benchmark associated with a dataset.
     HTTPValidationError:
       properties:
         detail:
@@ -429,19 +482,6 @@ components:
       - updatedAt
       title: Dataset
       description: Studio API model for datasets.
-    JsonSerializable-Output:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
-        type: object
-      - type: 'null'
     Example_JsonSerializable_JsonSerializable_:
       properties:
         input:
@@ -463,6 +503,33 @@ components:
       - input
       - expected_output
       title: Example[JsonSerializable, JsonSerializable]
+    PagedResponse_Example_JsonSerializable__JsonSerializable__:
+      properties:
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        size:
+          type: integer
+          title: Size
+        num_pages:
+          type: integer
+          title: Num Pages
+        items:
+          items:
+            $ref: '#/components/schemas/Example_JsonSerializable_JsonSerializable_'
+          type: array
+          title: Items
+          default: []
+      type: object
+      required:
+      - total
+      - page
+      - size
+      - num_pages
+      title: PagedResponse[Example[JsonSerializable, JsonSerializable]]
     DownloadLinkResponse:
       properties:
         downloadId:
@@ -527,73 +594,6 @@ components:
       type: object
       title: DatasetMetadataUpdate
       description: Model for updating dataset metadata.
-    PagedResponse_Example_JsonSerializable__JsonSerializable__:
-      properties:
-        total:
-          type: integer
-          title: Total
-        page:
-          type: integer
-          title: Page
-        size:
-          type: integer
-          title: Size
-        num_pages:
-          type: integer
-          title: Num Pages
-        items:
-          items:
-            $ref: '#/components/schemas/Example_JsonSerializable_JsonSerializable_'
-          type: array
-          title: Items
-          default: []
-      type: object
-      required:
-      - total
-      - page
-      - size
-      - num_pages
-      title: PagedResponse[Example[JsonSerializable, JsonSerializable]]
-    AssociatedBenchmark:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: AssociatedBenchmark
-      description: Benchmark associated with a dataset.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

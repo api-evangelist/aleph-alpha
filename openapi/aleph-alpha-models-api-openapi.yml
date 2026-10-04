@@ -263,6 +263,42 @@ paths:
           default: https://api.pharia.example.com
 components:
   schemas:
+    ModelCompleteRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        prompt:
+          type: string
+          title: Prompt
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - prompt
+      title: ModelCompleteRequest
+      description: Request model for model completion.
+    ChatCompletionRequest:
+      properties:
+        messages:
+          items:
+            $ref: '#/components/schemas/Message'
+          type: array
+          title: Messages
+        model:
+          type: string
+          title: Model
+        stream:
+          type: boolean
+          title: Stream
+          default: true
+      additionalProperties: true
+      type: object
+      required:
+      - messages
+      - model
+      title: ChatCompletionRequest
+      description: Request model for chat completion.
     ModelCardResponse:
       properties:
         name:
@@ -400,21 +436,6 @@ components:
       - content
       title: Message
       description: Chat message model.
-    ModelCompleteRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        prompt:
-          type: string
-          title: Prompt
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - prompt
-      title: ModelCompleteRequest
-      description: Request model for model completion.
     ValidationError:
       properties:
         loc:
@@ -441,27 +462,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ChatCompletionRequest:
-      properties:
-        messages:
-          items:
-            $ref: '#/components/schemas/Message'
-          type: array
-          title: Messages
-        model:
-          type: string
-          title: Model
-        stream:
-          type: boolean
-          title: Stream
-          default: true
-      additionalProperties: true
-      type: object
-      required:
-      - messages
-      - model
-      title: ChatCompletionRequest
-      description: Request model for chat completion.
   securitySchemes:
     token:
       type: http

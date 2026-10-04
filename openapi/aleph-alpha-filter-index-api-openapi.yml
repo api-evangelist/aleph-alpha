@@ -183,22 +183,6 @@ paths:
       x-operation-id-source: derived
 components:
   parameters:
-    index:
-      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
-
-        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
-
-        be longer than 50 characters.
-
-        '
-      name: index
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: asymmetric
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
 
@@ -219,6 +203,22 @@ components:
         pattern: ^[a-zA-Z0-9\-\.]+$
       required: 'true'
       example: wikipedia-de
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
     filterIndex:
       description: 'Filter index for an index assigned to a collection. Filter indexes are used to allow
 

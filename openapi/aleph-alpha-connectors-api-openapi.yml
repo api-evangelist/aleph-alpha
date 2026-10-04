@@ -229,6 +229,129 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    FileListWithPagination:
+      type: object
+      properties:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
+    ConnectorUpdate:
+      type: object
+      properties:
+        connector_mode:
+          type: boolean
+          description: Whether the connector is enabled for sync.
+    ConnectorCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the connector.
+        connectionId:
+          type: string
+          description: The connection ID of the connector from OAuth-Gateway-API.
+        name:
+          type: string
+          description: The name of the connector. It is not unique.
+        connector_mode:
+          type: string
+          enum:
+          - non-synced
+          - synced
+          description: Whether the connector is enabled for sync.
+        stage_id:
+          type: string
+          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
+        source:
+          type: object
+          description: The data source configuration.
+          properties:
+            type:
+              type: string
+              enum:
+              - sharepoint
+              - google_drive
+            configuration:
+              type: object
+              properties:
+                driveId:
+                  type: string
+                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
+                folderId:
+                  type: string
+                  description: The folder Id from Sharepoint or Google Drive.
+                fileIds:
+                  type: array
+                  items:
+                    type: string
+                  description: List of file Ids from from Shareporint or Google Drive.
+        destination:
+          type: object
+          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
+          properties:
+            type:
+              type: string
+              enum:
+              - DataPlatform:SearchStore
+              - DocumentIndex:SearchStore
+              - DocumentIndex:Collection
+              example: DataPlatform:SearchStore
+            searchStore:
+              type: string
+              description: Id of the search store
+            namespace:
+              type: string
+              description: Namesapce, requried when destination.type is DocumentIndex:Collection
+            collection:
+              type: string
+              description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
+        transformationContext:
+          type:
+          - object
+          - 'null'
+          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
+        createdAt:
+          type: string
+          description: The date and time the connector was created.
+    ConnectorList:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of connectors displayed per page.
+          example: 1
     TransformationRun:
       type: object
       properties:
@@ -362,171 +485,6 @@ components:
               - 'null'
               description: The version of the file to be processed by the transformation.
               example: null
-    ConnectorCreate:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the connector.
-        connectionId:
-          type: string
-          description: The connection ID of the connector from OAuth-Gateway-API.
-        name:
-          type: string
-          description: The name of the connector. It is not unique.
-        connector_mode:
-          type: string
-          enum:
-          - non-synced
-          - synced
-          description: Whether the connector is enabled for sync.
-        stage_id:
-          type: string
-          description: The ID of the stage to be used to store the files. the triggers set in this stage will be used when files are fetched from.
-        source:
-          type: object
-          description: The data source configuration.
-          properties:
-            type:
-              type: string
-              enum:
-              - sharepoint
-              - google_drive
-            configuration:
-              type: object
-              properties:
-                driveId:
-                  type: string
-                  description: The unique Microsoft Graph drive ID. No required with Google Drive.
-                folderId:
-                  type: string
-                  description: The folder Id from Sharepoint or Google Drive.
-                fileIds:
-                  type: array
-                  items:
-                    type: string
-                  description: List of file Ids from from Shareporint or Google Drive.
-        destination:
-          type: object
-          description: The destination of the files ingested via the connector. It is not required if the stage was created with search store. Keep in mind the every time the parameter is provided, it will be validated againt the configuration of the satge.
-          properties:
-            type:
-              type: string
-              enum:
-              - DataPlatform:SearchStore
-              - DocumentIndex:SearchStore
-              - DocumentIndex:Collection
-              example: DataPlatform:SearchStore
-            searchStore:
-              type: string
-              description: Id of the search store
-            namespace:
-              type: string
-              description: Namesapce, requried when destination.type is DocumentIndex:Collection
-            collection:
-              type: string
-              description: Name of rhe collection,  requried when destination.type is DocumentIndex:Collection
-        transformationContext:
-          type:
-          - object
-          - 'null'
-          description: The transformation context for the connector. Pass to the transformation applied to the files. In this case the first transformation set in the triggers of the stage.
-          properties:
-            parameters:
-              type: object
-              description: The parameters to be used for the transformation run.
-        createdAt:
-          type: string
-          description: The date and time the connector was created.
-    ConnectorUpdate:
-      type: object
-      properties:
-        connector_mode:
-          type: boolean
-          description: Whether the connector is enabled for sync.
-    RunListWithPagination:
-      type: object
-      properties:
-        runs:
-          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/TransformationRun'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of runs displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of runs created.
-          example: 1
-    File:
-      type: object
-      properties:
-        fileID:
-          type: string
-          description: Unique identifier for the file.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        stageID:
-          type: string
-          description: Unique identifier of the stage where the file is stored.
-          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
-        mediaType:
-          type: string
-          description: The media type of the file, indicating its format (e.g., application/octet-stream).
-          example: application/octet-stream
-          enum:
-          - application/octet-stream
-        name:
-          type: string
-          description: The name of the file, used for easy identification.
-          example: dataset_name
-        size:
-          type: integer
-          description: The size of the file in bytes.
-          example: 1024
-        version:
-          type: string
-          description: The current version of the file, allowing version tracking.
-          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
-        updatedAt:
-          type: string
-          description: The timestamp of the last update made to the file in ISO 8601 format.
-          example: '2024-07-04'
-        createdAt:
-          type: string
-          description: The timestamp when the file was initially created in ISO 8601 format.
-          example: '2024-07-04'
-        expireAt:
-          type:
-          - string
-          - 'null'
-          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
-          example: '2024-07-04'
-    FileListWithPagination:
-      type: object
-      properties:
-        files:
-          type: array
-          description: A list of files retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/File'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of files displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of files available in the data platform.
-          example: 1
     Connector:
       type: object
       properties:
@@ -626,6 +584,69 @@ components:
           - incremental_sync_completed
           - deleted
           - full_sync_partially_completed
+    File:
+      type: object
+      properties:
+        fileID:
+          type: string
+          description: Unique identifier for the file.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        stageID:
+          type: string
+          description: Unique identifier of the stage where the file is stored.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        mediaType:
+          type: string
+          description: The media type of the file, indicating its format (e.g., application/octet-stream).
+          example: application/octet-stream
+          enum:
+          - application/octet-stream
+        name:
+          type: string
+          description: The name of the file, used for easy identification.
+          example: dataset_name
+        size:
+          type: integer
+          description: The size of the file in bytes.
+          example: 1024
+        version:
+          type: string
+          description: The current version of the file, allowing version tracking.
+          example: 55a62ef9-dd9c-4e5d-9b93-0361bae4db37
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the file in ISO 8601 format.
+          example: '2024-07-04'
+        createdAt:
+          type: string
+          description: The timestamp when the file was initially created in ISO 8601 format.
+          example: '2024-07-04'
+        expireAt:
+          type:
+          - string
+          - 'null'
+          description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
+          example: '2024-07-04'
+    RunListWithPagination:
+      type: object
+      properties:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransformationRun'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of runs displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of runs created.
+          example: 1
     RunError:
       type: object
       properties:
@@ -669,27 +690,6 @@ components:
           - DATA0009
           - DATA0010
           example: DATA0001
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    ConnectorList:
-      type: object
-      properties:
-        connectors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Connector'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of connectors displayed per page.
-          example: 1
   securitySchemes:
     Bearer:
       type: http

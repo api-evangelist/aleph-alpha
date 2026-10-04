@@ -132,12 +132,19 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SpanType:
-      type: string
-      enum:
-      - SPAN
-      - TASK_SPAN
-      title: SpanType
+    JsonSerializable-Output:
+      anyOf:
+      - type: integer
+      - type: number
+      - type: string
+      - type: boolean
+      - items:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: array
+      - additionalProperties:
+          $ref: '#/components/schemas/JsonSerializable-Output'
+        type: object
+      - type: 'null'
     PagedResponse_SpanResponse_:
       properties:
         total:
@@ -165,6 +172,13 @@ components:
       - size
       - num_pages
       title: PagedResponse[SpanResponse]
+    SpanStatus:
+      type: string
+      enum:
+      - ERROR
+      - OK
+      - ACTIVE
+      title: SpanStatus
     HTTPValidationError:
       properties:
         detail:
@@ -174,99 +188,17 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    SpanResponse-Output:
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The timestamp when this resource was created in UTC.
-        created_by:
-          type: string
-          title: Created By
-          description: The ID of the user that created the resource.
-          examples:
-          - '12345'
-        id:
-          type: string
-          format: uuid
-          title: Id
-          description: The unique id of the span.
-          examples:
-          - 123e4567-e89b-12d3-a456-426614174000
-        parent_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Parent Id
-          description: The unique id of the parent element of the span.
-          examples:
-          - 123e4567-e89b-12d3-a456-426614174000
-        name:
-          type: string
-          title: Name
-          description: The name of the span.
-          examples:
-          - Span
-        start_time:
-          type: string
-          format: date-time
-          title: Start Time
-          description: The timestamp when this span was started.
-          examples:
-          - '2024-01-01 12:34:56.123456+00:00'
-        end_time:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: End Time
-          description: The timestamp when this span was ended.
-          examples:
-          - '2024-01-01 12:34:56.123456+00:00'
-        status:
-          $ref: '#/components/schemas/SpanStatus'
-          description: The status code of the span.
-          examples:
-          - OK
-        type:
-          $ref: '#/components/schemas/SpanType'
-          description: The type of the span.
-          examples:
-          - TaskSpan
-        attributes:
-          additionalProperties:
-            $ref: '#/components/schemas/JsonSerializable-Output'
-          type: object
-          title: Attributes
-          description: The `Attributes` of the `Span`.
-          examples:
-          - key: value
-      type: object
-      required:
-      - created_at
-      - created_by
-      - id
-      - parent_id
-      - name
-      - start_time
-      - end_time
-      - status
-      - type
-      - attributes
-      title: SpanResponse
-    JsonSerializable-Output:
+    JsonSerializable-Input:
       anyOf:
       - type: integer
       - type: number
       - type: string
       - type: boolean
       - items:
-          $ref: '#/components/schemas/JsonSerializable-Output'
+          $ref: '#/components/schemas/JsonSerializable-Input'
         type: array
       - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Output'
+          $ref: '#/components/schemas/JsonSerializable-Input'
         type: object
       - type: 'null'
     SpanResponse-Input:
@@ -351,26 +283,12 @@ components:
       - type
       - attributes
       title: SpanResponse
-    JsonSerializable-Input:
-      anyOf:
-      - type: integer
-      - type: number
-      - type: string
-      - type: boolean
-      - items:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: array
-      - additionalProperties:
-          $ref: '#/components/schemas/JsonSerializable-Input'
-        type: object
-      - type: 'null'
-    SpanStatus:
+    SpanType:
       type: string
       enum:
-      - ERROR
-      - OK
-      - ACTIVE
-      title: SpanStatus
+      - SPAN
+      - TASK_SPAN
+      title: SpanType
     ValidationError:
       properties:
         loc:
@@ -397,6 +315,88 @@ components:
       - msg
       - type
       title: ValidationError
+    SpanResponse-Output:
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The timestamp when this resource was created in UTC.
+        created_by:
+          type: string
+          title: Created By
+          description: The ID of the user that created the resource.
+          examples:
+          - '12345'
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: The unique id of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Id
+          description: The unique id of the parent element of the span.
+          examples:
+          - 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          title: Name
+          description: The name of the span.
+          examples:
+          - Span
+        start_time:
+          type: string
+          format: date-time
+          title: Start Time
+          description: The timestamp when this span was started.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        end_time:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: End Time
+          description: The timestamp when this span was ended.
+          examples:
+          - '2024-01-01 12:34:56.123456+00:00'
+        status:
+          $ref: '#/components/schemas/SpanStatus'
+          description: The status code of the span.
+          examples:
+          - OK
+        type:
+          $ref: '#/components/schemas/SpanType'
+          description: The type of the span.
+          examples:
+          - TaskSpan
+        attributes:
+          additionalProperties:
+            $ref: '#/components/schemas/JsonSerializable-Output'
+          type: object
+          title: Attributes
+          description: The `Attributes` of the `Span`.
+          examples:
+          - key: value
+      type: object
+      required:
+      - created_at
+      - created_by
+      - id
+      - parent_id
+      - name
+      - start_time
+      - end_time
+      - status
+      - type
+      - attributes
+      title: SpanResponse
   securitySchemes:
     BearerAuth:
       type: http

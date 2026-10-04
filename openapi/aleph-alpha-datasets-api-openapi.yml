@@ -502,6 +502,18 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    HandleFailedResponseDataset:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
     DatasetListResponse:
       type: object
       properties:
@@ -606,18 +618,6 @@ components:
           type: integer
           description: The total number of data points within the dataset.
           example: 0
-    HandleFailedResponseDataset:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
   securitySchemes:
     Bearer:
       type: http

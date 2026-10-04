@@ -285,27 +285,61 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    filter:
-      description: 'A logical combination of filter conditions.
+    imageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
 
         '
       type: object
-      oneOf:
-      - type: object
-        description: Logical conjunction, i.e. forms the predicate "filterCondition1 AND filterCondition2 AND ..."
-        properties:
-          with:
-            $ref: '#/components/schemas/filterConditions'
-      - type: object
-        description: Logical conjunction of negations, i.e. forms the predicate "(NOT filterCondition1) AND (NOT filterCondition2) AND ..."
-        properties:
-          without:
-            $ref: '#/components/schemas/filterConditions'
-      - type: object
-        description: Logical disjunction, i.e. forms the predicate "filterCondition1 OR filterCondition2 OR ..."
-        properties:
-          withOneOf:
-            $ref: '#/components/schemas/filterConditions'
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+      required:
+      - modality
+      - text
+    image:
+      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+      required:
+      - modality
+      - bytes
+    textCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
     queryResult:
       description: 'The result for semantic document search.
 
@@ -338,117 +372,6 @@ components:
                 sub-query.
 
                 '
-    imageCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
-
-        '
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        item:
-          type: integer
-          description: Index of the item in the document
-    textCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
-
-        '
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        item:
-          type: integer
-          description: Index of the item in the document
-        position:
-          type: integer
-          description: The character position the cursor can be found at within the string.
-    documentPath:
-      description: The path to a document. A path uniquely identifies a document among all managed documents.
-      type: object
-      properties:
-        name:
-          description: Name of the document. The name is unique within a collection.
-          type: string
-          maxLength: '512'
-        collection:
-          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
-
-            '
-          type: string
-          maxLength: '100'
-        namespace:
-          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
-
-            for collections. A namespace typically corresponds to an organisation.
-
-            '
-          type: string
-          maxLength: '100'
-    image:
-      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        bytes:
-          type: string
-      required:
-      - modality
-      - bytes
-    searchQueryParameters:
-      description: 'The parameters for finding document sections within a collection based on a semantic search.
-
-        '
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/query'
-        max_results:
-          type: integer
-          description: Maximum number of found documents to return. Default 1.
-        min_score:
-          type: number
-          format: float
-          description: 'Filter out results with a cosine similarity score below this value. Scores range from -1 to 1.
-
-            For searches on hybrid indexes, the Document Index applies the min_score to the semantic results
-
-            before fusion of result sets. As fusion re-scores results, returned scores may exceed this value.
-
-            '
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/filter'
-          description: 'A filter for search results that restricts the results to those document sections that match the filter criteria.
-
-            The individual conditions of this array are AND-combined (i.e. all conditions must match). This can for example be
-
-            used to restrict the returned sections based on their modality (i.e. image or text), or on their metadata.
-
-            '
-      required:
-      - query
-    text:
-      description: Represent a single piece of continuous text. The modality must always be 'text'.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
-      required:
-      - modality
-      - text
     documentSection:
       description: 'A section of a document.
 
@@ -710,23 +633,84 @@ components:
       type: string
       maxLength: '1000'
       pattern: ^([[:alnum:]\-_]+(\[[[:digit:]]{0,5}\])*\.)*[[:alnum:]\-_]+$
-  parameters:
-    index:
-      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+    documentPath:
+      description: The path to a document. A path uniquely identifies a document among all managed documents.
+      type: object
+      properties:
+        name:
+          description: Name of the document. The name is unique within a collection.
+          type: string
+          maxLength: '512'
+        collection:
+          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
 
-        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+            '
+          type: string
+          maxLength: '100'
+        namespace:
+          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
 
-        be longer than 50 characters.
+            for collections. A namespace typically corresponds to an organisation.
+
+            '
+          type: string
+          maxLength: '100'
+    filter:
+      description: 'A logical combination of filter conditions.
 
         '
-      name: index
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: asymmetric
+      type: object
+      oneOf:
+      - type: object
+        description: Logical conjunction, i.e. forms the predicate "filterCondition1 AND filterCondition2 AND ..."
+        properties:
+          with:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical conjunction of negations, i.e. forms the predicate "(NOT filterCondition1) AND (NOT filterCondition2) AND ..."
+        properties:
+          without:
+            $ref: '#/components/schemas/filterConditions'
+      - type: object
+        description: Logical disjunction, i.e. forms the predicate "filterCondition1 OR filterCondition2 OR ..."
+        properties:
+          withOneOf:
+            $ref: '#/components/schemas/filterConditions'
+    searchQueryParameters:
+      description: 'The parameters for finding document sections within a collection based on a semantic search.
+
+        '
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/query'
+        max_results:
+          type: integer
+          description: Maximum number of found documents to return. Default 1.
+        min_score:
+          type: number
+          format: float
+          description: 'Filter out results with a cosine similarity score below this value. Scores range from -1 to 1.
+
+            For searches on hybrid indexes, the Document Index applies the min_score to the semantic results
+
+            before fusion of result sets. As fusion re-scores results, returned scores may exceed this value.
+
+            '
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/filter'
+          description: 'A filter for search results that restricts the results to those document sections that match the filter criteria.
+
+            The individual conditions of this array are AND-combined (i.e. all conditions must match). This can for example be
+
+            used to restrict the returned sections based on their modality (i.e. image or text), or on their metadata.
+
+            '
+      required:
+      - query
+  parameters:
     collection:
       description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
 
@@ -747,6 +731,22 @@ components:
         pattern: ^[a-zA-Z0-9\-\.]+$
       required: 'true'
       example: wikipedia-de
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
     namespace:
       description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
 

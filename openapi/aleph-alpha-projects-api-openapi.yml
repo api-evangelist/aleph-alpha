@@ -317,65 +317,12 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ProjectUser:
-      properties:
-        type:
-          type: string
-          const: user
-          title: Type
-          default: user
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the user
-          examples:
-          - '123456789'
-        user_name:
-          type: string
-          title: User Name
-          description: The username of the user
-          examples:
-          - Chuck Norris
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        email:
-          type: string
-          title: Email
-          description: The email of the user
-          examples:
-          - chuck@norris.com
-        profile:
-          $ref: '#/components/schemas/UserProfile'
-          description: The profile of the user
-        role:
-          $ref: '#/components/schemas/WPUserRole'
-          description: The role of the user in a project
-          examples:
-          - owner
-          - member
-      type: object
-      required:
-      - id
-      - user_name
-      - created_at
-      - updated_at
-      - email
-      - profile
-      - role
-      title: ProjectUser
-      description: User model with project role information.
+    GetProjectUserlistResponse:
+      items:
+        $ref: '#/components/schemas/ProjectUser'
+      type: array
+      title: GetProjectUserlistResponse
+      description: Response model for getting project user list.
     HTTPValidationError:
       properties:
         detail:
@@ -464,6 +411,134 @@ components:
       - created_by
       title: ProjectResponseV2
       description: Response model for project operations (v2) with enhanced user details.
+    UserProfile:
+      properties:
+        given_name:
+          type: string
+          title: Given Name
+          description: The given name of the profile
+          examples:
+          - Chuck
+        last_name:
+          type: string
+          title: Last Name
+          description: The last name of the profile
+          examples:
+          - Norris
+      type: object
+      required:
+      - given_name
+      - last_name
+      title: UserProfile
+    ProjectUser:
+      properties:
+        type:
+          type: string
+          const: user
+          title: Type
+          default: user
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the user
+          examples:
+          - '123456789'
+        user_name:
+          type: string
+          title: User Name
+          description: The username of the user
+          examples:
+          - Chuck Norris
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        email:
+          type: string
+          title: Email
+          description: The email of the user
+          examples:
+          - chuck@norris.com
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+          description: The profile of the user
+        role:
+          $ref: '#/components/schemas/WPUserRole'
+          description: The role of the user in a project
+          examples:
+          - owner
+          - member
+      type: object
+      required:
+      - id
+      - user_name
+      - created_at
+      - updated_at
+      - email
+      - profile
+      - role
+      title: ProjectUser
+      description: User model with project role information.
+    UpsertOrRemoveProjectUser:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the user
+          examples:
+          - '12345'
+        role:
+          type: string
+          enum:
+          - owner
+          - member
+          title: Role
+          description: The role of the user
+          examples:
+          - owner
+          - member
+      type: object
+      required:
+      - id
+      - role
+      title: UpsertOrRemoveProjectUser
+      description: Model for adding or removing users from a project.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     User:
       properties:
         type:
@@ -515,50 +590,6 @@ components:
       - email
       - profile
       title: User
-    UpsertOrRemoveProjectUser:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the user
-          examples:
-          - '12345'
-        role:
-          type: string
-          enum:
-          - owner
-          - member
-          title: Role
-          description: The role of the user
-          examples:
-          - owner
-          - member
-      type: object
-      required:
-      - id
-      - role
-      title: UpsertOrRemoveProjectUser
-      description: Model for adding or removing users from a project.
-    UpdateProjectUserlistRequest:
-      properties:
-        upsert:
-          items:
-            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
-          type: array
-          title: Upsert
-          description: The list of users to be added to the project and their roles
-        remove:
-          items:
-            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
-          type: array
-          title: Remove
-          description: The list of users to be removed from the project
-      type: object
-      required:
-      - upsert
-      - remove
-      title: UpdateProjectUserlistRequest
-      description: Request model for updating project user list.
     PatchProjectRequest:
       properties:
         name:
@@ -588,12 +619,26 @@ components:
       type: object
       title: PatchProjectRequest
       description: Request model for partially updating a project.
-    GetProjectUserlistResponse:
-      items:
-        $ref: '#/components/schemas/ProjectUser'
-      type: array
-      title: GetProjectUserlistResponse
-      description: Response model for getting project user list.
+    UpdateProjectUserlistRequest:
+      properties:
+        upsert:
+          items:
+            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
+          type: array
+          title: Upsert
+          description: The list of users to be added to the project and their roles
+        remove:
+          items:
+            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
+          type: array
+          title: Remove
+          description: The list of users to be removed from the project
+      type: object
+      required:
+      - upsert
+      - remove
+      title: UpdateProjectUserlistRequest
+      description: Request model for updating project user list.
     WPUserRole:
       type: string
       enum:
@@ -622,51 +667,6 @@ components:
       - name
       title: ProjectRequest
       description: Request model for creating or updating a project.
-    UserProfile:
-      properties:
-        given_name:
-          type: string
-          title: Given Name
-          description: The given name of the profile
-          examples:
-          - Chuck
-        last_name:
-          type: string
-          title: Last Name
-          description: The last name of the profile
-          examples:
-          - Norris
-      type: object
-      required:
-      - given_name
-      - last_name
-      title: UserProfile
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     BearerAuth:
       type: http

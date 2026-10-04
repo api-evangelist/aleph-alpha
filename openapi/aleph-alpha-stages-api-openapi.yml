@@ -952,6 +952,355 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    HandleFailedResponseDataset:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    StageListWithPagination:
+      type: object
+      properties:
+        stages:
+          type: array
+          description: A list of stages retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/Stage'
+        page:
+          type: integer
+          description: The current page number in the paginated list of stages.
+          example: 0
+        size:
+          type: integer
+          description: The number of stages displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of stages available in the data platform.
+          example: 1
+    StageCreate:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name to assign to the new stage.
+          example: My Stage
+        triggers:
+          type:
+          - array
+          - 'null'
+          description: List of triggers associated with the stage for automated processing.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the trigger to be applied.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be triggered.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type: string
+                description: The type of connector to be used for the transformation run.
+                example: DocumentIndex:Collection
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: Optional retention policy for the stage. Omit this field or set it to `null` to create an unrestricted stage (no automatic expiration). If provided, `retentionPeriod` must be >= 1.
+          properties:
+            retentionPeriod:
+              type: integer
+              minimum: 1
+              example: 30
+              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
+          required:
+          - retentionPeriod
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: 'Access policy that controls who can access this stage and its files. Set to ''private'' for owner-only access (default), or ''public'' for read-only access by all users. Note: Only admin users can create public stages. Non-admin users will receive a 403 Forbidden error if attempting to create a public stage. Public stages grant read-only access to all users while maintaining write access exclusively for the owner.'
+          enum:
+          - private
+          - public
+          example: private
+        searchStore:
+          type:
+          - object
+          - 'null'
+          description: Optional search store configuration for stages that include search functionality.
+          $ref: '#/components/schemas/SearchStoreContext'
+    RunError:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error that occurred during the transformation run.
+          enum:
+          - UnexpectedError
+          - ExtractorError
+          - FileTooLargeError
+          - TooManyPagesError
+          - TransformerError
+          - LoaderError
+          - ConnectorError
+          - ConfigurationError
+          - InternalServiceError
+          - ServiceNotAvailableError
+          - TooManyTokensError
+          example: ExtractorError
+        message:
+          type: string
+          description: A human-readable description of the error that occurred.
+          example: Error message
+        httpCode:
+          type: integer
+          description: The HTTP status code associated with the error.
+          example: 422
+        dataCode:
+          type: string
+          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
+          enum:
+          - DATA0000
+          - DATA0001
+          - DATA0002
+          - DATA0003
+          - DATA0004
+          - DATA0005
+          - DATA0006
+          - DATA0007
+          - DATA0008
+          - DATA0009
+          - DATA0010
+          example: DATA0001
+    HandleFailedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
+    FileListWithPagination:
+      type: object
+      properties:
+        files:
+          type: array
+          description: A list of files retrieved for the current page.
+          items:
+            $ref: '#/components/schemas/File'
+        page:
+          type: integer
+          description: The current page number in the paginated list.
+          example: 0
+        size:
+          type: integer
+          description: The number of files displayed per page.
+          example: 1
+        total:
+          type: integer
+          description: The total number of files available in the data platform.
+          example: 1
+    Stage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name assigned to the stage for easy identification.
+          example: My Stage
+        stageId:
+          type: string
+          description: Unique identifier for the stage.
+          example: cb26237c-3beb-40f3-8e13-77d862f722b5
+        createdAt:
+          type: string
+          description: The timestamp when the stage was created in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        updatedAt:
+          type: string
+          description: The timestamp of the last update made to the stage in ISO 8601 format.
+          example: '2021-08-25T15:04:05Z'
+        triggers:
+          type:
+          - array
+          - 'null'
+          description: List of triggers associated with the stage for automated processing.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the trigger to be applied.
+                example: PDFTriggerMyStage
+              transformationName:
+                type: string
+                description: The name of the transformation to be triggered.
+                example: PDFToText
+              destinationType:
+                type: string
+                description: The type of destination where the output will be stored.
+                example: DataPlatform:Repository
+              connectorType:
+                type: string
+                description: The type of connector to be used for the transformation run.
+                example: DocumentIndex:Collection
+              repositoryId:
+                type:
+                - string
+                - 'null'
+                format: uuid
+                description: The ID of the repository created for this trigger's output.
+                example: 815f77f9-6a68-4c42-86a4-9bd603395a49
+        retentionPolicy:
+          type:
+          - object
+          - 'null'
+          description: Optional stage-level retention policy. If `null`, the stage retention policy is unrestricted (no automatic expiration).
+          properties:
+            retentionPeriod:
+              type: integer
+              example: 30
+              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
+        filesCount:
+          type: integer
+          description: The number of files currently stored in this stage.
+          example: 42
+        accessPolicy:
+          type:
+          - string
+          - 'null'
+          description: 'The access policy for the stage. This field is only included in the response when the permission service is enabled.
+
+
+            - `private`: Only the owner can read and write (default)
+
+
+            - `public`: All authenticated users can read, only the owner can write. Can only be set by admin users during creation.
+
+
+            - `shared`: The stage has been shared with specific users/groups'
+          enum:
+          - private
+          - public
+          - shared
+          example: private
+        ownerId:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the user who owns this stage. This field is only included in the response when the permission service is enabled.
+        searchStore:
+          type:
+          - object
+          - 'null'
+          description: Minimal search store information returned for GET/LIST operations. Only includes the ID.
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Unique identifier for the search store.
+              example: 41804fe6-34b2-4db6-a4b1-dcd50fa7cf6a
+    SearchStoreContext:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the search store.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        chunkingStrategy:
+          type:
+          - object
+          - 'null'
+          description: Strategy for chunking documents in the search store.
+          properties:
+            maxChunkSizeTokens:
+              type: integer
+              description: Maximum number of tokens per chunk.
+              example: 100
+            chunkOverlapTokens:
+              type: integer
+              description: Number of tokens to overlap between chunks.
+              example: 10
+        embeddingStrategy:
+          type:
+          - object
+          - 'null'
+          description: Strategy for embedding documents in the search store.
+          properties:
+            type:
+              type: string
+              description: Type of embedding strategy.
+              enum:
+              - instruct
+              - semantic
+              example: instruct
+            config:
+              type: object
+              description: Configuration specific to the embedding strategy type. For 'instruct' type, contains model, instruction, and hybridIndex. For 'semantic' type, contains model, hybridIndex, and representation.
+              oneOf:
+              - type: object
+                description: Configuration for instruct embedding strategy
+                properties:
+                  model:
+                    type: string
+                    example: luminous-base
+                  instruction:
+                    type: object
+                    properties:
+                      document:
+                        type: string
+                        example: Represent this document for retrieval
+                      query:
+                        type: string
+                        example: Represent this query for searching
+                  hybridIndex:
+                    type: string
+                    example: bm25
+              - type: object
+                description: Configuration for semantic embedding strategy
+                properties:
+                  model:
+                    type: string
+                    example: luminous-base
+                  hybridIndex:
+                    type: string
+                    example: bm25
+                  representation:
+                    type: string
+                    example: asymmetric
+        metadata:
+          type:
+          - object
+          - 'null'
+          description: Additional metadata for the search store.
+          additionalProperties: true
+          example:
+            description: My Search Store
+            tags:
+            - personalDocument
+            - tags
+        metadataSchema:
+          type:
+          - object
+          - 'null'
+          description: Schema defining additional custom metadata fields and their types for documents in the search store. A default metadata schema is always applied with standard fields (author, createdAt, fileName, fileSize, etc.). You can add new custom fields or specify default fields with their original types. However, you cannot change the type of default fields - attempting to do so will result in a validation error.
+          additionalProperties:
+            type: string
+            enum:
+            - string
+            - integer
+            - float
+            - boolean
+            - date_time
+          example:
+            customField: string
+            customDate: date_time
+            customCount: integer
     TransformationRun:
       type: object
       properties:
@@ -1085,228 +1434,6 @@ components:
               - 'null'
               description: The version of the file to be processed by the transformation.
               example: null
-    StageListWithPagination:
-      type: object
-      properties:
-        stages:
-          type: array
-          description: A list of stages retrieved for the current page.
-          items:
-            $ref: '#/components/schemas/Stage'
-        page:
-          type: integer
-          description: The current page number in the paginated list of stages.
-          example: 0
-        size:
-          type: integer
-          description: The number of stages displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of stages available in the data platform.
-          example: 1
-    StageCreate:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name to assign to the new stage.
-          example: My Stage
-        triggers:
-          type:
-          - array
-          - 'null'
-          description: List of triggers associated with the stage for automated processing.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the trigger to be applied.
-                example: PDFTriggerMyStage
-              transformationName:
-                type: string
-                description: The name of the transformation to be triggered.
-                example: PDFToText
-              destinationType:
-                type: string
-                description: The type of destination where the output will be stored.
-                example: DataPlatform:Repository
-              connectorType:
-                type: string
-                description: The type of connector to be used for the transformation run.
-                example: DocumentIndex:Collection
-        retentionPolicy:
-          type:
-          - object
-          - 'null'
-          description: Optional retention policy for the stage. Omit this field or set it to `null` to create an unrestricted stage (no automatic expiration). If provided, `retentionPeriod` must be >= 1.
-          properties:
-            retentionPeriod:
-              type: integer
-              minimum: 1
-              example: 30
-              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
-          required:
-          - retentionPeriod
-        accessPolicy:
-          type:
-          - string
-          - 'null'
-          description: 'Access policy that controls who can access this stage and its files. Set to ''private'' for owner-only access (default), or ''public'' for read-only access by all users. Note: Only admin users can create public stages. Non-admin users will receive a 403 Forbidden error if attempting to create a public stage. Public stages grant read-only access to all users while maintaining write access exclusively for the owner.'
-          enum:
-          - private
-          - public
-          example: private
-        searchStore:
-          type:
-          - object
-          - 'null'
-          description: Optional search store configuration for stages that include search functionality.
-          $ref: '#/components/schemas/SearchStoreContext'
-    IngestionContext:
-      type: object
-      properties:
-        triggerName:
-          type: string
-          description: The name of a trigger registered to a Stage.
-        connectorContext:
-          type: object
-          properties:
-            collection:
-              type: string
-              description: The Document Index collection to be used for the transformation run.
-            namespace:
-              type: string
-              description: The Document Index namespace to be used for the transformation run.
-        destinationContext:
-          type: object
-          properties:
-            repositoryId:
-              type: string
-              description: The repository ID to be used as the target destination for the transformation run.
-        transformationContext:
-          type: object
-          properties:
-            parameters:
-              type: object
-              description: The parameters to be used for the transformation run.
-    SearchStoreContext:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the search store.
-          example: 123e4567-e89b-12d3-a456-426614174000
-        chunkingStrategy:
-          type:
-          - object
-          - 'null'
-          description: Strategy for chunking documents in the search store.
-          properties:
-            maxChunkSizeTokens:
-              type: integer
-              description: Maximum number of tokens per chunk.
-              example: 100
-            chunkOverlapTokens:
-              type: integer
-              description: Number of tokens to overlap between chunks.
-              example: 10
-        embeddingStrategy:
-          type:
-          - object
-          - 'null'
-          description: Strategy for embedding documents in the search store.
-          properties:
-            type:
-              type: string
-              description: Type of embedding strategy.
-              enum:
-              - instruct
-              - semantic
-              example: instruct
-            config:
-              type: object
-              description: Configuration specific to the embedding strategy type. For 'instruct' type, contains model, instruction, and hybridIndex. For 'semantic' type, contains model, hybridIndex, and representation.
-              oneOf:
-              - type: object
-                description: Configuration for instruct embedding strategy
-                properties:
-                  model:
-                    type: string
-                    example: luminous-base
-                  instruction:
-                    type: object
-                    properties:
-                      document:
-                        type: string
-                        example: Represent this document for retrieval
-                      query:
-                        type: string
-                        example: Represent this query for searching
-                  hybridIndex:
-                    type: string
-                    example: bm25
-              - type: object
-                description: Configuration for semantic embedding strategy
-                properties:
-                  model:
-                    type: string
-                    example: luminous-base
-                  hybridIndex:
-                    type: string
-                    example: bm25
-                  representation:
-                    type: string
-                    example: asymmetric
-        metadata:
-          type:
-          - object
-          - 'null'
-          description: Additional metadata for the search store.
-          additionalProperties: true
-          example:
-            description: My Search Store
-            tags:
-            - personalDocument
-            - tags
-        metadataSchema:
-          type:
-          - object
-          - 'null'
-          description: Schema defining additional custom metadata fields and their types for documents in the search store. A default metadata schema is always applied with standard fields (author, createdAt, fileName, fileSize, etc.). You can add new custom fields or specify default fields with their original types. However, you cannot change the type of default fields - attempting to do so will result in a validation error.
-          additionalProperties:
-            type: string
-            enum:
-            - string
-            - integer
-            - float
-            - boolean
-            - date_time
-          example:
-            customField: string
-            customDate: date_time
-            customCount: integer
-    RunListWithPagination:
-      type: object
-      properties:
-        runs:
-          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
-          type: array
-          items:
-            $ref: '#/components/schemas/TransformationRun'
-        page:
-          type: integer
-          description: The current page number in the paginated list.
-          example: 0
-        size:
-          type: integer
-          description: The number of runs displayed per page.
-          example: 1
-        total:
-          type: integer
-          description: The total number of runs created.
-          example: 1
     StageUpdate:
       type: object
       properties:
@@ -1377,6 +1504,33 @@ components:
           format: uuid
           description: 'Optional search store ID to link to the stage. When provided, it links the stage to the specified search store. Constraints: The stage must not already be linked to any search store, and the search store must not be linked to any other stage (enforces 1-to-1 relationship).'
           example: cb26237c-3beb-40f3-8e13-77d862f722b5
+    IngestionContext:
+      type: object
+      properties:
+        triggerName:
+          type: string
+          description: The name of a trigger registered to a Stage.
+        connectorContext:
+          type: object
+          properties:
+            collection:
+              type: string
+              description: The Document Index collection to be used for the transformation run.
+            namespace:
+              type: string
+              description: The Document Index namespace to be used for the transformation run.
+        destinationContext:
+          type: object
+          properties:
+            repositoryId:
+              type: string
+              description: The repository ID to be used as the target destination for the transformation run.
+        transformationContext:
+          type: object
+          properties:
+            parameters:
+              type: object
+              description: The parameters to be used for the transformation run.
     File:
       type: object
       properties:
@@ -1420,25 +1574,25 @@ components:
           - 'null'
           description: The timestamp when the file will expire in ISO 8601 format, after which it will be deleted.
           example: '2024-07-04'
-    FileListWithPagination:
+    RunListWithPagination:
       type: object
       properties:
-        files:
+        runs:
+          description: A list of runs retrieved for the current page given a transformation id and or other parameters.
           type: array
-          description: A list of files retrieved for the current page.
           items:
-            $ref: '#/components/schemas/File'
+            $ref: '#/components/schemas/TransformationRun'
         page:
           type: integer
           description: The current page number in the paginated list.
           example: 0
         size:
           type: integer
-          description: The number of files displayed per page.
+          description: The number of runs displayed per page.
           example: 1
         total:
           type: integer
-          description: The total number of files available in the data platform.
+          description: The total number of runs created.
           example: 1
     StageCreatedResponse:
       type: object
@@ -1526,154 +1680,6 @@ components:
           - 'null'
           description: The unique identifier of the user who owns this stage. This field is only included in the response when the permission service is enabled.
           example: '316056799180494087'
-    HandleFailedResponseDataset:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
-    RunError:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error that occurred during the transformation run.
-          enum:
-          - UnexpectedError
-          - ExtractorError
-          - FileTooLargeError
-          - TooManyPagesError
-          - TransformerError
-          - LoaderError
-          - ConnectorError
-          - ConfigurationError
-          - InternalServiceError
-          - ServiceNotAvailableError
-          - TooManyTokensError
-          example: ExtractorError
-        message:
-          type: string
-          description: A human-readable description of the error that occurred.
-          example: Error message
-        httpCode:
-          type: integer
-          description: The HTTP status code associated with the error.
-          example: 422
-        dataCode:
-          type: string
-          description: 'A specific error code indicating the nature of the error: - DATA0000: Unexpected error - Code used for runs with legacy errors and errors that don''t fit in the other categories - DATA0001: Extractor error - Something is wrong with the file (e.g., password protected file, parser unable to process) - DATA0002: File too large - File exceeds the size limit - DATA0003: Too many pages - File exceeds the page limit - DATA0004: Transformer error - Internal error in the transformation process - DATA0005: Loader error - Issue with dataset production (potential bug) - DATA0006: Connector error - Issue with sending to document index (e.g., request size limit reached) - DATA0007: Configuration error - Issue with document index configuration (e.g., non-existent namespace, collection) - DATA0008: Internal service error - Potential bug in the code - DATA0009: Service not available - Internal system (data API, document index) is unavailable - DATA0010: Too many tokens to index - The file contains too many tokens to be indexed and will not be processed'
-          enum:
-          - DATA0000
-          - DATA0001
-          - DATA0002
-          - DATA0003
-          - DATA0004
-          - DATA0005
-          - DATA0006
-          - DATA0007
-          - DATA0008
-          - DATA0009
-          - DATA0010
-          example: DATA0001
-    Stage:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name assigned to the stage for easy identification.
-          example: My Stage
-        stageId:
-          type: string
-          description: Unique identifier for the stage.
-          example: cb26237c-3beb-40f3-8e13-77d862f722b5
-        createdAt:
-          type: string
-          description: The timestamp when the stage was created in ISO 8601 format.
-          example: '2021-08-25T15:04:05Z'
-        updatedAt:
-          type: string
-          description: The timestamp of the last update made to the stage in ISO 8601 format.
-          example: '2021-08-25T15:04:05Z'
-        triggers:
-          type:
-          - array
-          - 'null'
-          description: List of triggers associated with the stage for automated processing.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: The name of the trigger to be applied.
-                example: PDFTriggerMyStage
-              transformationName:
-                type: string
-                description: The name of the transformation to be triggered.
-                example: PDFToText
-              destinationType:
-                type: string
-                description: The type of destination where the output will be stored.
-                example: DataPlatform:Repository
-              connectorType:
-                type: string
-                description: The type of connector to be used for the transformation run.
-                example: DocumentIndex:Collection
-              repositoryId:
-                type:
-                - string
-                - 'null'
-                format: uuid
-                description: The ID of the repository created for this trigger's output.
-                example: 815f77f9-6a68-4c42-86a4-9bd603395a49
-        retentionPolicy:
-          type:
-          - object
-          - 'null'
-          description: Optional stage-level retention policy. If `null`, the stage retention policy is unrestricted (no automatic expiration).
-          properties:
-            retentionPeriod:
-              type: integer
-              example: 30
-              description: Number of days in the retention period. Every file uploaded will be deleted after the specified number of days. Each time a file is updated, its retention period is extended, but the retention period for older versions of the file remains unchanged.
-        filesCount:
-          type: integer
-          description: The number of files currently stored in this stage.
-          example: 42
-        accessPolicy:
-          type:
-          - string
-          - 'null'
-          description: 'The access policy for the stage. This field is only included in the response when the permission service is enabled.
-
-
-            - `private`: Only the owner can read and write (default)
-
-
-            - `public`: All authenticated users can read, only the owner can write. Can only be set by admin users during creation.
-
-
-            - `shared`: The stage has been shared with specific users/groups'
-          enum:
-          - private
-          - public
-          - shared
-          example: private
-        ownerId:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the user who owns this stage. This field is only included in the response when the permission service is enabled.
-        searchStore:
-          type:
-          - object
-          - 'null'
-          description: Minimal search store information returned for GET/LIST operations. Only includes the ID.
-          properties:
-            id:
-              type: string
-              format: uuid
-              description: Unique identifier for the search store.
-              example: 41804fe6-34b2-4db6-a4b1-dcd50fa7cf6a
     PresignedURL:
       type: object
       properties:
@@ -1692,12 +1698,6 @@ components:
       required:
       - success
       - presignedUrl
-    HandleFailedResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          example: A descriptive error message based on the specific status code encountered, detailing the issue and possible causes.
   securitySchemes:
     Bearer:
       type: http
