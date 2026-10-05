@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.aleph-alpha.com/COMMON/_attachments/openapi/pharia-inference/v4.7.0.json",
+ "requested_url": "https://docs.aleph-alpha.com/COMMON/_attachments/openapi/pharia-inference/v4.7.0.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 211134,
+ "sha256": "2cc8acbe254f3b5861ff593788058ef4fe315d0a38dd3c93cded5eca7c8fe35d",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
