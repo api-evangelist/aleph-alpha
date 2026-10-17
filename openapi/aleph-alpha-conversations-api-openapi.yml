@@ -630,180 +630,40 @@ paths:
           description: Bad Gateway
 components:
   schemas:
-    Function:
+    ConversationRef:
       properties:
-        type:
-          type: string
-          const: function
-          title: Type
-          description: Tool type, must be 'function'
-        name:
-          type: string
-          title: Name
-          description: Name of the function tool
-        parameters:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Parameters
-        strict:
-          type: boolean
-          title: Strict
-          default: true
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      required:
-      - type
-      - name
-      title: Function
-      description: Function tool definition (client-executed).
-    CreateConversationRequest:
-      properties:
-        metadata:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Metadata
-      type: object
-      title: CreateConversationRequest
-      description: Request body for creating a conversation.
-    InputItemMcpListTools:
-      properties:
-        type:
-          type: string
-          const: mcp_list_tools
-          title: Type
         id:
           type: string
-          pattern: ^mcpl_[a-zA-Z0-9_-]+$
           title: Id
-          description: Unique identifier for the MCP list tools
-        server_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Label
-        tools:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - items: {}
-            type: array
-          - type: 'null'
-          title: Tools
       type: object
       required:
-      - type
       - id
-      title: InputItemMcpListTools
-    InputItemFunctionCallOutput:
+      title: ConversationRef
+      description: Minimal conversation reference embedded in response objects.
+    ErrorDetail:
       properties:
+        message:
+          type: string
+          title: Message
         type:
           type: string
-          const: function_call_output
           title: Type
-        call_id:
+        param:
           anyOf:
           - type: string
           - type: 'null'
-          title: Call Id
-        id:
+          title: Param
+        code:
           anyOf:
           - type: string
           - type: 'null'
-          title: Id
-        status:
-          anyOf:
-          - type: string
-            enum:
-            - in_progress
-            - completed
-            - incomplete
-          - type: 'null'
-          title: Status
-        output:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output
+          title: Code
       type: object
       required:
+      - message
       - type
-      title: InputItemFunctionCallOutput
-      description: Input item for function call (history reconstruction).
-    InputItemReasoning:
-      properties:
-        type:
-          type: string
-          const: reasoning
-          title: Type
-        id:
-          type: string
-          pattern: ^rs_[a-zA-Z0-9_-]+$
-          title: Id
-          description: Unique identifier for reasoning messages
-        status:
-          anyOf:
-          - type: string
-            enum:
-            - in_progress
-            - completed
-            - incomplete
-          - type: 'null'
-          title: Status
-        role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Role
-        content:
-          anyOf:
-          - type: string
-          - items:
-              $ref: '#/components/schemas/ContentItem'
-            type: array
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Content
-        summary:
-          items:
-            $ref: '#/components/schemas/ReasoningSummaryItem'
-          type: array
-          title: Summary
-          description: Reasoning summary items returned by the downstream service.
-      type: object
-      required:
-      - type
-      - id
-      title: InputItemReasoning
-      description: Input item for reasoning type messages.
-    UsageInfo:
-      properties:
-        input_tokens:
-          type: integer
-          title: Input Tokens
-        output_tokens:
-          type: integer
-          title: Output Tokens
-        total_tokens:
-          type: integer
-          title: Total Tokens
-      type: object
-      required:
-      - input_tokens
-      - output_tokens
-      - total_tokens
-      title: UsageInfo
-      description: Token usage information.
+      title: ErrorDetail
+      description: Structured error detail matching the OpenAI Responses API convention.
     InputItemMcpApprovalResponses:
       properties:
         type:
@@ -838,103 +698,15 @@ components:
       - approval_request_id
       - approve
       title: InputItemMcpApprovalResponses
-    MCPTool:
+    ErrorResponse:
       properties:
-        type:
-          type: string
-          const: mcp
-          title: Type
-          description: Tool type, must be 'mcp'
-        require_approval:
-          type: string
-          enum:
-          - always
-          - never
-          title: Require Approval
-          description: Whether the server requires approval before calling the tool. 'always' means approval is required, 'never' means no approval needed.
-          default: always
-        server_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Label
-          description: Optional label for the tool to be used by the server
-        allowed_tools:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Tools
-          description: Optional dict or array of allowed tools that the server can call, keyed by tool name. This can be used to specify which tools the server is allowed to call, and can include additional configuration for each tool.
-        authorization:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
-          description: Optional authorization information for the server to use when calling the tool. This can include API keys, tokens, or other credentials needed to access the tool.
-        headers:
-          anyOf:
-          - additionalProperties:
-              type: string
-            type: object
-          - type: 'null'
-          title: Headers
-          description: Optional headers to include when the server calls the tool. This can be used to provide additional context or information needed for the tool execution.
-        server_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Description
-          description: Optional description for the server to understand the tool's purpose
-        server_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Url
-          description: Optional URL for the server to call when executing the tool
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
       type: object
       required:
-      - type
-      title: MCPTool
-      description: MCP hosted tool definition (server-executed).
-    InputItemMcpCall:
-      properties:
-        type:
-          type: string
-          const: mcp_call
-          title: Type
-        id:
-          type: string
-          pattern: ^mcp_[a-zA-Z0-9_-]+$
-          title: Id
-          description: Unique identifier for the MCP call
-        name:
-          type: string
-          title: Name
-        arguments:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Arguments
-        server_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Server Label
-        output:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Output
-      type: object
-      required:
-      - type
-      - id
-      - name
-      title: InputItemMcpCall
+      - error
+      title: ErrorResponse
+      description: Structured error envelope.
     ConversationListResponse:
       properties:
         object:
@@ -965,6 +737,49 @@ components:
       - has_more
       title: ConversationListResponse
       description: Paginated response for listing conversations.
+    InputItemMcpApprovalRequest:
+      properties:
+        type:
+          type: string
+          const: mcp_approval_request
+          title: Type
+        id:
+          type: string
+          pattern: ^mcpr_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the approval request
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      - id
+      title: InputItemMcpApprovalRequest
+    CreateConversationRequest:
+      properties:
+        metadata:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Metadata
+      type: object
+      title: CreateConversationRequest
+      description: Request body for creating a conversation.
     ConversationResponseItem:
       properties:
         id:
@@ -1210,6 +1025,144 @@ components:
       - request_input
       title: ConversationResponseItem
       description: Full response plus tree metadata and user input for conversation listing.
+    InputItemFunctionCall:
+      properties:
+        type:
+          type: string
+          const: function_call
+          title: Type
+        call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Call Id
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        arguments:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Arguments
+      type: object
+      required:
+      - type
+      title: InputItemFunctionCall
+      description: Input item for function call (history reconstruction).
+    InputItemFunctionCallOutput:
+      properties:
+        type:
+          type: string
+          const: function_call_output
+          title: Type
+        call_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Call Id
+        id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Id
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        output:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Output
+      type: object
+      required:
+      - type
+      title: InputItemFunctionCallOutput
+      description: Input item for function call (history reconstruction).
+    ConversationResponsesList:
+      properties:
+        object:
+          type: string
+          title: Object
+          default: list
+        data:
+          items:
+            $ref: '#/components/schemas/ConversationResponseItem'
+          type: array
+          title: Data
+      type: object
+      required:
+      - data
+      title: ConversationResponsesList
+      description: Response for listing all responses in a conversation.
+    UsageInfo:
+      properties:
+        input_tokens:
+          type: integer
+          title: Input Tokens
+        output_tokens:
+          type: integer
+          title: Output Tokens
+        total_tokens:
+          type: integer
+          title: Total Tokens
+      type: object
+      required:
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      title: UsageInfo
+      description: Token usage information.
+    InputItemMcpListTools:
+      properties:
+        type:
+          type: string
+          const: mcp_list_tools
+          title: Type
+        id:
+          type: string
+          pattern: ^mcpl_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for the MCP list tools
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+        tools:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items: {}
+            type: array
+          - type: 'null'
+          title: Tools
+      type: object
+      required:
+      - type
+      - id
+      title: InputItemMcpListTools
     InputItemMessage:
       properties:
         type:
@@ -1269,112 +1222,80 @@ components:
         - id: unique identifier (optional on input, populated on output)
 
         - status: in_progress, completed, incomplete (optional on input)'
-    ErrorResponse:
+    UpdateConversationRequest:
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
       type: object
       required:
-      - error
-      title: ErrorResponse
-      description: Structured error envelope.
-    InputItemMcpApprovalRequest:
+      - metadata
+      title: UpdateConversationRequest
+      description: Request body for updating conversation metadata.
+    ConversationResponse:
+      properties:
+        id:
+          type: string
+          title: Id
+        object:
+          type: string
+          title: Object
+          default: conversation
+        metadata:
+          additionalProperties:
+            type: string
+          type: object
+          title: Metadata
+        created_at:
+          type: integer
+          title: Created At
+        updated_at:
+          type: integer
+          title: Updated At
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      title: ConversationResponse
+      description: API response schema for conversations — excludes internal fields.
+    InputItemMcpCall:
       properties:
         type:
           type: string
-          const: mcp_approval_request
+          const: mcp_call
           title: Type
         id:
           type: string
-          pattern: ^mcpr_[a-zA-Z0-9_-]+$
+          pattern: ^mcp_[a-zA-Z0-9_-]+$
           title: Id
-          description: Unique identifier for the approval request
+          description: Unique identifier for the MCP call
         name:
+          type: string
+          title: Name
+        arguments:
           anyOf:
           - type: string
           - type: 'null'
-          title: Name
+          title: Arguments
         server_label:
           anyOf:
           - type: string
           - type: 'null'
           title: Server Label
-        arguments:
+        output:
           anyOf:
           - type: string
           - type: 'null'
-          title: Arguments
+          title: Output
       type: object
       required:
       - type
       - id
-      title: InputItemMcpApprovalRequest
-    ConversationRef:
-      properties:
-        id:
-          type: string
-          title: Id
-      type: object
-      required:
-      - id
-      title: ConversationRef
-      description: Minimal conversation reference embedded in response objects.
-    ConversationResponsesList:
-      properties:
-        object:
-          type: string
-          title: Object
-          default: list
-        data:
-          items:
-            $ref: '#/components/schemas/ConversationResponseItem'
-          type: array
-          title: Data
-      type: object
-      required:
-      - data
-      title: ConversationResponsesList
-      description: Response for listing all responses in a conversation.
-    InputItemFunctionCall:
-      properties:
-        type:
-          type: string
-          const: function_call
-          title: Type
-        call_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Call Id
-        id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Id
-        status:
-          anyOf:
-          - type: string
-            enum:
-            - in_progress
-            - completed
-            - incomplete
-          - type: 'null'
-          title: Status
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        arguments:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Arguments
-      type: object
-      required:
-      - type
-      title: InputItemFunctionCall
-      description: Input item for function call (history reconstruction).
+      - name
+      title: InputItemMcpCall
     ContentItem:
       properties:
         type:
@@ -1404,30 +1325,54 @@ components:
         - text: the actual content
 
         - annotations: optional metadata'
-    ErrorDetail:
+    InputItemReasoning:
       properties:
-        message:
-          type: string
-          title: Message
         type:
           type: string
+          const: reasoning
           title: Type
-        param:
+        id:
+          type: string
+          pattern: ^rs_[a-zA-Z0-9_-]+$
+          title: Id
+          description: Unique identifier for reasoning messages
+        status:
+          anyOf:
+          - type: string
+            enum:
+            - in_progress
+            - completed
+            - incomplete
+          - type: 'null'
+          title: Status
+        role:
           anyOf:
           - type: string
           - type: 'null'
-          title: Param
-        code:
+          title: Role
+        content:
           anyOf:
           - type: string
+          - items:
+              $ref: '#/components/schemas/ContentItem'
+            type: array
+          - items:
+              type: string
+            type: array
           - type: 'null'
-          title: Code
+          title: Content
+        summary:
+          items:
+            $ref: '#/components/schemas/ReasoningSummaryItem'
+          type: array
+          title: Summary
+          description: Reasoning summary items returned by the downstream service.
       type: object
       required:
-      - message
       - type
-      title: ErrorDetail
-      description: Structured error detail matching the OpenAI Responses API convention.
+      - id
+      title: InputItemReasoning
+      description: Input item for reasoning type messages.
     ReasoningSummaryItem:
       properties:
         type:
@@ -1443,45 +1388,100 @@ components:
       - text
       title: ReasoningSummaryItem
       description: Summary item for reasoning output messages.
-    ConversationResponse:
+    Function:
       properties:
-        id:
+        type:
           type: string
-          title: Id
-        object:
+          const: function
+          title: Type
+          description: Tool type, must be 'function'
+        name:
           type: string
-          title: Object
-          default: conversation
-        metadata:
-          additionalProperties:
-            type: string
-          type: object
-          title: Metadata
-        created_at:
-          type: integer
-          title: Created At
-        updated_at:
-          type: integer
-          title: Updated At
+          title: Name
+          description: Name of the function tool
+        parameters:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Parameters
+        strict:
+          type: boolean
+          title: Strict
+          default: true
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
       type: object
       required:
-      - id
-      - created_at
-      - updated_at
-      title: ConversationResponse
-      description: API response schema for conversations — excludes internal fields.
-    UpdateConversationRequest:
+      - type
+      - name
+      title: Function
+      description: Function tool definition (client-executed).
+    MCPTool:
       properties:
-        metadata:
-          additionalProperties:
-            type: string
-          type: object
-          title: Metadata
+        type:
+          type: string
+          const: mcp
+          title: Type
+          description: Tool type, must be 'mcp'
+        require_approval:
+          type: string
+          enum:
+          - always
+          - never
+          title: Require Approval
+          description: Whether the server requires approval before calling the tool. 'always' means approval is required, 'never' means no approval needed.
+          default: always
+        server_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Label
+          description: Optional label for the tool to be used by the server
+        allowed_tools:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Tools
+          description: Optional dict or array of allowed tools that the server can call, keyed by tool name. This can be used to specify which tools the server is allowed to call, and can include additional configuration for each tool.
+        authorization:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+          description: Optional authorization information for the server to use when calling the tool. This can include API keys, tokens, or other credentials needed to access the tool.
+        headers:
+          anyOf:
+          - additionalProperties:
+              type: string
+            type: object
+          - type: 'null'
+          title: Headers
+          description: Optional headers to include when the server calls the tool. This can be used to provide additional context or information needed for the tool execution.
+        server_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Description
+          description: Optional description for the server to understand the tool's purpose
+        server_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Server Url
+          description: Optional URL for the server to call when executing the tool
       type: object
       required:
-      - metadata
-      title: UpdateConversationRequest
-      description: Request body for updating conversation metadata.
+      - type
+      title: MCPTool
+      description: MCP hosted tool definition (server-executed).
   securitySchemes:
     HTTPBearer:
       type: http

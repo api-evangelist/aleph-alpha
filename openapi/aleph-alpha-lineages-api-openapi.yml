@@ -255,12 +255,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SortDirection:
-      type: string
-      enum:
-      - asc
-      - desc
-      title: SortDirection
     PagedResponse_BenchmarkLineageResponse_:
       properties:
         total:
@@ -297,15 +291,12 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    BenchmarkLineageSortableColumns:
+    SortDirection:
       type: string
       enum:
-      - run_latency
-      - run_tokens
-      - created_by
-      - created_at
-      title: BenchmarkLineageSortableColumns
-      description: Sortable columns for benchmark lineage queries.
+      - asc
+      - desc
+      title: SortDirection
     ValidationError:
       properties:
         loc:
@@ -332,6 +323,15 @@ components:
       - msg
       - type
       title: ValidationError
+    BenchmarkLineageSortableColumns:
+      type: string
+      enum:
+      - run_latency
+      - run_tokens
+      - created_by
+      - created_at
+      title: BenchmarkLineageSortableColumns
+      description: Sortable columns for benchmark lineage queries.
     BenchmarkLineageResponse:
       properties:
         created_at:

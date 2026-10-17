@@ -323,6 +323,65 @@ components:
       type: array
       title: GetProjectUserlistResponse
       description: Response model for getting project user list.
+    ProjectUser:
+      properties:
+        type:
+          type: string
+          const: user
+          title: Type
+          default: user
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the user
+          examples:
+          - '123456789'
+        user_name:
+          type: string
+          title: User Name
+          description: The username of the user
+          examples:
+          - Chuck Norris
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        email:
+          type: string
+          title: Email
+          description: The email of the user
+          examples:
+          - chuck@norris.com
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+          description: The profile of the user
+        role:
+          $ref: '#/components/schemas/WPUserRole'
+          description: The role of the user in a project
+          examples:
+          - owner
+          - member
+      type: object
+      required:
+      - id
+      - user_name
+      - created_at
+      - updated_at
+      - email
+      - profile
+      - role
+      title: ProjectUser
+      description: User model with project role information.
     HTTPValidationError:
       properties:
         detail:
@@ -332,6 +391,137 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WPUserRole:
+      type: string
+      enum:
+      - owner
+      - member
+    User:
+      properties:
+        type:
+          type: string
+          const: user
+          title: Type
+          default: user
+        id:
+          type: string
+          title: Id
+          description: The unique identifier of the user
+          examples:
+          - '123456789'
+        user_name:
+          type: string
+          title: User Name
+          description: The username of the user
+          examples:
+          - Chuck Norris
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
+          examples:
+          - '2024-08-08T15:09:00Z'
+        email:
+          type: string
+          title: Email
+          description: The email of the user
+          examples:
+          - chuck@norris.com
+        profile:
+          $ref: '#/components/schemas/UserProfile'
+          description: The profile of the user
+      type: object
+      required:
+      - id
+      - user_name
+      - created_at
+      - updated_at
+      - email
+      - profile
+      title: User
+    UpdateProjectUserlistRequest:
+      properties:
+        upsert:
+          items:
+            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
+          type: array
+          title: Upsert
+          description: The list of users to be added to the project and their roles
+        remove:
+          items:
+            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
+          type: array
+          title: Remove
+          description: The list of users to be removed from the project
+      type: object
+      required:
+      - upsert
+      - remove
+      title: UpdateProjectUserlistRequest
+      description: Request model for updating project user list.
+    PatchProjectRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 100
+          - type: 'null'
+          title: Name
+          description: The name of the project.
+          examples:
+          - Project
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the project.
+          examples:
+          - This is a project.
+        archived:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Archived
+          description: The archival status of the project
+      type: object
+      title: PatchProjectRequest
+      description: Request model for partially updating a project.
     ProjectResponseV2:
       properties:
         updated_at:
@@ -411,84 +601,29 @@ components:
       - created_by
       title: ProjectResponseV2
       description: Response model for project operations (v2) with enhanced user details.
-    UserProfile:
+    ProjectRequest:
       properties:
-        given_name:
+        name:
           type: string
-          title: Given Name
-          description: The given name of the profile
+          maxLength: 100
+          title: Name
+          description: The name of the project.
           examples:
-          - Chuck
-        last_name:
-          type: string
-          title: Last Name
-          description: The last name of the profile
+          - Project
+        description:
+          anyOf:
+          - type: string
+            maxLength: 1000
+          - type: 'null'
+          title: Description
+          description: The description of the project.
           examples:
-          - Norris
+          - This is a project.
       type: object
       required:
-      - given_name
-      - last_name
-      title: UserProfile
-    ProjectUser:
-      properties:
-        type:
-          type: string
-          const: user
-          title: Type
-          default: user
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the user
-          examples:
-          - '123456789'
-        user_name:
-          type: string
-          title: User Name
-          description: The username of the user
-          examples:
-          - Chuck Norris
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        email:
-          type: string
-          title: Email
-          description: The email of the user
-          examples:
-          - chuck@norris.com
-        profile:
-          $ref: '#/components/schemas/UserProfile'
-          description: The profile of the user
-        role:
-          $ref: '#/components/schemas/WPUserRole'
-          description: The role of the user in a project
-          examples:
-          - owner
-          - member
-      type: object
-      required:
-      - id
-      - user_name
-      - created_at
-      - updated_at
-      - email
-      - profile
-      - role
-      title: ProjectUser
-      description: User model with project role information.
+      - name
+      title: ProjectRequest
+      description: Request model for creating or updating a project.
     UpsertOrRemoveProjectUser:
       properties:
         id:
@@ -513,160 +648,25 @@ components:
       - role
       title: UpsertOrRemoveProjectUser
       description: Model for adding or removing users from a project.
-    ValidationError:
+    UserProfile:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        given_name:
           type: string
-          title: Message
-        type:
+          title: Given Name
+          description: The given name of the profile
+          examples:
+          - Chuck
+        last_name:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Last Name
+          description: The last name of the profile
+          examples:
+          - Norris
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    User:
-      properties:
-        type:
-          type: string
-          const: user
-          title: Type
-          default: user
-        id:
-          type: string
-          title: Id
-          description: The unique identifier of the user
-          examples:
-          - '123456789'
-        user_name:
-          type: string
-          title: User Name
-          description: The username of the user
-          examples:
-          - Chuck Norris
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-          description: The UTC timestamp of the time the user has been created in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-          description: The UTC timestamp of the time the user has been updated in ISO 8601 format.
-          examples:
-          - '2024-08-08T15:09:00Z'
-        email:
-          type: string
-          title: Email
-          description: The email of the user
-          examples:
-          - chuck@norris.com
-        profile:
-          $ref: '#/components/schemas/UserProfile'
-          description: The profile of the user
-      type: object
-      required:
-      - id
-      - user_name
-      - created_at
-      - updated_at
-      - email
-      - profile
-      title: User
-    PatchProjectRequest:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            maxLength: 100
-          - type: 'null'
-          title: Name
-          description: The name of the project.
-          examples:
-          - Project
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-          description: The description of the project.
-          examples:
-          - This is a project.
-        archived:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Archived
-          description: The archival status of the project
-      type: object
-      title: PatchProjectRequest
-      description: Request model for partially updating a project.
-    UpdateProjectUserlistRequest:
-      properties:
-        upsert:
-          items:
-            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
-          type: array
-          title: Upsert
-          description: The list of users to be added to the project and their roles
-        remove:
-          items:
-            $ref: '#/components/schemas/UpsertOrRemoveProjectUser'
-          type: array
-          title: Remove
-          description: The list of users to be removed from the project
-      type: object
-      required:
-      - upsert
-      - remove
-      title: UpdateProjectUserlistRequest
-      description: Request model for updating project user list.
-    WPUserRole:
-      type: string
-      enum:
-      - owner
-      - member
-    ProjectRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 100
-          title: Name
-          description: The name of the project.
-          examples:
-          - Project
-        description:
-          anyOf:
-          - type: string
-            maxLength: 1000
-          - type: 'null'
-          title: Description
-          description: The description of the project.
-          examples:
-          - This is a project.
-      type: object
-      required:
-      - name
-      title: ProjectRequest
-      description: Request model for creating or updating a project.
+      - given_name
+      - last_name
+      title: UserProfile
   securitySchemes:
     BearerAuth:
       type: http

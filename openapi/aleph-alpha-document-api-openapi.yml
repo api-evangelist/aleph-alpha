@@ -462,73 +462,127 @@ paths:
         host:
           default: https://api.pharia.example.com
 components:
-  schemas:
-    DocumentInformationPage:
-      type: object
-      properties:
-        page:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 1
-        total:
-          type: number
-          example: 10
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentInformation'
-    Content:
-      type: array
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/ModalityText'
-        - $ref: '#/components/schemas/ModalityImage'
-    DocumentMetadata:
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/NestedMetadata'
-    ImageCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+  parameters:
+    DocumentName:
+      in: path
+      name: documentName
+      description: The name of the document
+      required: true
+      schema:
+        type: string
+    SearchStoreID:
+      in: path
+      name: searchStoreID
+      description: The ID of the search store
+      required: true
+      schema:
+        type: string
+      example: 7d78f98d-1c47-4c0b-8101-41b43b45e2cb
+    PageSize:
+      in: query
+      name: size
+      description: The number of items to include per page. A value between 1 and 100.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 50
+        example: 10
+    PageNumber:
+      in: query
+      name: page
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+    name:
+      description: 'Name of the document. The name must be unique within a collection and should not exceed 512 characters.
 
         '
+      name: name
+      in: path
+      schema:
+        type: string
+        maxLength: '512'
+      required: 'true'
+      example: Climate_change
+    version:
+      description: Which version of the document to retrieve.
+      name: version
+      in: path
+      schema:
+        type: integer
+      required: 'true'
+      example: '1'
+    namespace:
+      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+        for collections. A namespace typically corresponds to an organisation.
+
+        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
+
+        cannot be longer than 100 characters.
+
+        '
+      name: namespace
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: aleph-alpha
+    collection:
+      description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
+
+        only a single collection can be searched with a single search/lookup request. The name of the collection
+
+        must be unique within a namespace.
+
+        Collections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
+
+        then 100 characters.
+
+        '
+      name: collection
+      in: path
+      schema:
+        type: string
+        maxLength: '100'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: wikipedia-de
+    index:
+      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
+
+        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
+
+        be longer than 50 characters.
+
+        '
+      name: index
+      in: path
+      schema:
+        type: string
+        maxLength: '50'
+        pattern: ^[a-zA-Z0-9\-\.]+$
+      required: 'true'
+      example: asymmetric
+  schemas:
+    ModalityImage:
       type: object
       properties:
         modality:
           type: string
           enum:
           - image
-        item:
-          type: integer
-          description: Index of the item in the document
-    TextCursor:
-      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
-
-        '
-      type: object
-      properties:
-        modality:
+        image:
           type: string
-          enum:
-          - text
-        item:
-          type: integer
-          description: Index of the item in the document
-        position:
-          type: integer
-          description: The character position the cursor can be found at within the string.
-    Text:
-      description: Represent a single piece of continuous text. The modality must always be 'text'.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
+          example: <base64-encoded-string>
     DocumentInformation:
       description: Information about a document
       type: object
@@ -545,6 +599,44 @@ components:
           minimum: 1
         metadata:
           $ref: '#/components/schemas/NestedMetadata'
+    TextCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        item:
+          type: integer
+          description: Index of the item in the document
+        position:
+          type: integer
+          description: The character position the cursor can be found at within the string.
+    NestedMetadata:
+      type: object
+      description: 'Metadata attached to a search store file. This can be useful for storing
+
+        additional structured information.
+
+
+        Keys are strings with a maximum length of 64 characters.
+
+        '
+      additionalProperties:
+        anyOf:
+        - type: string
+        - type: number
+        - type: boolean
+        - type: array
+          items: {}
+        - type: object
+      example:
+        category: research-paper
+        wordCount: 6000
+        peerReviewed: true
     DocumentSection:
       description: 'A section of a document.
 
@@ -570,16 +662,11 @@ components:
           oneOf:
           - $ref: '#/components/schemas/TextCursor'
           - $ref: '#/components/schemas/ImageCursor'
-    Image:
-      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
+    DocumentMetadata:
       type: object
       properties:
-        modality:
-          type: string
-          enum:
-          - image
-        bytes:
-          type: string
+        metadata:
+          $ref: '#/components/schemas/NestedMetadata'
     DocumentContent:
       description: 'Represents a document. The actual content of the document is an array of text and image elements.
 
@@ -606,38 +693,42 @@ components:
             results based on these metadata fields using filter indexes.
 
             '
-    NestedMetadata:
+    Text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
       type: object
-      description: 'Metadata attached to a search store file. This can be useful for storing
-
-        additional structured information.
-
-
-        Keys are strings with a maximum length of 64 characters.
-
-        '
-      additionalProperties:
-        anyOf:
-        - type: string
-        - type: number
-        - type: boolean
-        - type: array
-          items: {}
-        - type: object
-      example:
-        category: research-paper
-        wordCount: 6000
-        peerReviewed: true
-    ModalityImage:
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    DocumentInformationPage:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentInformation'
+    Image:
+      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
       type: object
       properties:
         modality:
           type: string
           enum:
           - image
-        image:
+        bytes:
           type: string
-          example: <base64-encoded-string>
     ModalityText:
       type: object
       properties:
@@ -647,6 +738,25 @@ components:
           - text
         text:
           type: string
+    ImageCursor:
+      description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
+
+        '
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        item:
+          type: integer
+          description: Index of the item in the document
+    Content:
+      type: array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/ModalityText'
+        - $ref: '#/components/schemas/ModalityImage'
     imageCursor:
       description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
 
@@ -673,41 +783,18 @@ components:
       required:
       - modality
       - text
-    documentPath:
-      description: The path to a document. A path uniquely identifies a document among all managed documents.
+    documentInformation:
+      description: Information about a document
       type: object
       properties:
-        name:
-          description: Name of the document. The name is unique within a collection.
+        path:
+          $ref: '#/components/schemas/documentPath'
+        created:
           type: string
-          maxLength: '512'
-        collection:
-          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
-
-            '
-          type: string
-          maxLength: '100'
-        namespace:
-          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
-
-            for collections. A namespace typically corresponds to an organisation.
-
-            '
-          type: string
-          maxLength: '100'
-    image:
-      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        bytes:
-          type: string
-      required:
-      - modality
-      - bytes
+          format: date-time
+        version:
+          type: integer
+          minimum: '1'
     document:
       description: 'Represents a document. The actual content of the document is an array of text and image elements.
 
@@ -735,32 +822,6 @@ components:
       required:
       - schema_version
       - content
-    documentInformation:
-      description: Information about a document
-      type: object
-      properties:
-        path:
-          $ref: '#/components/schemas/documentPath'
-        created:
-          type: string
-          format: date-time
-        version:
-          type: integer
-          minimum: '1'
-    documentVersion:
-      description: 'The version of a document with the creation timestamp.
-
-        '
-      type: object
-      properties:
-        version:
-          type: integer
-        created_timestamp:
-          type: string
-          format: date-time
-        archived_timestamp:
-          type: string
-          format: date-time
     documentSection:
       description: 'A section of a document.
 
@@ -800,116 +861,55 @@ components:
         position:
           type: integer
           description: The character position the cursor can be found at within the string.
-  parameters:
-    SearchStoreID:
-      in: path
-      name: searchStoreID
-      description: The ID of the search store
-      required: true
-      schema:
-        type: string
-      example: 7d78f98d-1c47-4c0b-8101-41b43b45e2cb
-    DocumentName:
-      in: path
-      name: documentName
-      description: The name of the document
-      required: true
-      schema:
-        type: string
-    PageSize:
-      in: query
-      name: size
-      description: The number of items to include per page. A value between 1 and 100.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 50
-        example: 10
-    PageNumber:
-      in: query
-      name: page
-      description: The page number to retrieve.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-        example: 1
-    name:
-      description: 'Name of the document. The name must be unique within a collection and should not exceed 512 characters.
+    documentPath:
+      description: The path to a document. A path uniquely identifies a document among all managed documents.
+      type: object
+      properties:
+        name:
+          description: Name of the document. The name is unique within a collection.
+          type: string
+          maxLength: '512'
+        collection:
+          description: 'Collection containing documents. The name of the collection must be unique within a namespace.
+
+            '
+          type: string
+          maxLength: '100'
+        namespace:
+          description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
+
+            for collections. A namespace typically corresponds to an organisation.
+
+            '
+          type: string
+          maxLength: '100'
+    image:
+      description: Image data as base64-encoded bytes. Supperted types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+      required:
+      - modality
+      - bytes
+    documentVersion:
+      description: 'The version of a document with the creation timestamp.
 
         '
-      name: name
-      in: path
-      schema:
-        type: string
-        maxLength: '512'
-      required: 'true'
-      example: Climate_change
-    collection:
-      description: 'Collection containing documents. A search/lookup request always refers to a single collection, i.e.
-
-        only a single collection can be searched with a single search/lookup request. The name of the collection
-
-        must be unique within a namespace.
-
-        Collections may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot be longer
-
-        then 100 characters.
-
-        '
-      name: collection
-      in: path
-      schema:
-        type: string
-        maxLength: '100'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: wikipedia-de
-    version:
-      description: Which version of the document to retrieve.
-      name: version
-      in: path
-      schema:
-        type: integer
-      required: 'true'
-      example: '1'
-    index:
-      description: 'Index for a collection. Indexes are used for search operations on documents in collections.
-
-        An index name may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and cannot
-
-        be longer than 50 characters.
-
-        '
-      name: index
-      in: path
-      schema:
-        type: string
-        maxLength: '50'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: asymmetric
-    namespace:
-      description: 'Namespace for collections of documents. Namespaces support preventing naming conflicts
-
-        for collections. A namespace typically corresponds to an organisation.
-
-        Namespaces may only contain alphanumeric characters (a-z, A-Z, -, . and 0-9) and
-
-        cannot be longer than 100 characters.
-
-        '
-      name: namespace
-      in: path
-      schema:
-        type: string
-        maxLength: '100'
-        pattern: ^[a-zA-Z0-9\-\.]+$
-      required: 'true'
-      example: aleph-alpha
+      type: object
+      properties:
+        version:
+          type: integer
+        created_timestamp:
+          type: string
+          format: date-time
+        archived_timestamp:
+          type: string
+          format: date-time
   securitySchemes:
     Bearer:
       type: http

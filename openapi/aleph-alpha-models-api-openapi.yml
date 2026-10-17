@@ -263,21 +263,6 @@ paths:
           default: https://api.pharia.example.com
 components:
   schemas:
-    ModelCompleteRequest:
-      properties:
-        model:
-          type: string
-          title: Model
-        prompt:
-          type: string
-          title: Prompt
-      additionalProperties: true
-      type: object
-      required:
-      - model
-      - prompt
-      title: ModelCompleteRequest
-      description: Request model for model completion.
     ChatCompletionRequest:
       properties:
         messages:
@@ -299,6 +284,70 @@ components:
       - model
       title: ChatCompletionRequest
       description: Request model for chat completion.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ModelCompleteRequest:
+      properties:
+        model:
+          type: string
+          title: Model
+        prompt:
+          type: string
+          title: Prompt
+      additionalProperties: true
+      type: object
+      required:
+      - model
+      - prompt
+      title: ModelCompleteRequest
+      description: Request model for model completion.
+    Message:
+      properties:
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - role
+      - content
+      title: Message
+      description: Chat message model.
     ModelCardResponse:
       properties:
         name:
@@ -413,55 +462,6 @@ components:
       - link
       title: ModelCardResponse
       description: Response model for model cards.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    Message:
-      properties:
-        role:
-          type: string
-          title: Role
-        content:
-          type: string
-          title: Content
-      type: object
-      required:
-      - role
-      - content
-      title: Message
-      description: Chat message model.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     token:
       type: http

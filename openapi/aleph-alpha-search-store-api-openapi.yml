@@ -186,6 +186,34 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    CreatedAt:
+      type: string
+      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
+      example: '2025-12-31'
+    SearchStoreMetadata:
+      type: object
+      description: 'Metadata attached to a search store.
+
+
+        This can be useful for storing additional structured information about
+
+        the search store itself or the contained files.
+
+
+        Keys are strings with a maximum length of 64 characters. Values are either
+
+        strings with a maximum length of 512 characters, numbers or boolean values.
+
+        '
+      additionalProperties:
+        anyOf:
+        - type: string
+          maxLength: 512
+        - type: boolean
+        - type: number
+      example:
+        category: research-papers
+        approved: true
     TextCursor:
       description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
 
@@ -202,85 +230,43 @@ components:
         position:
           type: integer
           description: The character position the cursor can be found at within the string.
-    DocumentSection:
-      description: 'A section of a document.
+    MetadataSchema:
+      type: object
+      additionalProperties:
+        type: string
+        enum:
+        - string
+        - integer
+        - float
+        - boolean
+        - date_time
+      description: 'A dictionary of metadata fields on which to filter search results and their types.
+
+
+        Field names must only contain alphanumeric characters, dashes and underscores.
+
+
+        Nested fields can be specified using dot notation (e.g. ''a.b'').
+
+
+        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
+
+
+        The maximum length of the field name is 1000 characters.
 
         '
+      example:
+        approved: boolean
+    ModalityImage:
       type: object
       properties:
-        documentName:
+        modality:
           type: string
-          description: The name of the document this chunk belongs to.
-          example: document-123
-        section:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/Text'
-            - $ref: '#/components/schemas/Image'
-        start:
-          oneOf:
-          - $ref: '#/components/schemas/TextCursor'
-          - $ref: '#/components/schemas/ImageCursor'
-        end:
-          description: Inclusive cursor. The section of the document includes whatever is at this position
-          oneOf:
-          - $ref: '#/components/schemas/TextCursor'
-          - $ref: '#/components/schemas/ImageCursor'
-    transitioningResult:
-      description: 'The result for a transitioning documents query.
-
-        '
-      type: object
-      properties:
-        currently_embedding:
-          type: integer
-        currently_archiving:
-          type: integer
-      required:
-      - currently_embedding
-      - currently_archiving
-    SearchStoreInformationPage:
-      type: object
-      properties:
-        page:
-          type: number
-          example: 1
-        size:
-          type: number
-          example: 1
-        total:
-          type: number
-          example: 10
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchStoreInformation'
-    SearchStoreSearchRequest:
-      type: object
-      properties:
-        query:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/ModalityText'
-            - $ref: '#/components/schemas/ModalityImage'
-        filters:
-          type: array
-          items:
-            type: object
-        minScore:
-          type: integer
-        maxResults:
-          type: integer
-    ChunkingStrategy:
-      type: object
-      properties:
-        maxChunkSizeTokens:
-          type: integer
-          minimum: 1
-        chunkOverlapTokens:
-          type: integer
+          enum:
+          - image
+        image:
+          type: string
+          example: <base64-encoded-string>
     ImageCursor:
       description: 'A position within a document. The cursor is always inclusive of the current position, in both start and end positions.
 
@@ -294,24 +280,27 @@ components:
         item:
           type: integer
           description: Index of the item in the document
-    EmbeddingStrategySemantic:
+    EmbeddingStrategyInstruct:
       type: object
       properties:
         model:
           type: string
-        representation:
-          type: string
-          enum:
-          - asymmetric
-          - symmetric
-          description: "The type of embedding representation, which defines how text is\nencoded into a vector.\n\n* `symmetric`: embedding representation where the same encoding model\n  and strategy are used to embed both queries and documents.\n  \n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Symmetric embeddings are suitable for tasks where both the query\n  and the stored documents have a similar nature and should be directly\n  comparable in the same vector space.\n\n* `asymmetric`: embedding representation where different encoding\n   models and/or encoding strategies are used for queries and\n   documents.\n\n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Asymmetric embeddings are used when queries and documents differ in\n  structure, intent, or length, requiring distinct optimizations for\n  retrieval.\n"
+        instruction:
+          type: object
+          properties:
+            document:
+              type: string
+              description: Instruction to be used for embedding the document.
+            query:
+              type: string
+              description: Instruction to be used for embedding the query.
         hybridIndex:
           type: string
           enum:
           - bm25
       required:
       - model
-      - representation
+      - instruction
     SearchStoreProperties:
       type: object
       required:
@@ -341,56 +330,6 @@ components:
           $ref: '#/components/schemas/SearchStoreMetadata'
         metadataSchema:
           $ref: '#/components/schemas/MetadataSchema'
-    EmbeddingStrategyInstruct:
-      type: object
-      properties:
-        model:
-          type: string
-        instruction:
-          type: object
-          properties:
-            document:
-              type: string
-              description: Instruction to be used for embedding the document.
-            query:
-              type: string
-              description: Instruction to be used for embedding the query.
-        hybridIndex:
-          type: string
-          enum:
-          - bm25
-      required:
-      - model
-      - instruction
-    Text:
-      description: Represent a single piece of continuous text. The modality must always be 'text'.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
-    SearchStoreInformation:
-      allOf:
-      - type: object
-        properties:
-          id:
-            $ref: '#/components/schemas/SearchStoreID'
-          createdAt:
-            $ref: '#/components/schemas/CreatedAt'
-      - $ref: '#/components/schemas/SearchStoreProperties'
-    ModalityImage:
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        image:
-          type: string
-          example: <base64-encoded-string>
     EmbeddingStrategyVllm:
       type: object
       properties:
@@ -445,65 +384,18 @@ components:
           document: 'passage: {{text}}'
         encodingFormat: float
         dimensions: 1024
-    SearchStoreID:
-      type: string
-      pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
-      example: 568cf1c0-5251-4210-8b61-d1eff43011b2
-    ModalityText:
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - text
-        text:
-          type: string
-    SearchStoreMetadata:
-      type: object
-      description: 'Metadata attached to a search store.
-
-
-        This can be useful for storing additional structured information about
-
-        the search store itself or the contained files.
-
-
-        Keys are strings with a maximum length of 64 characters. Values are either
-
-        strings with a maximum length of 512 characters, numbers or boolean values.
-
-        '
-      additionalProperties:
-        anyOf:
-        - type: string
-          maxLength: 512
-        - type: boolean
-        - type: number
-      example:
-        category: research-papers
-        approved: true
-    CreatedAt:
-      type: string
-      pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}'
-      example: '2025-12-31'
-    Image:
-      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
-      type: object
-      properties:
-        modality:
-          type: string
-          enum:
-          - image
-        bytes:
-          type: string
     SearchStoreCreate:
       allOf:
       - $ref: '#/components/schemas/SearchStoreProperties'
-    SearchStoreUpdate:
-      type: object
-      properties:
-        metadata:
-          $ref: '#/components/schemas/SearchStoreMetadata'
+    SearchStoreInformation:
+      allOf:
+      - type: object
+        properties:
+          id:
+            $ref: '#/components/schemas/SearchStoreID'
+          createdAt:
+            $ref: '#/components/schemas/CreatedAt'
+      - $ref: '#/components/schemas/SearchStoreProperties'
     SearchStoreQueryResult:
       description: 'The result for semantic document search.
 
@@ -536,33 +428,141 @@ components:
                 sub-query.
 
                 '
-    MetadataSchema:
+    ChunkingStrategy:
       type: object
-      additionalProperties:
-        type: string
-        enum:
-        - string
-        - integer
-        - float
-        - boolean
-        - date_time
-      description: 'A dictionary of metadata fields on which to filter search results and their types.
-
-
-        Field names must only contain alphanumeric characters, dashes and underscores.
-
-
-        Nested fields can be specified using dot notation (e.g. ''a.b'').
-
-
-        Array-valued fields can either use a wildcard specifier (e.g. ''a[].b'') or a specific index (e.g. ''a[1].b'').
-
-
-        The maximum length of the field name is 1000 characters.
+      properties:
+        maxChunkSizeTokens:
+          type: integer
+          minimum: 1
+        chunkOverlapTokens:
+          type: integer
+    DocumentSection:
+      description: 'A section of a document.
 
         '
-      example:
-        approved: boolean
+      type: object
+      properties:
+        documentName:
+          type: string
+          description: The name of the document this chunk belongs to.
+          example: document-123
+        section:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/Text'
+            - $ref: '#/components/schemas/Image'
+        start:
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+        end:
+          description: Inclusive cursor. The section of the document includes whatever is at this position
+          oneOf:
+          - $ref: '#/components/schemas/TextCursor'
+          - $ref: '#/components/schemas/ImageCursor'
+    SearchStoreID:
+      type: string
+      pattern: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+      example: 568cf1c0-5251-4210-8b61-d1eff43011b2
+    Image:
+      description: Image data as base64-encoded bytes. Supported types are PNG, JPG, GIF, BMP, WEBP.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - image
+        bytes:
+          type: string
+    SearchStoreSearchRequest:
+      type: object
+      properties:
+        query:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ModalityText'
+            - $ref: '#/components/schemas/ModalityImage'
+        filters:
+          type: array
+          items:
+            type: object
+        minScore:
+          type: integer
+        maxResults:
+          type: integer
+    EmbeddingStrategySemantic:
+      type: object
+      properties:
+        model:
+          type: string
+        representation:
+          type: string
+          enum:
+          - asymmetric
+          - symmetric
+          description: "The type of embedding representation, which defines how text is\nencoded into a vector.\n\n* `symmetric`: embedding representation where the same encoding model\n  and strategy are used to embed both queries and documents.\n  \n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Symmetric embeddings are suitable for tasks where both the query\n  and the stored documents have a similar nature and should be directly\n  comparable in the same vector space.\n\n* `asymmetric`: embedding representation where different encoding\n   models and/or encoding strategies are used for queries and\n   documents.\n\n  PhariaSearch automatically selects the appropriate optimized\n  representation based on the configured Index.\n  \n  Asymmetric embeddings are used when queries and documents differ in\n  structure, intent, or length, requiring distinct optimizations for\n  retrieval.\n"
+        hybridIndex:
+          type: string
+          enum:
+          - bm25
+      required:
+      - model
+      - representation
+    SearchStoreInformationPage:
+      type: object
+      properties:
+        page:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 1
+        total:
+          type: number
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchStoreInformation'
+    SearchStoreUpdate:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/SearchStoreMetadata'
+    ModalityText:
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
+    transitioningResult:
+      description: 'The result for a transitioning documents query.
+
+        '
+      type: object
+      properties:
+        currently_embedding:
+          type: integer
+        currently_archiving:
+          type: integer
+      required:
+      - currently_embedding
+      - currently_archiving
+    Text:
+      description: Represent a single piece of continuous text. The modality must always be 'text'.
+      type: object
+      properties:
+        modality:
+          type: string
+          enum:
+          - text
+        text:
+          type: string
   parameters:
     PageSize:
       in: query
