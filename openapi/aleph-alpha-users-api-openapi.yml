@@ -106,3 +106,9 @@ components:
       type: http
       scheme: bearer
       description: Can be generated in your [Aleph Alpha profile](https://app.aleph-alpha.com/profile)
+x-provenance:
+  method: harvested
+  publisher: Aleph Alpha
+  source: https://docs.aleph-alpha.com/COMMON/_attachments/openapi/pharia-inference/v4.7.0.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
