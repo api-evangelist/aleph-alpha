@@ -126,6 +126,36 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-official-clis.py
   first_seen: '2026-10-20'
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/Aleph-Alpha
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - Aleph-Alpha/Aleph-Alpha-GermanWeb
+  - Aleph-Alpha/MTBench-German
+  - Aleph-Alpha/ticket-classification
+  - Aleph-Alpha/Kolibri-1
+  - Aleph-Alpha/Pharia-1-LLM-7B-control-hf
+  - Aleph-Alpha/Kolibri-1-BF16
+  - Aleph-Alpha/llama-3_1-8b-tfree-hat-sft
+  - Aleph-Alpha/llama-3_1-8b-tfree-hat-base
+  - Aleph-Alpha/llama-3_1-8b-tfree-hat-dpo
+  - Aleph-Alpha/llama-tfree-hat-pretrained-7b-dpo
+  - Aleph-Alpha/Pharia-1-LLM-7B-control-aligned-hf
+  - Aleph-Alpha/meta-eval-argilla
+  listing_count: 3
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 generated: '2026-10-15'
 method: searched
 checked:
@@ -142,6 +172,7 @@ checked:
 - https://formulae.brew.sh/api/formula.json
 - https://github.com/ScoopInstaller/Extras
 - https://github.com/ScoopInstaller/Main
+- hugging-face/integrations/hugging-face-integration-edges.yml
 source:
 - https://registry.npmjs.org
 - https://pypi.org/pypi
